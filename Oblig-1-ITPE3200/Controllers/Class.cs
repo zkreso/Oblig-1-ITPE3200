@@ -2,5 +2,6 @@
 {
     public class Class
     {
+        private string hey;
     }
 }
