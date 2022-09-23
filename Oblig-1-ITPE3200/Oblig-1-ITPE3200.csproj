@@ -5,4 +5,10 @@
     <RootNamespace>Oblig_1_ITPE3200</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="Controllers\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+  </ItemGroup>
 </Project>
