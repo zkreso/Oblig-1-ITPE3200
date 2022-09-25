@@ -1,0 +1,29 @@
+﻿using Microsoft.AspNetCore.Mvc;
+using Oblig_1_ITPE3200.DAL;
+using Oblig_1_ITPE3200.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace Oblig_1_ITPE3200.Controllers
+{
+    [Route("[controller]/[action]")]
+    public class ObligController : ControllerBase
+    {
+        private readonly IObligRepository _db;
+
+        public ObligController(IObligRepository db)
+        {
+            _db = db;
+        }
+
+        public async Task<List<Disease>> GetAllDiseases()
+        {
+            return await _db.GetAllDiseases();
+        }
+
+        public async Task<List<Symptom>> GetAllSymptoms()
+        {
+            return await _db.GetAllSymptoms();
+        }
+    }
+}
