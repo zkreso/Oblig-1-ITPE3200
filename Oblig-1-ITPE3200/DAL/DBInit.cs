@@ -19,24 +19,20 @@ namespace Oblig_1_ITPE3200.DAL
                 var disease1 = new Disease { Name = "Common cold" };
                 var disease2 = new Disease { Name = "Influenza" };
 
-                var symptom1 = new Symptom { Name = "Runny nose" };
-                var symptom2 = new Symptom { Name = "Coughing" };
-                var symptom3 = new Symptom { Name = "High temperature" };
-                var symptom4 = new Symptom { Name = "Sneezing" };
-                var symptom5 = new Symptom { Name = "Muscle ache" };
+                var symptom1 = new Symptom { Name = "Runny nose" }; // Cold
+                var symptom2 = new Symptom { Name = "Sneezing" }; // Cold
+                var symptom3 = new Symptom { Name = "Coughing" }; // Cold and flu
+                var symptom4 = new Symptom { Name = "High temperature" }; // Flu
 
-                var symptoms1 = new List<Symptom>();
-                var symptoms2 = new List<Symptom>();
+                disease1.DiseaseSymptoms = new List<DiseaseSymptom>();
+                disease2.DiseaseSymptoms = new List<DiseaseSymptom>();
 
-                symptoms1.Add(symptom1);
-                symptoms1.Add(symptom4);
+                disease1.DiseaseSymptoms.Add(new DiseaseSymptom { Symptom = symptom1 });
+                disease1.DiseaseSymptoms.Add(new DiseaseSymptom { Symptom = symptom2 });
+                disease1.DiseaseSymptoms.Add(new DiseaseSymptom { Symptom = symptom3 });
 
-                symptoms2.Add(symptom2);
-                symptoms2.Add(symptom3);
-                symptoms2.Add(symptom5);
-
-                disease1.Symptoms = symptoms1;
-                disease2.Symptoms = symptoms2;
+                disease2.DiseaseSymptoms.Add(new DiseaseSymptom { Symptom = symptom3 });
+                disease2.DiseaseSymptoms.Add(new DiseaseSymptom { Symptom = symptom4 });
 
                 context.Diseases.Add(disease1);
                 context.Diseases.Add(disease2);

@@ -11,16 +11,17 @@ function getalldiseases() {
 
 function skrivUtDiseases(diseases) {
     let ut = "";
-    for (let disease of diseases) {
-        ut += disease.name;
+    for (let d of diseases) {
+        ut += d.name + "<br>"
         ut += "<ul>";
-        for (let symptom of disease.symptoms) {
-            ut += "<li>" + symptom.name + "</li>";
+        for (let ds of d.diseaseSymptoms) {
+            ut += "<li>" + ds.symptom.name + "</li>";
         }
-        ut += "</ul>";
+        ut += "</ul>"
     }
     $("#diseases").html(ut);
 }
+
 
 function getallsymptoms() {
     $.get("oblig/GetAllSymptoms", function (symptoms) {
@@ -29,10 +30,14 @@ function getallsymptoms() {
 }
 
 function skrivUtSymptoms(symptoms) {
-    let ut = "<ul>";
-    for (let symptom of symptoms) {
-        ut += "<li>" + symptom.name + "</li>";
+    let ut = "";
+    for (let s of symptoms) {
+        ut += s.name + "<br>"
+        ut += "<ul>";
+        for (let ds of s.diseaseSymptoms) {
+            ut += "<li>" + ds.disease.name + "</li>";
+        }
+        ut += "</ul>"
     }
-    ut += "</ul>";
     $("#symptoms").html(ut);
 }

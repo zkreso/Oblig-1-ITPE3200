@@ -11,6 +11,7 @@ namespace Oblig_1_ITPE3200.DAL
         }
         public virtual DbSet<Disease> Diseases { get; set; }
         public virtual DbSet<Symptom> Symptoms { get; set; }
+        public virtual DbSet<DiseaseSymptom> DiseaseSymptoms { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
