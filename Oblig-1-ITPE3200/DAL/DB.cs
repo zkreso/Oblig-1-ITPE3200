@@ -17,5 +17,11 @@ namespace Oblig_1_ITPE3200.DAL
         {
             optionsBuilder.UseLazyLoadingProxies();
         }
+        
+        // source: https://www.entityframeworktutorial.net/efcore/configure-many-to-many-relationship-in-ef-core.aspx
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<DiseaseSymptom>().HasKey(ds => new { ds.DiseaseId, ds.SymptomId });
+        }
     }
 }
