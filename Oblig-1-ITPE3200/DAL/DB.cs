@@ -1,4 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿
+//Sig er råå
+
+using Microsoft.EntityFrameworkCore;
 using Oblig_1_ITPE3200.Models;
 
 namespace Oblig_1_ITPE3200.DAL
