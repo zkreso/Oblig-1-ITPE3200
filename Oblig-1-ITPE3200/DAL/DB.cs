@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿// Denne fila er ny nå
+
+using Microsoft.EntityFrameworkCore;
 using Oblig_1_ITPE3200.Models;
 
 namespace Oblig_1_ITPE3200.DAL

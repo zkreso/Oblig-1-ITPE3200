@@ -1,6 +1,4 @@
 ﻿
-//Ny linje her nå
-
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Oblig_1_ITPE3200.Models;
