@@ -11,9 +11,9 @@ namespace Oblig_1_ITPE3200.DAL
         {
             Database.EnsureCreated();
         }
-        public virtual DbSet<Disease> Diseases { get; set; }
-        public virtual DbSet<Symptom> Symptoms { get; set; }
-        public virtual DbSet<DiseaseSymptom> DiseaseSymptoms { get; set; }
+        public DbSet<Disease> Diseases { get; set; }
+        public DbSet<Symptom> Symptoms { get; set; }
+        public DbSet<DiseaseSymptom> DiseaseSymptoms { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
