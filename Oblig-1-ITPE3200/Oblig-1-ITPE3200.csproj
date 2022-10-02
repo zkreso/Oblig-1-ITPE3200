@@ -5,6 +5,7 @@
     <RootNamespace>Oblig_1_ITPE3200</RootNamespace>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'Oblig-1-ITPE3200' " />
   <ItemGroup>
     <None Remove="Controllers\" />
     <None Remove="Models\" />

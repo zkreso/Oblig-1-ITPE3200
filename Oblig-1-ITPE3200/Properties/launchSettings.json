@@ -3,8 +3,8 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:16306",
-      "sslPort": 0
+      "applicationUrl": "http://localhost:10248",
+      "sslPort": 44323
     }
   },
   "profiles": {
@@ -16,11 +16,11 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "Oblig_1_ITPE3200": {
+    "Oblig-1-ITPE3200": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "index.html",
-      "applicationUrl": "http://localhost:5000",
+      "applicationUrl": "https://localhost:32681;http://localhost:2359",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
