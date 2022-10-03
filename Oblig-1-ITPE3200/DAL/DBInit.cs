@@ -24,18 +24,13 @@ namespace Oblig_1_ITPE3200.DAL
                 var symptom3 = new Symptom { Name = "Coughing" }; // Cold and flu
                 var symptom4 = new Symptom { Name = "High temperature" }; // Flu
 
-                disease1.DiseaseSymptoms = new List<DiseaseSymptom>();
-                disease2.DiseaseSymptoms = new List<DiseaseSymptom>();
+                var ds1 = new DiseaseSymptom { Disease = disease1, Symptom = symptom1 };
+                var ds2 = new DiseaseSymptom { Disease = disease1, Symptom = symptom2 };
+                var ds3 = new DiseaseSymptom { Disease = disease1, Symptom = symptom3 };
+                var ds4 = new DiseaseSymptom { Disease = disease2, Symptom = symptom3 };
+                var ds5 = new DiseaseSymptom { Disease = disease2, Symptom = symptom4 };
 
-                disease1.DiseaseSymptoms.Add(new DiseaseSymptom { Symptom = symptom1 });
-                disease1.DiseaseSymptoms.Add(new DiseaseSymptom { Symptom = symptom2 });
-                disease1.DiseaseSymptoms.Add(new DiseaseSymptom { Symptom = symptom3 });
-
-                disease2.DiseaseSymptoms.Add(new DiseaseSymptom { Symptom = symptom3 });
-                disease2.DiseaseSymptoms.Add(new DiseaseSymptom { Symptom = symptom4 });
-
-                context.Diseases.Add(disease1);
-                context.Diseases.Add(disease2);
+                context.DiseaseSymptoms.AddRange(ds1, ds2, ds3, ds4, ds5);
                 context.SaveChanges();
             }
         }
