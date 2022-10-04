@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Oblig_1_ITPE3200.DAL;
 
 namespace Oblig_1_ITPE3200
@@ -13,10 +14,15 @@ namespace Oblig_1_ITPE3200
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<DB>(options => options.UseSqlite("Data source=Oblig.db"));
+            services.AddDbContext<DB>(options => {
+                options.UseSqlite("Data source=Oblig.db");
+            });
+
             services.AddControllers().AddNewtonsoftJson(options =>
-                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-            );
+            {
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+                options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
+            });
             services.AddScoped<IObligRepository, ObligRepository>();
         }
 

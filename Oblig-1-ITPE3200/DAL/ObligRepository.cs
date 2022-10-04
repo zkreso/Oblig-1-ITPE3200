@@ -1,7 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Update;
+using Microsoft.Extensions.Hosting;
 using Oblig_1_ITPE3200.Models;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
+using System.Runtime.Serialization.Formatters;
 using System.Threading.Tasks;
 
 namespace Oblig_1_ITPE3200.DAL
@@ -38,6 +44,9 @@ namespace Oblig_1_ITPE3200.DAL
             try
             {
                 Disease disease = await _db.Diseases.FindAsync(id);
+
+                disease.Symptoms = disease.DiseaseSymptoms.Select(ds => ds.Symptom).ToList();
+
                 return disease;
             }
             catch
@@ -79,7 +88,13 @@ namespace Oblig_1_ITPE3200.DAL
         {
             try
             {
-                List<Disease> allDiseases = await _db.Diseases.ToListAsync();
+                List<Disease> allDiseases = await _db.Diseases.Select(d => new Disease
+                {
+                    Id = d.Id,
+                    Name = d.Name,
+                    Symptoms = d.DiseaseSymptoms.Select(ds => ds.Symptom).ToList()
+                }).ToListAsync();
+                
                 return allDiseases;
             }
             catch
@@ -110,6 +125,9 @@ namespace Oblig_1_ITPE3200.DAL
             try
             {
                 Symptom symptom = await _db.Symptoms.FindAsync(id);
+
+                symptom.Diseases = symptom.DiseaseSymptoms.Select(ds => ds.Disease).ToList();
+                
                 return symptom;
             }
             catch
@@ -151,7 +169,13 @@ namespace Oblig_1_ITPE3200.DAL
         {
             try
             {
-                List<Symptom> allSymptoms = await _db.Symptoms.ToListAsync();
+                List<Symptom> allSymptoms = await _db.Symptoms.Select(s => new Symptom
+                {
+                    Id = s.Id,
+                    Name = s.Name,
+                    Diseases = s.DiseaseSymptoms.Select(ds => ds.Disease).ToList()
+                }).ToListAsync();
+                
                 return allSymptoms;
             }
             catch
@@ -202,7 +226,39 @@ namespace Oblig_1_ITPE3200.DAL
             {
                 return false;
             }
-            
+        }
+
+        // Matching symptoms to diseases
+        public async Task<List<Disease>> SearchDiseases(int[] symptomsArray)
+        {
+            try
+            {
+                if (symptomsArray.Length > 0)
+                {
+                    // Get all diseases
+                    var results = await _db.Diseases.ToListAsync();
+
+                    // Filter results one by one
+                    foreach (int i in symptomsArray)
+                    {
+                        results = results.Where(d => d.DiseaseSymptoms.Select(ds => ds.SymptomId).Contains(i)).ToList();
+                    }
+                    // Populate symptom table for transfer
+                    foreach (Disease disease in results)
+                    {
+                        disease.Symptoms = disease.DiseaseSymptoms.Select(ds => ds.Symptom).ToList();
+                    }
+                    return results;
+                } 
+                else
+                {
+                    return null;
+                }
+            }
+            catch
+            {
+                return null;
+            }
         }
     }
 }

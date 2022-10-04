@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging.Console;
+using Microsoft.Extensions.Logging;
 using Oblig_1_ITPE3200.Models;
 
 namespace Oblig_1_ITPE3200.DAL

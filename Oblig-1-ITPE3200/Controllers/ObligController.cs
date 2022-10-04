@@ -73,5 +73,9 @@ namespace Oblig_1_ITPE3200.Controllers
         {
             return await _db.GetAllDiseaseSymptoms();
         }
+        public async Task<List<Disease>> SearchDiseases(int[] symptomsArray)
+        {
+            return await _db.SearchDiseases(symptomsArray);
+        }
     }
 }

@@ -1,7 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace Oblig_1_ITPE3200.Models
+﻿namespace Oblig_1_ITPE3200.Models
 {
     public class DiseaseSymptom
     {
