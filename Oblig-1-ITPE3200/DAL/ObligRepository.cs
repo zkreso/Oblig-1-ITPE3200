@@ -42,6 +42,52 @@ namespace Oblig_1_ITPE3200.DAL
             }
         }
 
+        public async Task<Disease> GetDisease(int id)
+        {
+            try
+            {
+                Disease disease = await _db.Diseases.FindAsync(id);
+                return disease;
+            }
+            catch
+            {
+                return null;
+            }
+        }
 
+        public async Task<List<Symptom>> GetAllSymptomsId (int id)
+        {
+            try
+            {
+                List<DiseaseSymptom> lds = await _db.DiseaseSymptoms.Select(ds => new DiseaseSymptom
+                {
+                    DiseaseId = ds.DiseaseId,
+                    SymptomId = ds.SymptomId
+                }).ToListAsync();
+
+                List<int> symptomIds = new List<int>();
+
+                foreach (DiseaseSymptom ds in lds)
+                {
+                    if (ds.DiseaseId == id)
+                    {
+                        symptomIds.Add(ds.SymptomId);
+                    }
+                }
+
+                List<Symptom> symptoms = new List<Symptom>();
+
+                foreach (int i in symptomIds)
+                {
+                    symptoms.Add(await _db.Symptoms.FindAsync(i));
+                }
+
+                return symptoms;
+            }
+            catch
+            {
+                return null;
+            }
+        }
     }
 }
