@@ -10,34 +10,18 @@ function getalldiseases() {
 }
 
 function skrivUtDiseases(diseases) {
-    let ut = "";
+    let ut = "<table class='table table-striped'>" +
+        "<tr>" +
+        "<th>Name</th><th></th><th></th>" +
+        "</tr>";
     for (let d of diseases) {
-        ut += d.name + "<br>"
-        ut += "<ul>";
-        for (let ds of d.diseaseSymptoms) {
-            ut += "<li>" + ds.symptom.name + "</li>";
-        }
-        ut += "</ul>"
+        ut += "<tr>" +
+            "<td>" + d.name + "</td>" +
+            "<td> <a class='btn btn-primary' href='change.html?id=" + d.id + "'>Change</a></td>" +
+            "<td> <button class='btn btn-danger' onclick='slettKunde(" + d.id + ")'>Delete</button></td>" +
+            "</tr>";
     }
+    ut += "</tabel>"
     $("#diseases").html(ut);
 }
 
-
-function getallsymptoms() {
-    $.get("oblig/GetAllSymptoms", function (symptoms) {
-        skrivUtSymptoms(symptoms);
-    });
-}
-
-function skrivUtSymptoms(symptoms) {
-    let ut = "";
-    for (let s of symptoms) {
-        ut += s.name + "<br>"
-        ut += "<ul>";
-        for (let ds of s.diseaseSymptoms) {
-            ut += "<li>" + ds.disease.name + "</li>";
-        }
-        ut += "</ul>"
-    }
-    $("#symptoms").html(ut);
-}
