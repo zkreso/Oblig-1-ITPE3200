@@ -24,8 +24,8 @@ namespace Oblig_1_ITPE3200.DAL
             Diagnose diagnose1 = new Diagnose { DiagnoseNavn = "Covid", Description = "New virus found in 2020"};
             Diagnose diagnose2 = new Diagnose { DiagnoseNavn = "Pollen allergy", Description = "High incidence in the spring"};
 
-            SymptomDiagnose symptomDiagnose1 = new SymptomDiagnose { SymptomId = symptom1.SymptomId, Symptom = symptom1, DiagnoseId = diagnose1.DiagnoseId, Diagnose = diagnose1 };
-            SymptomDiagnose symptomDiagnose2 = new SymptomDiagnose { SymptomId = symptom2.SymptomId, Symptom = symptom2, DiagnoseId = diagnose2.DiagnoseId, Diagnose = diagnose2 };
+            SymptomDiagnose symptomDiagnose1 = new SymptomDiagnose { Symptom = symptom1,  Diagnose = diagnose1 };
+            SymptomDiagnose symptomDiagnose2 = new SymptomDiagnose { Symptom = symptom2, Diagnose = diagnose2 };
 
             List<SymptomDiagnose> symptomDiagnoser1 = new List<SymptomDiagnose>
             {
@@ -38,26 +38,11 @@ namespace Oblig_1_ITPE3200.DAL
             };
 
             diagnose1.SymptomDiagnoser = symptomDiagnoser1;
-            diagnose2.SymptomDiagnoser = symptomDiagnoser2;
-
-            //diagnose1.SymptomDiagnoser = (ICollection<SymptomDiagnose>)symptomDiagnose1;
-            //diagnose2.SymptomDiagnoser = (ICollection<SymptomDiagnose>)symptomDiagnose2;
-
-            /**List<Diagnose> diagnoser1 = new List<Diagnose>
-            {
-                diagnose1,
-            };
-
-            List<Diagnose> diagnoser2 = new List<Diagnose>
-            {
-                diagnose2,
-            };**/
+            diagnose2.SymptomDiagnoser = symptomDiagnoser2;      
 
             symptom1.SymptomDiagnoser = symptomDiagnoser1;
             symptom2.SymptomDiagnoser = symptomDiagnoser2;
 
-            //symptom1.SymptomDiagnoser = (ICollection<SymptomDiagnose>)symptomDiagnose1;
-            //symptom2.SymptomDiagnoser = (ICollection<SymptomDiagnose>)symptomDiagnose2;
 
             context.Symptomer.Add(symptom1);
             context.Symptomer.Add(symptom2);
