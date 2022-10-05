@@ -237,7 +237,8 @@ namespace Oblig_1_ITPE3200.DAL
             {
                 if (symptomsArray.Length > 0)
                 {
-                    List<Disease> results = await _db.Diseases
+                    List<Disease> results = await _db.Diseases.ToListAsync();
+                    results = results
                         .Where(d => symptomsArray.All(d.DiseaseSymptoms.Select(ds => ds.SymptomId).Contains))
                         .Select(d => new Disease
                         {
@@ -245,7 +246,7 @@ namespace Oblig_1_ITPE3200.DAL
                             Name = d.Name,
                             Symptoms = d.DiseaseSymptoms.Select(s => s.Symptom).ToList()
                         })
-                        .ToListAsync();
+                        .ToList();
 
                     return results;
                 }
