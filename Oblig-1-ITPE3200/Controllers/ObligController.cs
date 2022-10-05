@@ -48,6 +48,14 @@ namespace Oblig_1_ITPE3200.Controllers
         {
             return await _db.GetAllSymptoms();
         }
+        public async Task<List<Symptom>> GetRelatedSymptoms(int id)
+        {
+            return await _db.GetRelatedSymptoms(id);
+        }
+        public async Task<List<Symptom>> GetUnrelatedSymptoms(int id)
+        {
+            return await _db.GetUnrelatedSymptoms(id);
+        }
         public async Task<bool> CreateSymptom(Symptom symptom)
         {
             return await _db.CreateSymptom(symptom);

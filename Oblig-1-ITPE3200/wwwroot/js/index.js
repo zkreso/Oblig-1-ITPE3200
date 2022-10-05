@@ -11,7 +11,7 @@ function getalldiseases() {
 
 function skrivUtDiseases(diseases) {
     let ut = "<table class='table table-striped'>" +
-        "<tr><th>Name</th><th>Symptoms</th><th>Change</th><th>Delete</th></tr>";
+        "<tr><th>Name</th><th>Symptoms</th><th>Edit</th><th>Delete</th></tr>";
     for (let d of diseases) {
         ut += "<tr>" +
             "<td>" + d.name + "</td>" +
@@ -20,8 +20,8 @@ function skrivUtDiseases(diseases) {
             ut += symptom.name + ", ";
         }
         ut += "</td>" +
-            "<td><a class='btn btn-primary' href='endre.html?id=" + d.id + "' disabled>Update</a></td>" +
-            "<td><button class='btn btn-danger' onclick='deletedisease(" + d.id + ")' disabled>Delete</button></td>" +
+            "<td><a href='endre.html?id=" + d.id + "'>Edit</a></td>" +
+            "<td><button class='btn btn-danger' onclick='deletedisease(" + d.id + ")'>Delete</button></td>" +
             "</td></tr>";
     }
     $("#diseases").html(ut);
@@ -36,26 +36,5 @@ function deletedisease(id) {
         else {
             $("#feil").html("Feil i db - prøv igjen senere");
         }
-
     });
 };
-
-
-function getallsymptoms() {
-    $.get("oblig/GetAllSymptoms", function (symptoms) {
-        skrivUtSymptoms(symptoms);
-    });
-}
-
-function skrivUtSymptoms(symptoms) {
-    let ut = "";
-    for (let s of symptoms) {
-        ut += s.name + "<br>"
-        ut += "<ul>";
-        for (let disease of s.diseases) {
-            ut += "<li>" + disease.name + "</li>";
-        }
-        ut += "</ul>"
-    }
-    $("#symptoms").html(ut);
-}

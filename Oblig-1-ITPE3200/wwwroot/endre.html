@@ -1,0 +1,34 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Edit disease</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <script src="js/endre.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Edit disease</h1>
+        <form>
+            <input type="hidden" id="id" />
+            <div class="mb-3">
+                <label for="name" class="form-label">Disease name</label>
+                <input type="text" class="form-control" id="name">
+            </div>
+            <div class="mb-3">
+                Select symptoms
+            </div>
+            <div class="mb-3" id="symptomsdiv">
+
+            </div>
+        </form>
+        <button type="submit" onclick="saveChanges()" class="btn btn-primary">Save changes</button>
+        <a href="index.html" class="btn btn-secondary">Discard changes</a>
+        <div class="mb-3" id="#feil">
+
+        </div>
+    </div>
+</body>
+</html>

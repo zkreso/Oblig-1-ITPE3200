@@ -16,6 +16,8 @@ namespace Oblig_1_ITPE3200.DAL
         // Symptom methods
         Task<Symptom> GetSymptom(int id);
         Task<List<Symptom>> GetAllSymptoms();
+        Task<List<Symptom>> GetRelatedSymptoms(int id);
+        Task<List<Symptom>> GetUnrelatedSymptoms(int id);
         Task<bool> CreateSymptom(Symptom symptom);
         Task<bool> UpdateSymptom(Symptom symptom);
         Task<bool> DeleteSymptom(int id);

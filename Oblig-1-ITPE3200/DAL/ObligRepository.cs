@@ -1,13 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Update;
-using Microsoft.Extensions.Hosting;
+﻿using Microsoft.EntityFrameworkCore;
 using Oblig_1_ITPE3200.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Runtime.Serialization.Formatters;
 using System.Threading.Tasks;
 
 namespace Oblig_1_ITPE3200.DAL
@@ -76,9 +71,22 @@ namespace Oblig_1_ITPE3200.DAL
         {
             try
             {
-                Disease changedDisease = await _db.Diseases.FindAsync(disease.Id);
+                Disease changedDisease = _db.Diseases.Find(disease.Id);
 
                 changedDisease.Name = disease.Name;
+                changedDisease.DiseaseSymptoms.Clear();
+
+                if (disease.Symptoms != null)
+                {
+                    List<DiseaseSymptom> symptomList = disease.Symptoms.Select(s => new DiseaseSymptom
+                    {
+                        Symptom = s,
+                        Disease = changedDisease
+                    }).ToList();
+
+                    changedDisease.DiseaseSymptoms = symptomList;
+                }
+
                 await _db.SaveChangesAsync();
                 return true;
             }
@@ -136,6 +144,22 @@ namespace Oblig_1_ITPE3200.DAL
             {
                 return null;
             }
+        }
+        public async Task<List<Symptom>> GetRelatedSymptoms(int id)
+        {
+            List<Symptom> symptoms = await _db.Symptoms.ToListAsync();
+
+            symptoms = symptoms.Where(s => s.DiseaseSymptoms.Select(ds => ds.DiseaseId).Contains(id)).ToList();
+
+            return symptoms;
+        }
+        public async Task<List<Symptom>> GetUnrelatedSymptoms(int id)
+        {
+            List<Symptom> symptoms = await _db.Symptoms.ToListAsync();
+
+            symptoms = symptoms.Where(s => !s.DiseaseSymptoms.Select(ds => ds.DiseaseId).Contains(id)).ToList();
+
+            return symptoms;
         }
         public async Task<bool> CreateSymptom(Symptom symptom)
         {
