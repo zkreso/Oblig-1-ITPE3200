@@ -22,6 +22,39 @@ namespace Oblig_1_ITPE3200.DAL
         }
 
         // Disease methods
+        public async Task<Disease> GetDisease(int id)
+        {
+            try
+            {
+                Disease disease = await _db.Diseases.FindAsync(id);
+
+                disease.Symptoms = disease.DiseaseSymptoms.Select(ds => ds.Symptom).ToList();
+
+                return disease;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+        public async Task<List<Disease>> GetAllDiseases()
+        {
+            try
+            {
+                List<Disease> allDiseases = await _db.Diseases.Select(d => new Disease
+                {
+                    Id = d.Id,
+                    Name = d.Name,
+                    Symptoms = d.DiseaseSymptoms.Select(ds => ds.Symptom).ToList()
+                }).ToListAsync();
+
+                return allDiseases;
+            }
+            catch
+            {
+                return null;
+            }
+        }
         public async Task<bool> CreateDisease(Disease disease)
         {
             try
@@ -37,21 +70,6 @@ namespace Oblig_1_ITPE3200.DAL
             catch
             {
                 return false;
-            }
-        }
-        public async Task<Disease> GetDisease(int id)
-        {
-            try
-            {
-                Disease disease = await _db.Diseases.FindAsync(id);
-
-                disease.Symptoms = disease.DiseaseSymptoms.Select(ds => ds.Symptom).ToList();
-
-                return disease;
-            }
-            catch
-            {
-                return null;
             }
         }
         public async Task<bool> UpdateDisease(Disease disease)
@@ -84,25 +102,41 @@ namespace Oblig_1_ITPE3200.DAL
             }
             
         }
-        public async Task<List<Disease>> GetAllDiseases()
+
+        // Symptom methods
+        public async Task<Symptom> GetSymptom(int id)
         {
             try
             {
-                List<Disease> allDiseases = await _db.Diseases.Select(d => new Disease
-                {
-                    Id = d.Id,
-                    Name = d.Name,
-                    Symptoms = d.DiseaseSymptoms.Select(ds => ds.Symptom).ToList()
-                }).ToListAsync();
-                
-                return allDiseases;
+                Symptom symptom = await _db.Symptoms.FindAsync(id);
+
+                symptom.Diseases = symptom.DiseaseSymptoms.Select(ds => ds.Disease).ToList();
+
+                return symptom;
             }
             catch
             {
                 return null;
             }
         }
-        // Symptom methods
+        public async Task<List<Symptom>> GetAllSymptoms()
+        {
+            try
+            {
+                List<Symptom> allSymptoms = await _db.Symptoms.Select(s => new Symptom
+                {
+                    Id = s.Id,
+                    Name = s.Name,
+                    Diseases = s.DiseaseSymptoms.Select(ds => ds.Disease).ToList()
+                }).ToListAsync();
+
+                return allSymptoms;
+            }
+            catch
+            {
+                return null;
+            }
+        }
         public async Task<bool> CreateSymptom(Symptom symptom)
         {
             try
@@ -118,21 +152,6 @@ namespace Oblig_1_ITPE3200.DAL
             catch
             {
                 return false;
-            }
-        }
-        public async Task<Symptom> GetSymptom(int id)
-        {
-            try
-            {
-                Symptom symptom = await _db.Symptoms.FindAsync(id);
-
-                symptom.Diseases = symptom.DiseaseSymptoms.Select(ds => ds.Disease).ToList();
-                
-                return symptom;
-            }
-            catch
-            {
-                return null;
             }
         }
         public async Task<bool> UpdateSymptom(Symptom symptom)
@@ -165,24 +184,7 @@ namespace Oblig_1_ITPE3200.DAL
             }
 
         }
-        public async Task<List<Symptom>> GetAllSymptoms()
-        {
-            try
-            {
-                List<Symptom> allSymptoms = await _db.Symptoms.Select(s => new Symptom
-                {
-                    Id = s.Id,
-                    Name = s.Name,
-                    Diseases = s.DiseaseSymptoms.Select(ds => ds.Disease).ToList()
-                }).ToListAsync();
-                
-                return allSymptoms;
-            }
-            catch
-            {
-                return null;
-            }
-        }
+        
         // Joining table methods
         public async Task<List<DiseaseSymptom>> GetAllDiseaseSymptoms()
         {
@@ -228,31 +230,28 @@ namespace Oblig_1_ITPE3200.DAL
             }
         }
 
-        // Matching symptoms to diseases
+        // Search method
         public async Task<List<Disease>> SearchDiseases(int[] symptomsArray)
         {
             try
             {
                 if (symptomsArray.Length > 0)
                 {
-                    // Get all diseases
-                    var results = await _db.Diseases.ToListAsync();
+                    List<Disease> results = await _db.Diseases
+                        .Where(d => symptomsArray.All(d.DiseaseSymptoms.Select(ds => ds.SymptomId).Contains))
+                        .Select(d => new Disease
+                        {
+                            Id = d.Id,
+                            Name = d.Name,
+                            Symptoms = d.DiseaseSymptoms.Select(s => s.Symptom).ToList()
+                        })
+                        .ToListAsync();
 
-                    // Filter results one by one
-                    foreach (int i in symptomsArray)
-                    {
-                        results = results.Where(d => d.DiseaseSymptoms.Select(ds => ds.SymptomId).Contains(i)).ToList();
-                    }
-                    // Populate symptom table for transfer
-                    foreach (Disease disease in results)
-                    {
-                        disease.Symptoms = disease.DiseaseSymptoms.Select(ds => ds.Symptom).ToList();
-                    }
                     return results;
-                } 
+                }
                 else
                 {
-                    return null;
+                    return new List<Disease>();
                 }
             }
             catch

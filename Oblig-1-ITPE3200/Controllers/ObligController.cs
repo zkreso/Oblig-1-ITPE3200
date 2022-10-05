@@ -17,14 +17,19 @@ namespace Oblig_1_ITPE3200.Controllers
         }
 
         // Disease methods
-        public async Task<bool> CreateDisease(Disease disease)
-        {
-            return await _db.CreateDisease(disease);
-        }
         public async Task<Disease> GetDisease(int id)
         {
             return await _db.GetDisease(id);
         }
+        public async Task<List<Disease>> GetAllDiseases()
+        {
+            return await _db.GetAllDiseases();
+        }
+        public async Task<bool> CreateDisease(Disease disease)
+        {
+            return await _db.CreateDisease(disease);
+        }
+
         public async Task<bool> UpdateDisease(Disease disease)
         {
             return await _db.UpdateDisease(disease);
@@ -33,19 +38,19 @@ namespace Oblig_1_ITPE3200.Controllers
         {
             return await _db.DeleteDisease(id);
         }
-        public async Task<List<Disease>> GetAllDiseases()
-        {
-            return await _db.GetAllDiseases();
-        }
-        
+
         // Symptom methods
-        public async Task<bool> CreateSymptom(Symptom symptom)
-        {
-            return await _db.CreateSymptom(symptom);
-        }
         public async Task<Symptom> GetSymptom(int id)
         {
             return await _db.GetSymptom(id);
+        }
+        public async Task<List<Symptom>> GetAllSymptoms()
+        {
+            return await _db.GetAllSymptoms();
+        }
+        public async Task<bool> CreateSymptom(Symptom symptom)
+        {
+            return await _db.CreateSymptom(symptom);
         }
         public async Task<bool> UpdateSymptom(Symptom symptom)
         {
@@ -54,10 +59,6 @@ namespace Oblig_1_ITPE3200.Controllers
         public async Task<bool> DeleteSymptom(int id)
         {
             return await _db.DeleteSymptom(id);
-        }
-        public async Task<List<Symptom>> GetAllSymptoms()
-        {
-            return await _db.GetAllSymptoms();
         }
 
         // Joining table methods
@@ -73,6 +74,8 @@ namespace Oblig_1_ITPE3200.Controllers
         {
             return await _db.GetAllDiseaseSymptoms();
         }
+
+        // Search method
         public async Task<List<Disease>> SearchDiseases(int[] symptomsArray)
         {
             return await _db.SearchDiseases(symptomsArray);
