@@ -9,6 +9,6 @@ namespace Oblig_1_ITPE3200.DAL
         Task<List<Disease>> GetAllDiseases();
         Task<List<Symptom>> GetAllSymptoms();
         Task<Disease> GetDisease(int id);
-        Task<List<Symptom>> GetAllSymptomsId(int id);
+        Task<List<Symptom>> GetSymptomsDisease(int id);
     }
 }

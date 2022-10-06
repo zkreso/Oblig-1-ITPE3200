@@ -16,6 +16,7 @@ namespace Oblig_1_ITPE3200.DAL
             _db = db;
         }
 
+        // Gets all diseases from Diseases-table
         public async Task<List<Disease>> GetAllDiseases()
         {
             try
@@ -29,6 +30,7 @@ namespace Oblig_1_ITPE3200.DAL
             }
         }
 
+        // Gets all symptoms from Symptoms-table
         public async Task<List<Symptom>> GetAllSymptoms()
         {
             try
@@ -42,6 +44,7 @@ namespace Oblig_1_ITPE3200.DAL
             }
         }
 
+        // Gets one disease from the disease-table by using id
         public async Task<Disease> GetDisease(int id)
         {
             try
@@ -55,11 +58,14 @@ namespace Oblig_1_ITPE3200.DAL
             }
         }
 
-        public async Task<List<Symptom>> GetAllSymptomsId (int id)
+
+        // Gets all symptoms linked to one disease
+        public async Task<List<Symptom>> GetSymptomsDisease (int id)
         {
             try
             {
-                List<DiseaseSymptom> lds = await _db.DiseaseSymptoms.Select(ds => new DiseaseSymptom
+                    // First gathers all DiseaseSymptoms
+                    List<DiseaseSymptom> lds = await _db.DiseaseSymptoms.Select(ds => new DiseaseSymptom
                 {
                     DiseaseId = ds.DiseaseId,
                     SymptomId = ds.SymptomId
