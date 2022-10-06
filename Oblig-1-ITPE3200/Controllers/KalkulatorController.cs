@@ -17,7 +17,7 @@ namespace Oblig_1_ITPE3200.Controllers
             _db = db;
         }
 
-        public async Task<List<Symptom>> Index()
+        public async Task<List<SymptomDiagnose>> Index()
         {
             
             return await _db.Index();

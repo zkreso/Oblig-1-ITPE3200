@@ -19,10 +19,10 @@ namespace Oblig_1_ITPE3200.DAL
         public DbSet<Diagnose> Diagnoser { get; set; }
         public DbSet<SymptomDiagnose> SymptomDiagnoser { get; set; }
 
-        /**protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseLazyLoadingProxies();
-        }**/
+        }
 
         //Fluent API
         protected override void OnModelCreating(ModelBuilder modelBuilder)

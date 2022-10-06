@@ -8,6 +8,6 @@ namespace Oblig_1_ITPE3200.DAL
 {
     public interface IRepo
     {       
-        Task<List<Symptom>> Index();
+        Task<List<SymptomDiagnose>> Index();
      }
 }

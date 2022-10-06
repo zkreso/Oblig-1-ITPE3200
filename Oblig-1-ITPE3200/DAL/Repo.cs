@@ -16,11 +16,19 @@ namespace Oblig_1_ITPE3200.DAL
             _db = db;
         }
 
-        public async Task<List<Symptom>> Index()
+        public async Task<List<SymptomDiagnose>> Index()
         {
-            List<Symptom> symptomer = await _db.Symptomer.ToListAsync();
+            try
+            {
+                List<SymptomDiagnose> sd = await _db.SymptomDiagnoser.ToListAsync();
 
-            return symptomer;
+                return sd;
+            }
+            catch
+            {
+                return null;
+            }
+
         }
     }
 }
