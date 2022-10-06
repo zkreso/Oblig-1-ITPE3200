@@ -8,7 +8,7 @@ namespace Oblig_1_ITPE3200.Models
         [Key]
         public int Id { get; set; }
         public string Name { get; set; }
-        public string Discription { get; set; }
+        public string Description { get; set; }
         public virtual List<DiseaseSymptom> DiseaseSymptoms { get; set; }
     }
 }

@@ -17,8 +17,8 @@ namespace Oblig_1_ITPE3200.DAL
                 context.Database.EnsureDeleted();
                 context.Database.EnsureCreated();
 
-                var disease1 = new Disease { Name = "Common cold" };
-                var disease2 = new Disease { Name = "Influenza" };
+                var disease1 = new Disease { Name = "Common cold", Description = "Very Common, especially if cold."};
+                var disease2 = new Disease { Name = "Influenza" , Description = "Very bad disease. Not good."};
 
                 var symptom1 = new Symptom { Name = "Runny nose" }; // Cold
                 var symptom2 = new Symptom { Name = "Sneezing" }; // Cold

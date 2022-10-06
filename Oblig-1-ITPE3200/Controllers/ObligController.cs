@@ -42,5 +42,10 @@ namespace Oblig_1_ITPE3200.Controllers
             return await _db.DeleteDisease(id);
         }
 
+        public async Task<bool> ChangeDisease(Disease d)
+        {
+            return await _db.ChangeDisease(d);
+        }
+
     }
 }

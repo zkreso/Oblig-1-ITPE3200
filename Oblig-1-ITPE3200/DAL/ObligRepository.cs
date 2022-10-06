@@ -101,5 +101,30 @@ namespace Oblig_1_ITPE3200.DAL
                 return false;
             }
         }
+
+        // Changes current disease with new disease
+        //!!Missing checking for symptom change!!
+        public async Task<bool> ChangeDisease(Disease newD)
+        {
+            try
+            {
+                Disease oldD = await _db.Diseases.FindAsync(newD.Id);
+                
+                if (newD.DiseaseSymptoms != oldD.DiseaseSymptoms)
+                {
+
+                }
+                
+                oldD.Name = newD.Name;
+                oldD.Description = newD.Description;
+
+                await _db.SaveChangesAsync();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }
