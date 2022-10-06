@@ -10,20 +10,23 @@ function getalldiseases() {
 }
 
 function skrivUtDiseases(diseases) {
-    let ut = "<table class='table table-striped'>" +
-        "<tr><th>Name</th><th>Symptoms</th><th>Edit</th><th>Delete</th></tr>";
+    let ut = "<table class='table table-sm'>" +
+        "<thead><tr>" +
+        "<th scope='col'>Name</th><th scope='col'>Symptoms</th><th scope='col'>Edit</th><th scope='col'>Delete</th>" +
+        "</tr></thead><tbody>"
     for (let d of diseases) {
         ut += "<tr>" +
-            "<td>" + d.name + "</td>" +
+            "<th scope='row'>" + d.name + "</th>" +
             "<td>"
         for (let symptom of d.symptoms) {
             ut += symptom.name + ", ";
         }
         ut += "</td>" +
-            "<td><a href='endre.html?id=" + d.id + "'>Edit</a></td>" +
+            "<td><a href='endre.html?id=" + d.id + "' class='btn btn-primary'>Edit</a></td>" +
             "<td><button class='btn btn-danger' onclick='deletedisease(" + d.id + ")'>Delete</button></td>" +
             "</td></tr>";
     }
+    ut += "</tbody></table>"
     $("#diseases").html(ut);
 }
 

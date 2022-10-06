@@ -54,10 +54,15 @@ namespace Oblig_1_ITPE3200.DAL
         {
             try
             {
-                var newDisease = new Disease();
-                newDisease.Id = disease.Id;
-                newDisease.Name = disease.Name;
-                
+                Disease newDisease = new Disease
+                {
+                    Name = disease.Name,
+                    DiseaseSymptoms = disease.Symptoms?.Select(s => new DiseaseSymptom
+                    {
+                        SymptomId = s.Id
+                    }).ToList()
+                };
+
                 _db.Diseases.Add(newDisease);
                 await _db.SaveChangesAsync();
                 return true;
@@ -76,16 +81,11 @@ namespace Oblig_1_ITPE3200.DAL
                 changedDisease.Name = disease.Name;
                 changedDisease.DiseaseSymptoms.Clear();
 
-                if (disease.Symptoms != null)
+                changedDisease.DiseaseSymptoms = disease.Symptoms?.Select(s => new DiseaseSymptom
                 {
-                    List<DiseaseSymptom> symptomList = disease.Symptoms.Select(s => new DiseaseSymptom
-                    {
-                        Symptom = s,
-                        Disease = changedDisease
-                    }).ToList();
-
-                    changedDisease.DiseaseSymptoms = symptomList;
-                }
+                    SymptomId = s.Id,
+                    Disease = changedDisease
+                }).ToList();
 
                 await _db.SaveChangesAsync();
                 return true;

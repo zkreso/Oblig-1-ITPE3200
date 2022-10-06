@@ -9,13 +9,13 @@ function getallsymptoms() {
 }
 
 function skrivUtSymptoms(symptoms) {
-    let ut = "<table class='table table-striped'>" +
-        "<tr><th>Choose symptoms:</th><th></th></tr>";
+    let ut = "<table class='table'>" +
+        "<thead><tr><th>Choose symptoms:</th><th></th></tr></thead><tbody>";
     for (let s of symptoms) {
         ut += "<tr><td>" + s.name + "</td>";
         ut += "<td><input type='checkbox' name='symptoms' value='" + s.id + "'/></td></tr > ";
     }
-    ut += "</table>";
+    ut += "</tbody></table>";
     $("#symptoms").html(ut);
 }
 
