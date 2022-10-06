@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace Oblig_1_ITPE3200.DAL
 {
-    public class Repo : IRepo
+    public class KalkulatorRepo : IKalkulatorRepo
     {
         private readonly KalkulatorContext _db;
 
-        public Repo (KalkulatorContext db)
+        public KalkulatorRepo (KalkulatorContext db)
         {
             _db = db;
         }

@@ -46,10 +46,6 @@ namespace Oblig_1_ITPE3200.DAL
 
             context.Symptomer.Add(symptom1);
             context.Symptomer.Add(symptom2);
-            //context.Diagnoser.Add(diagnose1);
-            //context.Diagnoser.Add(diagnose2);
-            //context.SymptomDiagnoser.Add(symptomDiagnose1);
-            //context.SymptomDiagnoser.Add(symptomDiagnose2);
 
             context.SaveChanges();
         }

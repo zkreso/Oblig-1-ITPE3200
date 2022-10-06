@@ -26,7 +26,7 @@ namespace Oblig_1_ITPE3200
         {
             services.AddControllers();
             services.AddDbContext<KalkulatorContext>(options => options.UseSqlite("Data Source=Kalkulator.db"));
-            services.AddScoped<IRepo, Repo>();
+            services.AddScoped<IKalkulatorRepo, KalkulatorRepo>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -11,8 +11,6 @@ namespace Oblig_1_ITPE3200.Models
         public int SymptomId { get; set; }
         public string SymptomNavn { get; set; }
 
-        //public ICollection<SymptomDiagnose> SymptomDiagnoser { get; set; }
-
         [JsonIgnore]
         public virtual List<SymptomDiagnose> SymptomDiagnoser { get; set; }
     }

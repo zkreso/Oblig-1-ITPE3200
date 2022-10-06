@@ -11,9 +11,10 @@ namespace Oblig_1_ITPE3200.Models
         public int DiagnoseId { get; set; }
         public string DiagnoseNavn { get; set; }
         public string Description { get; set; }
-        //public ICollection<SymptomDiagnose> SymptomDiagnoser { get; set; }
 
-        [JsonIgnore]
+        //[JsonIgnore] 特性修饰其中一个导航属性，该特性指示 Json.NET 在序列化时不遍历该导航属性。
+
+        [JsonIgnore]  
         public virtual List<SymptomDiagnose> SymptomDiagnoser { get; set; }
     }
 }

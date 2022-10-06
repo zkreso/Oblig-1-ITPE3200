@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Oblig_1_ITPE3200.DAL
 {
-    public interface IRepo
+    public interface IKalkulatorRepo
     {       
         Task<List<SymptomDiagnose>> Index();
      }

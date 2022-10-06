@@ -10,9 +10,9 @@ namespace Oblig_1_ITPE3200.Controllers
     [Route("[controller]/[action]")]
     public class KalkulatorController : ControllerBase
     {
-        private readonly IRepo _db;
+        private readonly IKalkulatorRepo _db;
 
-        public KalkulatorController(IRepo db)
+        public KalkulatorController(IKalkulatorRepo db)
         {
             _db = db;
         }
