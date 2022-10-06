@@ -31,9 +31,15 @@ namespace Oblig_1_ITPE3200.Controllers
             return await _db.GetDisease(id);
         }
 
-        public async Task<List<Symptom>> GetSymptomsDisease (int id)
+        public async Task<List<Symptom>> GetSymptomsDisease(int id)
         {
             return await _db.GetSymptomsDisease(id);
+
+        }
+
+        public async Task<bool> DeleteDisease(int id)
+        {
+            return await _db.DeleteDisease(id);
         }
 
     }

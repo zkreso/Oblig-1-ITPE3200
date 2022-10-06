@@ -64,28 +64,18 @@ namespace Oblig_1_ITPE3200.DAL
         {
             try
             {
-                    // First gathers all DiseaseSymptoms
-                    List<DiseaseSymptom> lds = await _db.DiseaseSymptoms.Select(ds => new DiseaseSymptom
-                {
-                    DiseaseId = ds.DiseaseId,
-                    SymptomId = ds.SymptomId
-                }).ToListAsync();
+                List<Symptom> symptoms = new List<Symptom>();
 
-                List<int> symptomIds = new List<int>();
+                Disease d = await _db.Diseases.FindAsync(id);
+
+                List<DiseaseSymptom> lds = d.DiseaseSymptoms.ToList();
 
                 foreach (DiseaseSymptom ds in lds)
                 {
-                    if (ds.DiseaseId == id)
+                    if (!symptoms.Contains(ds.Symptom))
                     {
-                        symptomIds.Add(ds.SymptomId);
+                        symptoms.Add(ds.Symptom);
                     }
-                }
-
-                List<Symptom> symptoms = new List<Symptom>();
-
-                foreach (int i in symptomIds)
-                {
-                    symptoms.Add(await _db.Symptoms.FindAsync(i));
                 }
 
                 return symptoms;
@@ -93,6 +83,22 @@ namespace Oblig_1_ITPE3200.DAL
             catch
             {
                 return null;
+            }
+        }
+
+        //Deletes one disease from disease-table using id
+        public async Task<bool> DeleteDisease(int id)
+        {
+            try
+            {
+                Disease d = await _db.Diseases.FindAsync(id);
+                _db.Remove(d);
+                await _db.SaveChangesAsync();
+                return true;
+            }
+            catch
+            {
+                return false;
             }
         }
     }
