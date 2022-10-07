@@ -16,7 +16,15 @@ $(function () {
 
 
 function changeDisease() {
+    const s = [];
 
+
+
+    const d = {
+        id: $("#id").val(),
+        name: $("#name").val(),
+        description: $("#description").val()
+    };
 }
 
 
@@ -33,17 +41,17 @@ function getAllSymptoms(id) {
             for (let i = 0; i < symptoms.length; i++) {
 
                 // Setting s as the name of the symptom 
-                let s = symptoms[i].name;
+                let s = symptoms[i];
                 let b = false;
 
                 // Running through the true symptoms list to check if s is in there
                 for (let j = 0; j < tSymptoms.length; j++){
 
                     // Saving the true symtom as tS
-                    let tS = tSymptoms[j].name;
+                    let tS = tSymptoms[j];
 
                     // Checking if a match with s, if so set b to true and break out of for-loop
-                    if (tS == s) {
+                    if (tS.id == s.id) {
                         b = true;
                         break;
                     }
@@ -69,13 +77,15 @@ function formatSymptom(s, b) {
     let ut = "";
 
     if (b) {
-        ut += '<label>' + s + '</label>'
+        ut += '<label>' + s.name + '</label>'
         ut += '<input type="checkbox" checked/>'
+        ut += '<input type="text" value="' + s.id + '" style="display: none;"/>'
         ut += '<br>'
     }
     else {
-        ut += '<label>' + s + '</label>'
+        ut += '<label>' + s.name + '</label>'
         ut += '<input type="checkbox" />'
+        ut += '<input type="text" value="' + s.id + '" style="display: none;"/>'
         ut += '<br>'
     }
 
