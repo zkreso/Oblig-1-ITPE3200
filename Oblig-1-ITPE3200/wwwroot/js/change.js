@@ -18,6 +18,8 @@ function changeDisease() {
     const urlId = window.location.search.substring(1);
     const id = urlId.replace(/\D/g, "");
     const s = [];
+    const ds = [];
+    let d;
 
     $("input[type='checkbox']").each(function () {
         if ($(this).is(":checked")) {
@@ -29,7 +31,8 @@ function changeDisease() {
 
                     s[sid - 1] = {
                         id: sid,
-                        name: $(this).attr('value')
+                        name: $(this).attr('value'),
+                        diseasesymptoms: ds
                     };
 
                 }
@@ -38,6 +41,12 @@ function changeDisease() {
         }
     });
 
+    d = {
+        id: $("#id").val(),
+        name: $("#name").val(),
+        description: $("#description").val(),
+        diseasesymptoms: ds
+    };
 
     let tS = 0;
 
@@ -45,22 +54,22 @@ function changeDisease() {
         tS++;
     })
 
-    //Somthing wrong with ds object when sending to db!!!!
-    const ds = [];
+    //Something wrong with ds object when sending to db!!!!
 
-    for (let i = 0; i < tS; i++) {
+    for (let i = 0; i < tS-1; i++) {
         ds[i] = {
+            disease: d,
             diseaseid: id,
             symptom: s[i],
             symptomid: i+1
         }
     }
 
-    const d = {
+    d = {
         id: $("#id").val(),
         name: $("#name").val(),
         description: $("#description").val(),
-        diseasesymptom: ds
+        diseasesymptoms: ds
     };
 
     $.post("oblig/ChangeDisease", d, function (OK) {
@@ -68,7 +77,7 @@ function changeDisease() {
             window.location.href = 'index.html';
         }
         else {
-            $("#err").html("Somthing wrong happened in change in db");
+            $("#err").html("Something wrong happened in change in db");
         }
     })
 }
