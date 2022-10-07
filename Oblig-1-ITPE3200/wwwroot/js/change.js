@@ -1,7 +1,6 @@
 ﻿// Places values from current state disease into fields
 $(function () {
     // Gets diesease id
-
     const id = window.location.search.substring(1);
     let url = "oblig/GetDisease?" + id;
 
@@ -16,15 +15,62 @@ $(function () {
 
 
 function changeDisease() {
+    const urlId = window.location.search.substring(1);
+    const id = urlId.replace(/\D/g, "");
     const s = [];
 
+    $("input[type='checkbox']").each(function () {
+        if ($(this).is(":checked")) {
+            let sid = $(this).attr('id');
+            sid = sid ;
 
+            $("#symptoms label").each(function () {
+                if ($(this).attr('id') == sid) {
+
+                    s[sid - 1] = {
+                        id: sid,
+                        name: $(this).attr('value')
+                    };
+
+                }
+            });
+
+        }
+    });
+
+
+    let tS = 0;
+
+    $("input[type='checkbox']").each(function () {
+        tS++;
+    })
+
+    //Somthing wrong with ds object when sending to db!!!!
+    const ds = [];
+
+    for (let i = 0; i < tS; i++) {
+        ds[i] = {
+            diseaseid: id,
+            symptom: s[i],
+            symptomid: i+1
+        }
+    }
 
     const d = {
         id: $("#id").val(),
         name: $("#name").val(),
-        description: $("#description").val()
+        description: $("#description").val(),
+        diseasesymptom: ds
     };
+
+    $.post("oblig/ChangeDisease", d, function (OK) {
+        if (OK) {
+            window.location.href = 'index.html';
+        }
+        else {
+            $("#err").html("Somthing wrong happened in change in db");
+        }
+    })
 }
 
 
@@ -77,15 +123,15 @@ function formatSymptom(s, b) {
     let ut = "";
 
     if (b) {
-        ut += '<label>' + s.name + '</label>'
-        ut += '<input type="checkbox" checked/>'
         ut += '<input type="text" value="' + s.id + '" style="display: none;"/>'
+        ut += '<label id="' + s.id + '" value="' + s.name + '">' + s.name + '</label>'
+        ut += '<input id="' + s.id + '" type="checkbox" checked />'
         ut += '<br>'
     }
     else {
-        ut += '<label>' + s.name + '</label>'
-        ut += '<input type="checkbox" />'
         ut += '<input type="text" value="' + s.id + '" style="display: none;"/>'
+        ut += '<label id="' + s.id + '" value="' + s.name +'">' + s.name + '</label>'
+        ut += '<input id="'+ s.id +'" type="checkbox" />'
         ut += '<br>'
     }
 
