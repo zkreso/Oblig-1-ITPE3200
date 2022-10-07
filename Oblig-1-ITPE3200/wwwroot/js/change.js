@@ -72,6 +72,8 @@ function changeDisease() {
         diseasesymptoms: ds
     };
 
+
+    //Cant post now what
     $.post("oblig/ChangeDisease", d, function (OK) {
         if (OK) {
             window.location.href = 'index.html';
