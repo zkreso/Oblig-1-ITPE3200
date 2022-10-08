@@ -8,6 +8,7 @@ namespace Oblig_1_ITPE3200.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public string Description { get; set; }
         [JsonIgnore]
         public virtual List<DiseaseSymptom> DiseaseSymptoms { get; set; }
         [NotMapped]
