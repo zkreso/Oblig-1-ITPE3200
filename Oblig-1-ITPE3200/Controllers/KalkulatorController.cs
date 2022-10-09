@@ -17,10 +17,20 @@ namespace Oblig_1_ITPE3200.Controllers
             _db = db;
         }
 
-        public async Task<List<SymptomDiagnose>> Index()
+        public async Task<List<SymptomDiagnose>> GetSymptomDiagnoser()
         {
             
-            return await _db.Index();
+            return await _db.GetSymptomDiagnoser();
         }
+
+        public async Task<List<Symptom>> GetSymptomer()
+        {
+            return await _db.GetSymptomer();
+        }
+
+        public async Task<List<Diagnose>> GetDiagnoser(Symptom symptom)
+         {
+             return await _db.GetDiagnoser(symptom);
+         }
     }
 }

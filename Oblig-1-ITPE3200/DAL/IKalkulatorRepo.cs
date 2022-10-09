@@ -8,6 +8,9 @@ namespace Oblig_1_ITPE3200.DAL
 {
     public interface IKalkulatorRepo
     {       
-        Task<List<SymptomDiagnose>> Index();
-     }
+        Task<List<SymptomDiagnose>> GetSymptomDiagnoser();
+        Task<List<Symptom>> GetSymptomer();
+
+        Task<List<Diagnose>> GetDiagnoser(Symptom symptom);
+    }
 }

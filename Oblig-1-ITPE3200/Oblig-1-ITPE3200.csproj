@@ -13,6 +13,7 @@
     <Content Remove="wwwroot\" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.29" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.29" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="3.1.29" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.29" />

@@ -3,7 +3,7 @@
 })
 
 const list = () => {
-    $.get("kalkulator/index", list => {
+    $.get("kalkulator/getSymptomDiagnoser", list => {
         format(list);
     })
 }

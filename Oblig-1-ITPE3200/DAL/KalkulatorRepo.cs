@@ -16,7 +16,7 @@ namespace Oblig_1_ITPE3200.DAL
             _db = db;
         }
 
-        public async Task<List<SymptomDiagnose>> Index()
+        public async Task<List<SymptomDiagnose>> GetSymptomDiagnoser()
         {
             try
             {
@@ -29,6 +29,40 @@ namespace Oblig_1_ITPE3200.DAL
                 return null;
             }
 
+        }
+
+        public async Task<List<Symptom>> GetSymptomer()
+        {
+            try
+            {
+                List<Symptom> s = await _db.Symptomer.ToListAsync();
+                return s;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public async Task<List<Diagnose>> GetDiagnoser(Symptom symptom)
+        {
+            try
+            {
+                List<Diagnose> diagnoser = await _db.Diagnoser.ToListAsync();
+                diagnoser = diagnoser.Where(d => d.SymptomDiagnoser
+                                .Select(sd => sd.DiagnoseId)
+                                .Contains(symptom.SymptomId))
+                                .ToList();
+                    
+
+                //System.Console.WriteLine(symptomDiagnoseList.Count);
+
+                return diagnoser;
+            }
+            catch
+            {
+                return null;
+            }
         }
     }
 }

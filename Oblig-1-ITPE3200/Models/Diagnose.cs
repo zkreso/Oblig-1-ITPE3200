@@ -14,7 +14,7 @@ namespace Oblig_1_ITPE3200.Models
 
         //[JsonIgnore] 特性修饰其中一个导航属性，该特性指示 Json.NET 在序列化时不遍历该导航属性。
 
-        [JsonIgnore]  
+        //[JsonIgnore]  
         public virtual List<SymptomDiagnose> SymptomDiagnoser { get; set; }
     }
 }
