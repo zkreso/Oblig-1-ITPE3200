@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Oblig_1_ITPE3200.DTOs;
 using Oblig_1_ITPE3200.Models;
 using System;
 using System.Collections.Generic;
@@ -17,30 +18,35 @@ namespace Oblig_1_ITPE3200.DAL
         }
 
         // Disease methods
-        public async Task<Disease> GetDisease(int id)
+        public async Task<DiseaseDTO> GetDisease(int id)
         {
             try
             {
                 Disease disease = await _db.Diseases.FindAsync(id);
 
-                disease.Symptoms = disease.DiseaseSymptoms.Select(ds => ds.Symptom).ToList();
+                DiseaseDTO diseaseDTO = new DiseaseDTO
+                {
+                    Id = disease.Id,
+                    Name = disease.Name,
+                    Description = disease.Description,
+                };
 
-                return disease;
+                return diseaseDTO;
             }
             catch
             {
                 return null;
             }
         }
-        public async Task<List<Disease>> GetAllDiseases()
+        public async Task<List<DiseasePageEntryDTO>> GetAllDiseases()
         {
             try
             {
-                List<Disease> allDiseases = await _db.Diseases.Select(d => new Disease
+                List<DiseasePageEntryDTO> allDiseases = await _db.Diseases.Select(d => new DiseasePageEntryDTO
                 {
                     Id = d.Id,
                     Name = d.Name,
-                    Symptoms = d.DiseaseSymptoms.Select(ds => ds.Symptom).ToList()
+                    Symptoms = d.DiseaseSymptoms.Select(ds => ds.Symptom.Name).ToArray()
                 }).ToListAsync();
 
                 return allDiseases;
@@ -57,6 +63,7 @@ namespace Oblig_1_ITPE3200.DAL
                 Disease newDisease = new Disease
                 {
                     Name = disease.Name,
+                    Description = disease.Description,
                     DiseaseSymptoms = disease.Symptoms?.Select(s => new DiseaseSymptom
                     {
                         SymptomId = s.Id
@@ -79,6 +86,7 @@ namespace Oblig_1_ITPE3200.DAL
                 Disease changedDisease = _db.Diseases.Find(disease.Id);
 
                 changedDisease.Name = disease.Name;
+                changedDisease.Description = disease.Description;
                 changedDisease.DiseaseSymptoms.Clear();
 
                 changedDisease.DiseaseSymptoms = disease.Symptoms?.Select(s => new DiseaseSymptom

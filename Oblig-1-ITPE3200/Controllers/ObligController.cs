@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Oblig_1_ITPE3200.DAL;
+using Oblig_1_ITPE3200.DTOs;
 using Oblig_1_ITPE3200.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -17,11 +18,11 @@ namespace Oblig_1_ITPE3200.Controllers
         }
 
         // Disease methods
-        public async Task<Disease> GetDisease(int id)
+        public async Task<DiseaseDTO> GetDisease(int id)
         {
             return await _db.GetDisease(id);
         }
-        public async Task<List<Disease>> GetAllDiseases()
+        public async Task<List<DiseasePageEntryDTO>> GetAllDiseases()
         {
             return await _db.GetAllDiseases();
         }

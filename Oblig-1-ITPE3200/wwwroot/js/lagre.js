@@ -18,6 +18,7 @@ function skrivUtSymptoms(symptoms) {
 function createDisease() {
     const disease = {
         name: $("#name").val(),
+        description: $("#description").val(),
         symptoms : createSymptomsList()
     };
 

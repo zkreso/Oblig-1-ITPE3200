@@ -20,7 +20,7 @@ namespace Oblig_1_ITPE3200.DAL
                 var d3 = new Disease { Name = "Coronary heart disease", Description = "Common heart condition where the blood vessels struggle to supply the heart" };
                 var d4 = new Disease { Name = "Alzheimers disease", Description = "Progressive neurological disorder causing atrophy of the brain" };
                 var d5 = new Disease { Name = "Diabetes type 2", Description = "The impairment of the body to use sugar as fuel" };
-                var d6 = new Disease { Name = "Anemia", Description = "Lack of red blood cells" };
+                var d6 = new Disease { Name = "Anemia", Description = "Caused by low red blood cell count" };
                 var d7 = new Disease { Name = "Covid", Description = "A respiratory disease carried by a coronavirus discovered in 2019" };
 
                 var s1 = new Symptom { Name = "Runny nose" }; // Cold

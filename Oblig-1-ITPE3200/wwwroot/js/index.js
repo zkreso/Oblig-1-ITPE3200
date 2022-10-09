@@ -1,6 +1,5 @@
 ﻿$(function () {
     getalldiseases();
-    // getallsymptoms();
 })
 
 function getalldiseases() {
@@ -19,7 +18,7 @@ function skrivUtDiseases(diseases) {
             "<th scope='row'>" + d.name + "</th>" +
             "<td>"
         for (let symptom of d.symptoms) {
-            ut += symptom.name + ", ";
+            ut += symptom + ", ";
         }
         ut += "</td>" +
             "<td><a href='endre.html?id=" + d.id + "' class='btn btn-primary'>Edit</a></td>" +

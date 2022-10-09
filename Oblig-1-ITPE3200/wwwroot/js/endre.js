@@ -11,6 +11,7 @@ function getDiseaseData() {
     $.get(url, function (disease) {
         $("#id").val(selecteddisease); // må ha med id inn skjemaet, hidden i html
         $("#name").val(disease.name);
+        $("#description").val(disease.description);
     });
 }
 
@@ -41,6 +42,7 @@ function saveChanges() {
     const disease = {
         id: $("#id").val(),
         name: $("#name").val(),
+        description: $("#description").val(),
         symptoms : createSymptomsList()
     };
 
