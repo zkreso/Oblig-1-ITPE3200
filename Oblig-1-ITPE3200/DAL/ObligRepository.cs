@@ -110,18 +110,37 @@ namespace Oblig_1_ITPE3200.DAL
             {
                 var oldD = await _db.Diseases.FindAsync(newD.Id);
 
-                newD.DiseaseSymptoms = new List<DiseaseSymptom>();
+                newD.DiseaseSymptoms = oldD.DiseaseSymptoms;
 
-                foreach (var s in newSlist)
+                var oldDs = oldD.DiseaseSymptoms;
+
+                // If lower symptoms count as last time
+                if (newSlist.Count < oldDs.Count)
                 {
-                    newD.DiseaseSymptoms.Add(new DiseaseSymptom { DiseaseId = newD.Id, Disease = newD, SymptomId = s.Id,Symptom = s });
-
-                    s.DiseaseSymptoms = new List<DiseaseSymptom>();
-                    s.DiseaseSymptoms.Add(new DiseaseSymptom { DiseaseId = newD.Id, Disease = newD, Symptom = s, SymptomId = s.Id });
+                    while (newSlist.Count < oldDs.Count)
+                    {
+                        oldDs.RemoveAt(oldDs.Count - 1);
+                    }
+                }
+                // If higher symptoms count as last time
+                else if (newSlist.Count > oldDs.Count)
+                {
+                    while (newSlist.Count > oldDs.Count)
+                    {
+                        oldDs.Add(oldDs.ElementAt(1));
+                    }
                 }
 
-                // Changing symptoms linked to disease
-                oldD.DiseaseSymptoms = newD.DiseaseSymptoms;
+                // Changing Id and symtom object in ds
+
+                int i = 0;
+                foreach (var s in newSlist)
+                {
+                    oldDs[i].SymptomId = s.Id;
+                    oldDs[i].Symptom = s;
+
+                    i++;
+                }
 
                 oldD.Name = newD.Name;
                 oldD.Description = newD.Description;
