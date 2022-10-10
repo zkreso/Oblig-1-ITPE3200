@@ -123,6 +123,7 @@ namespace Oblig_1_ITPE3200.DAL
                     }
                 }
                 // If higher symptoms count as last time
+                //Not tested!!
                 else if (newSlist.Count > oldDs.Count)
                 {
                     while (newSlist.Count > oldDs.Count)
@@ -132,7 +133,6 @@ namespace Oblig_1_ITPE3200.DAL
                 }
 
                 // Changing Id and symtom object in ds
-
                 int i = 0;
                 foreach (var s in newSlist)
                 {
