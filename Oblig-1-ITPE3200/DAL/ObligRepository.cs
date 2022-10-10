@@ -39,11 +39,11 @@ namespace Oblig_1_ITPE3200.DAL
                 return null;
             }
         }
-        public async Task<List<DiseasePageEntryDTO>> GetAllDiseases()
+        public async Task<List<DiseaseListDTO>> GetAllDiseases()
         {
             try
             {
-                List<DiseasePageEntryDTO> allDiseases = await _db.Diseases.Select(d => new DiseasePageEntryDTO
+                List<DiseaseListDTO> allDiseases = await _db.Diseases.Select(d => new DiseaseListDTO
                 {
                     Id = d.Id,
                     Name = d.Name,

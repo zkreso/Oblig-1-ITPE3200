@@ -9,7 +9,7 @@ namespace Oblig_1_ITPE3200.DAL
     {
         // Disease methods
         Task<DiseaseDTO> GetDisease(int id);
-        Task<List<DiseasePageEntryDTO>> GetAllDiseases();
+        Task<List<DiseaseListDTO>> GetAllDiseases();
         Task<bool> CreateDisease(Disease disease);
         Task<bool> UpdateDisease(Disease disease);
         Task<bool> DeleteDisease(int id);
