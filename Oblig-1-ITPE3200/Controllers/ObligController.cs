@@ -22,7 +22,7 @@ namespace Oblig_1_ITPE3200.Controllers
         {
             return await _db.GetDisease(id);
         }
-        public async Task<List<DiseaseListDTO>> GetAllDiseases()
+        public async Task<List<DiseaseDTO>> GetAllDiseases()
         {
             return await _db.GetAllDiseases();
         }
