@@ -18,8 +18,6 @@ function changeDisease() {
     const urlId = window.location.search.substring(1);
     const id = urlId.replace(/\D/g, "");
     const s = [];
-    const ds = [];
-    let d;
 
     $("input[type='checkbox']").each(function () {
         if ($(this).is(":checked")) {
@@ -32,7 +30,6 @@ function changeDisease() {
                     s[sid - 1] = {
                         id: sid,
                         name: $(this).attr('value'),
-                        diseasesymptoms: ds
                     };
 
                 }
@@ -41,40 +38,13 @@ function changeDisease() {
         }
     });
 
-    d = {
+    const d = {
         id: $("#id").val(),
         name: $("#name").val(),
         description: $("#description").val(),
-        diseasesymptoms: ds
     };
 
-    let tS = 0;
-
-    $("input[type='checkbox']").each(function () {
-        tS++;
-    })
-
-    //Something wrong with ds object when sending to db!!!!
-
-    for (let i = 0; i < tS-1; i++) {
-        ds[i] = {
-            disease: d,
-            diseaseid: id,
-            symptom: s[i],
-            symptomid: i+1
-        }
-    }
-
-    d = {
-        id: $("#id").val(),
-        name: $("#name").val(),
-        description: $("#description").val(),
-        diseasesymptoms: ds
-    };
-
-
-    //Cant post now what
-    $.post("oblig/ChangeDisease", d, function (OK) {
+    $.post("oblig/ChangeDisease", {d, s}, function (OK) {
         if (OK) {
             window.location.href = 'index.html';
         }

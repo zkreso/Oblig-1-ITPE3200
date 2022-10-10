@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Oblig_1_ITPE3200.Models;
 using System;
 using System.Collections.Generic;
@@ -103,18 +104,25 @@ namespace Oblig_1_ITPE3200.DAL
         }
 
         // Changes current disease with new disease
-        //!!Missing checking for symptom change!!
-        public async Task<bool> ChangeDisease(Disease newD)
+        public async Task<bool> ChangeDisease(Disease newD, List<Symptom> newSlist)
         {
             try
             {
-                Disease oldD = await _db.Diseases.FindAsync(newD.Id);
-                
-                if (newD.DiseaseSymptoms != oldD.DiseaseSymptoms)
-                {
+                var oldD = await _db.Diseases.FindAsync(newD.Id);
 
+                newD.DiseaseSymptoms = new List<DiseaseSymptom>();
+
+                foreach (var s in newSlist)
+                {
+                    newD.DiseaseSymptoms.Add(new DiseaseSymptom { DiseaseId = newD.Id, Disease = newD, SymptomId = s.Id,Symptom = s });
+
+                    s.DiseaseSymptoms = new List<DiseaseSymptom>();
+                    s.DiseaseSymptoms.Add(new DiseaseSymptom { DiseaseId = newD.Id, Disease = newD, Symptom = s, SymptomId = s.Id });
                 }
-                
+
+                // Changing symptoms linked to disease
+                oldD.DiseaseSymptoms = newD.DiseaseSymptoms;
+
                 oldD.Name = newD.Name;
                 oldD.Description = newD.Description;
 
