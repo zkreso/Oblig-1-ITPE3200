@@ -8,6 +8,7 @@ namespace Oblig_1_ITPE3200.DAL
     public interface IKalkulatorRepository
     {
         Task<List<Sykdom>> HentSykdom();
+        Task<List<Symptom>> HentSymptom();
         Task<bool> Lagre(Sykdom nySykdom);
         Task<Sykdom> HentEn(int id);
         Task<bool> Endre(Sykdom innSykdom);

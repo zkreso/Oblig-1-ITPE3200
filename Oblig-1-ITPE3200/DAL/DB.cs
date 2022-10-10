@@ -11,9 +11,9 @@ namespace Oblig_1_ITPE3200.Models
             Database.EnsureCreated();
         }
 
-        public virtual DbSet<Sykdom> Sykdomstabel { get; set; }
-        public virtual DbSet<Symptom> Symptomstabel { get; set; }
-        public virtual DbSet<Relasjon> Relasjonstabel { get; set; }
+        public virtual DbSet<Sykdom> SykdomTabel { get; set; }
+        public virtual DbSet<Symptom> SymptomTabel { get; set; }
+        public virtual DbSet<Sykdomssymptom> SykdomssymptomTabel { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -21,4 +21,3 @@ namespace Oblig_1_ITPE3200.Models
         }
     }
 }
-

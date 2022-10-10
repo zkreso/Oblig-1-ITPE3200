@@ -9,7 +9,7 @@
 
     $.post(url, sykdom, (ok) => {
         if (ok) {
-            window.location.href = 'index.html';
+            window.location.href = 'admin.html';
         }
         else {
             $('#feil').html("Error in the database.");

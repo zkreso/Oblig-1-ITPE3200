@@ -25,6 +25,11 @@ namespace Oblig_1_ITPE3200.Controllers
             return await _db.HentSykdom();
         }
 
+        public async Task<List<Symptom>> HentSymptom()
+        {
+            return await _db.HentSymptom();
+        }
+
         public async Task<bool> Lagre(Sykdom nySykdom)
         {
             return await _db.Lagre(nySykdom);
@@ -46,5 +51,4 @@ namespace Oblig_1_ITPE3200.Controllers
         }
     }
 }
-
 

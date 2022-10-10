@@ -35,10 +35,10 @@ const slett = (id) => {
 
     $.get(url, (ok) => {
         if (ok) {
-            window.location.href = 'index.html';
+            window.location.href = 'admin.html';
         }
         else {
-            $("#feil").html("Errro in the database.");
+            $("#feil").html("Error in the database.");
         }
     });
 };

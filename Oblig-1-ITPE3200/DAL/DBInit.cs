@@ -21,17 +21,16 @@ namespace Oblig_1_ITPE3200.Models
                 var symptom1 = new Symptom { Navn = "Cough" };
                 var symptom2 = new Symptom { Navn = "Fever" };
                 var symptom3 = new Symptom { Navn = "Loss of taste or smell" };
+                var symptom4 = new Symptom { Navn = "Runny nose" };
 
+                context.SykdomTabel.Add(sykdom1);
+                context.SykdomTabel.Add(sykdom2);
 
+                context.SymptomTabel.Add(symptom1);
+                context.SymptomTabel.Add(symptom2);
+                context.SymptomTabel.Add(symptom3);
+                context.SymptomTabel.Add(symptom4);
 
-
-
-                context.Sykdomstabel.Add(sykdom1);
-                context.Sykdomstabel.Add(sykdom2);
-
-              
-
-          
                 context.SaveChanges();
 
             }

@@ -8,21 +8,21 @@ namespace Oblig_1_ITPE3200.DAL
 {
     public class KalkulatorRepository : IKalkulatorRepository
     {
-        private readonly DB _sykdomDB;
+        private readonly DB _db;
 
 
         // Constructor
         public KalkulatorRepository(DB db)
         {
-            _sykdomDB = db;
+            _db = db;
         }
 
-        // Get the whole table/list
+        // Get the whole table/list of diseases
         public async Task<List<Sykdom>> HentSykdom()
         {
             try
             {
-                List<Sykdom> sykdomListe = await _sykdomDB.Sykdomstabel.ToListAsync();
+                List<Sykdom> sykdomListe = await _db.SykdomTabel.ToListAsync();
                 return sykdomListe;
             }
 
@@ -33,13 +33,30 @@ namespace Oblig_1_ITPE3200.DAL
 
         }
 
+        // Get the whole table/list of symptoms
+        public async Task<List<Symptom>> HentSymptom()
+        {
+            try
+            {
+                List<Symptom> symptomListe = await _db.SymptomTabel.ToListAsync();
+                return symptomListe;
+            }
+
+            catch
+            {
+                return null;
+            }
+
+        }
+
+
         // Register a new disease
         public async Task<bool> Lagre(Sykdom nySykdom)
         {
             try
             {
-                _sykdomDB.Sykdomstabel.Add(nySykdom);
-                await _sykdomDB.SaveChangesAsync();
+                _db.SykdomTabel.Add(nySykdom);
+                await _db.SaveChangesAsync();
                 return true;
             }
             catch
@@ -53,7 +70,7 @@ namespace Oblig_1_ITPE3200.DAL
         {
             try
             {
-                Sykdom enSykdom = await _sykdomDB.Sykdomstabel.FindAsync(id);
+                Sykdom enSykdom = await _db.SykdomTabel.FindAsync(id);
                 return enSykdom;
             }
             catch
@@ -68,10 +85,10 @@ namespace Oblig_1_ITPE3200.DAL
         {
             try
             {
-                Sykdom gammelSykdom = await _sykdomDB.Sykdomstabel.FindAsync(nySykdom.Id);
+                Sykdom gammelSykdom = await _db.SykdomTabel.FindAsync(nySykdom.Id);
                 gammelSykdom.Navn = nySykdom.Navn;
                 gammelSykdom.Beskrivelse = nySykdom.Beskrivelse;
-                await _sykdomDB.SaveChangesAsync();
+                await _db.SaveChangesAsync();
                 return true;
             }
             catch
@@ -85,9 +102,9 @@ namespace Oblig_1_ITPE3200.DAL
         {
             try
             {
-                Sykdom targetSykdom = await _sykdomDB.Sykdomstabel.FindAsync(id);
-                _sykdomDB.Sykdomstabel.Remove(targetSykdom);
-                await _sykdomDB.SaveChangesAsync();
+                Sykdom targetSykdom = await _db.SykdomTabel.FindAsync(id);
+                _db.SykdomTabel.Remove(targetSykdom);
+                await _db.SaveChangesAsync();
                 return true;
             }
             catch

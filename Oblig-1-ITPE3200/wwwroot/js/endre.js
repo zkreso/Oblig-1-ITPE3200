@@ -4,7 +4,7 @@
     const url = "Kalkulator/HentEn?" + id;
 
     $.get(url, (sykdom) => {
-        $("#id").val(sykdom.id); // Hidden in html
+        $("#id").val(sykdom.id);
         $("#navn").val(sykdom.navn);
         $("#beskr").val(sykdom.beskrivelse);
         // $("#symptom").val(sykdom.symptomListe)
@@ -21,7 +21,7 @@ const endre = () => {
 
     $.post("Kalkulator/Endre", sykdom, (ok) => {
         if (ok) {
-            window.location.href = 'index.html';
+            window.location.href = 'admin.html';
         }
         else {
             $("#feil").html("Error in the database.");
