@@ -17,7 +17,7 @@ namespace Oblig_1_ITPE3200.Controllers
             _db = db;
         }
 
-        // Disease methods
+        // Disease CRUD
         public async Task<DiseaseDTO> GetDisease(int id)
         {
             return await _db.GetDisease(id);
@@ -40,22 +40,23 @@ namespace Oblig_1_ITPE3200.Controllers
             return await _db.DeleteDisease(id);
         }
 
-        // Symptom methods
-        public async Task<Symptom> GetSymptom(int id)
-        {
-            return await _db.GetSymptom(id);
-        }
-        public async Task<List<Symptom>> GetAllSymptoms()
+        // Symptom CRUD
+        public async Task<List<SymptomDTO>> GetAllSymptoms()
         {
             return await _db.GetAllSymptoms();
         }
-        public async Task<List<Symptom>> GetRelatedSymptoms(int id)
+        public async Task<List<SymptomDTO>> GetRelatedSymptoms(int id)
         {
             return await _db.GetRelatedSymptoms(id);
         }
-        public async Task<List<Symptom>> GetUnrelatedSymptoms(int id)
+        public async Task<List<SymptomDTO>> GetUnrelatedSymptoms(int id)
         {
             return await _db.GetUnrelatedSymptoms(id);
+        }
+        /* Unused/unneccessary methods
+        public async Task<Symptom> GetSymptom(int id)
+        {
+            return await _db.GetSymptom(id);
         }
         public async Task<bool> CreateSymptom(Symptom symptom)
         {
@@ -69,6 +70,7 @@ namespace Oblig_1_ITPE3200.Controllers
         {
             return await _db.DeleteSymptom(id);
         }
+        */
 
         // Joining table methods
         public async Task<bool> CreateDiseaseSymptom(int diseaseId, int symptomId)
@@ -78,10 +80,6 @@ namespace Oblig_1_ITPE3200.Controllers
         public async Task<bool> DeleteDiseaseSymptom(int diseaseId, int symptomId)
         {
             return await _db.DeleteDiseaseSymptom(diseaseId, symptomId);
-        }
-        public async Task<List<DiseaseSymptom>> GetAllDiseaseSymptoms()
-        {
-            return await _db.GetAllDiseaseSymptoms();
         }
 
         // Search method

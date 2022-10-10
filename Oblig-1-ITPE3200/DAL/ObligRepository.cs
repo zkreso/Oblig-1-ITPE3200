@@ -17,7 +17,7 @@ namespace Oblig_1_ITPE3200.DAL
             _db = db;
         }
 
-        // Disease methods
+        // Disease CRUD
         public async Task<DiseaseDTO> GetDisease(int id)
         {
             try
@@ -88,13 +88,6 @@ namespace Oblig_1_ITPE3200.DAL
 
                 changedDisease.Name = disease.Name;
                 changedDisease.Description = disease.Description;
-                changedDisease.DiseaseSymptoms.Clear();
-
-                changedDisease.DiseaseSymptoms = disease.Symptoms?.Select(s => new DiseaseSymptom
-                {
-                    SymptomId = s.Id,
-                    Disease = changedDisease
-                }).ToList();
 
                 await _db.SaveChangesAsync();
                 return true;
@@ -120,7 +113,54 @@ namespace Oblig_1_ITPE3200.DAL
             
         }
 
-        // Symptom methods
+        // Symptom CRUD
+        public async Task<List<SymptomDTO>> GetAllSymptoms()
+        {
+            try
+            {
+                List<SymptomDTO> allSymptoms = await _db.Symptoms.Select(s => new SymptomDTO
+                {
+                    Id = s.Id,
+                    Name = s.Name,
+                }).ToListAsync();
+
+                return allSymptoms;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+        public async Task<List<SymptomDTO>> GetRelatedSymptoms(int id)
+        {
+            List<SymptomDTO> symptoms = await _db.Symptoms
+                .Where(s => s.DiseaseSymptoms.Select(ds => ds.DiseaseId).Contains(id))
+                .Select(s => new SymptomDTO
+                {
+                    Id = s.Id,
+                    Name = s.Name
+                })
+                .ToListAsync();
+
+            return symptoms;
+        }
+        public async Task<List<SymptomDTO>> GetUnrelatedSymptoms(int diseaseId)
+        {
+            List<Symptom> ufo = await _db.Symptoms.ToListAsync();
+
+            List<SymptomDTO> symptoms = ufo
+                .Where(s => !s.DiseaseSymptoms.Select(ds => ds.DiseaseId).Contains(diseaseId))
+                .Select(s => new SymptomDTO
+                {
+                    Id = s.Id,
+                    Name = s.Name
+                })
+                .ToList();
+
+            return symptoms;
+        }
+
+        /* Unused/unnecessary methods
         public async Task<Symptom> GetSymptom(int id)
         {
             try
@@ -135,32 +175,6 @@ namespace Oblig_1_ITPE3200.DAL
             {
                 return null;
             }
-        }
-        public async Task<List<Symptom>> GetAllSymptoms()
-        {
-            try
-            {
-                List<Symptom> allSymptoms = await _db.Symptoms.Select(s => new Symptom
-                {
-                    Id = s.Id,
-                    Name = s.Name,
-                    Diseases = s.DiseaseSymptoms.Select(ds => ds.Disease).ToList()
-                }).ToListAsync();
-
-                return allSymptoms;
-            }
-            catch
-            {
-                return null;
-            }
-        }
-        public async Task<List<Symptom>> GetRelatedSymptoms(int id)
-        {
-            List<Symptom> symptoms = await _db.Symptoms.ToListAsync();
-
-            symptoms = symptoms.Where(s => s.DiseaseSymptoms.Select(ds => ds.DiseaseId).Contains(id)).ToList();
-
-            return symptoms;
         }
         public async Task<List<Symptom>> GetUnrelatedSymptoms(int id)
         {
@@ -217,27 +231,18 @@ namespace Oblig_1_ITPE3200.DAL
             }
 
         }
-        
-        // Joining table methods
-        public async Task<List<DiseaseSymptom>> GetAllDiseaseSymptoms()
-        {
-            try
-            {
-                List<DiseaseSymptom> allDiseaseSymptoms = await _db.DiseaseSymptoms.ToListAsync();
-                return allDiseaseSymptoms;
-            }
-            catch
-            {
-                return null;
-            }
-        }
+        */
+
+        // Joining table CRUD
         public async Task<bool> CreateDiseaseSymptom(int DiseaseId, int SymptomId)
         {
             try
             {
-                var newDiseaseSymptom = new DiseaseSymptom();
-                newDiseaseSymptom.SymptomId = SymptomId;
-                newDiseaseSymptom.DiseaseId = DiseaseId;
+                var newDiseaseSymptom = new DiseaseSymptom
+                {
+                    SymptomId = SymptomId,
+                    DiseaseId = DiseaseId
+                };
 
                 _db.DiseaseSymptoms.Add(newDiseaseSymptom);
                 await _db.SaveChangesAsync();

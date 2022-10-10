@@ -16,26 +16,76 @@ function getDiseaseData() {
 }
 
 function generateSymptomsTable() {
-    $.get("oblig/GetAllSymptoms", function (symptoms) {
-        skrivUtSymptoms(symptoms);
+    const url1 = "oblig/GetRelatedSymptoms?id=" + selecteddisease;
+    $.get(url1, function (symptoms) {
+        let ut = printSymptoms(symptoms, true);
+        $("#selectedsymptomsdiv").html(ut);
+    });
+
+    const url2 = "oblig/GetUnrelatedSymptoms?id=" + selecteddisease;
+
+    $.get(url2, function (symptoms) {
+        let ut = printSymptoms(symptoms);
+        $("#notselectedsymptomsdiv").html(ut);
     });
 }
 
-function skrivUtSymptoms(symptoms) {
-    let ut = "";
-    for (let symptom of symptoms) {
-        ut += "<div class='form-check'>";
-        ut += "<input class='form-check-input' name='symptoms' type='checkbox' value='" + symptom.id + "' id='" + symptom.name + "'";
-        for (let disease of symptom.diseases) {
-            if (disease.id == selecteddisease) {
-                ut += " checked";
-            }
-        }
-        ut += ">";
-        ut += "<label class ='form-check-label' for='" + symptom.name + "'>" + symptom.name + "</label>";
-        ut += "</div>";
+function printSymptoms(symptoms, istrue) {
+    let ut = "<table class='table'>" +
+        "<thead><tr>" +
+        "<th scope='col'>";
+    if (istrue) {
+        ut += "Selected symptoms";
+    } else {
+        ut += "Not selected symptoms";
     }
-    $("#symptomsdiv").html(ut);
+    ut += "</th > <th scope='col'></th>" +
+        "</tr></thead><tbody>";
+        
+    for (let symptom of symptoms) {
+        ut += "<tr>" +
+            "<td>" + symptom.name + "</td><td>";
+        if (istrue) {
+            ut += "<button onclick='removeSymptom(" + symptom.id + ")' class='btn btn-danger'>Remove</button>";
+        } else {
+            ut += "<button onclick='addSymptom(" + symptom.id + ")' class='btn btn-secondary'>Add</button>";
+        }
+        ut += "</td></tr>";
+    }
+    ut += "</tbody></table>"
+    return ut;
+}
+
+function addSymptom(inId) {
+    const ds = {
+        diseaseId : selecteddisease,
+        symptomId : inId
+    }
+
+    $.post("oblig/CreateDiseaseSymptom", ds, function (OK) {
+        if (OK) {
+            generateSymptomsTable();
+        }
+        else {
+            console.log("feil");
+        }
+    });
+}
+
+function removeSymptom(inId) {
+    const ds = {
+        diseaseId: selecteddisease,
+        symptomId: inId
+    }
+
+    $.post("oblig/DeleteDiseaseSymptom", ds, function (OK) {
+        if (OK) {
+            generateSymptomsTable();
+        }
+        else {
+            console.log("feil");
+        }
+    });
 }
 
 function saveChanges() {
@@ -43,7 +93,6 @@ function saveChanges() {
         id: $("#id").val(),
         name: $("#name").val(),
         description: $("#description").val(),
-        symptoms : createSymptomsList()
     };
 
     $.post("oblig/UpdateDisease", disease, function (OK) {
@@ -54,18 +103,4 @@ function saveChanges() {
             $("#feil").html("Feil i db - prøv igjen senere");
         }
     });
-}
-
-function createSymptomsList() {
-    let symptoms = [];
-    let formData = document.getElementsByName("symptoms");
-    for (let entry of formData) {
-        if (entry.checked) {
-            const symptom = {
-                id : entry.value,
-            };
-            symptoms.push(symptom);
-        }
-    }
-    return symptoms;
 }
