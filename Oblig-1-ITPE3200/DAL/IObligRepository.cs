@@ -31,6 +31,6 @@ namespace Oblig_1_ITPE3200.DAL
         Task<bool> DeleteDiseaseSymptom(int DiseaseId, int SymptomId);
         
         // Search method
-        Task<List<Disease>> SearchDiseases(int[] symptomsArray);
+        Task<List<DiseaseDTO>> SearchDiseases(int[] symptomsArray);
     }
 }

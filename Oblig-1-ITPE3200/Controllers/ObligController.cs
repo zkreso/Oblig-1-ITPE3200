@@ -83,7 +83,7 @@ namespace Oblig_1_ITPE3200.Controllers
         }
 
         // Search method
-        public async Task<List<Disease>> SearchDiseases(int[] symptomsArray)
+        public async Task<List<DiseaseDTO>> SearchDiseases(int[] symptomsArray)
         {
             return await _db.SearchDiseases(symptomsArray);
         }

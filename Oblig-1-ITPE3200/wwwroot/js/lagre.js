@@ -19,7 +19,7 @@ function createDisease() {
     const disease = {
         name: $("#name").val(),
         description: $("#description").val(),
-        symptoms : createSymptomsList()
+        diseaseSymptoms : createDsList()
     };
 
     $.post("oblig/CreateDisease", disease, function (OK) {
@@ -32,17 +32,16 @@ function createDisease() {
     });
 }
 
-function createSymptomsList() {
-    let symptoms = [];
+function createDsList() {
+    let dsArray = [];
     let formData = document.getElementsByName("symptoms");
     for (let entry of formData) {
         if (entry.checked) {
-            const symptom = {
-                id : entry.value,
-                name : entry.id
+            const ds = {
+                symptomId : entry.value,
             };
-            symptoms.push(symptom);
+            dsArray.push(ds);
         }
     }
-    return symptoms;
+    return dsArray;
 }

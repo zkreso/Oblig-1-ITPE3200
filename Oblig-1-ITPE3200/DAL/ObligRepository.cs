@@ -65,9 +65,9 @@ namespace Oblig_1_ITPE3200.DAL
                 {
                     Name = disease.Name,
                     Description = disease.Description,
-                    DiseaseSymptoms = disease.Symptoms?.Select(s => new DiseaseSymptom
+                    DiseaseSymptoms = disease.DiseaseSymptoms?.Select(s => new DiseaseSymptom
                     {
-                        SymptomId = s.Id
+                        SymptomId = s.SymptomId
                     }).ToList()
                 };
 
@@ -269,29 +269,28 @@ namespace Oblig_1_ITPE3200.DAL
         }
 
         // Search method
-        public async Task<List<Disease>> SearchDiseases(int[] symptomsArray)
+        public async Task<List<DiseaseDTO>> SearchDiseases(int[] symptomsArray)
         {
             try
             {
-                if (symptomsArray.Length > 0)
+                // Return empty list if nothing is selected
+                if (symptomsArray.Length == 0)
                 {
-                    List<Disease> results = await _db.Diseases.ToListAsync();
-                    results = results
-                        .Where(d => symptomsArray.All(d.DiseaseSymptoms.Select(ds => ds.SymptomId).Contains))
-                        .Select(d => new Disease
-                        {
-                            Id = d.Id,
-                            Name = d.Name,
-                            Symptoms = d.DiseaseSymptoms.Select(s => s.Symptom).ToList()
-                        })
-                        .ToList();
+                    return new List<DiseaseDTO>();
+                }
 
-                    return results;
-                }
-                else
-                {
-                    return new List<Disease>();
-                }
+                List<Disease> allDiseases = await _db.Diseases.ToListAsync();
+                List<DiseaseDTO> results = allDiseases
+                    .Where(d => symptomsArray.All(d.DiseaseSymptoms.Select(ds => ds.SymptomId).Contains))
+                    .Select(d => new DiseaseDTO
+                    {
+                        Id = d.Id,
+                        Name = d.Name,
+                        Symptoms = d.DiseaseSymptoms.Select(ds => ds.Symptom.Name).ToArray()
+                    })
+                    .ToList();
+
+                return results;
             }
             catch
             {

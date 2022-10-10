@@ -11,7 +11,5 @@ namespace Oblig_1_ITPE3200.Models
         public string Description { get; set; }
         [JsonIgnore]
         public virtual List<DiseaseSymptom> DiseaseSymptoms { get; set; }
-        [NotMapped]
-        public List<Symptom> Symptoms { get; set; }
     }
 }

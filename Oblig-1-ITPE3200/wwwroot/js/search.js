@@ -47,7 +47,7 @@ function search() {
                 "<a href='disease.html?id=" + result.id + "' class='link-primary'>" + result.name + "</a>" +
                 "</td><td>";
             for (let s of result.symptoms) {
-                resultsUt += s.name + ", ";
+                resultsUt += s + ", ";
             }
             resultsUt += "</td></tr>";
         }

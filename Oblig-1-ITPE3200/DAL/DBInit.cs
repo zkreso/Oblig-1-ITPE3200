@@ -49,8 +49,9 @@ namespace Oblig_1_ITPE3200.DAL
                 var ds12 = new DiseaseSymptom { Disease = d7, Symptom = s3 };
                 var ds13 = new DiseaseSymptom { Disease = d7, Symptom = s10 };
                 var ds14 = new DiseaseSymptom { Disease = d7, Symptom = s11 };
+                var ds15 = new DiseaseSymptom { Disease = d7, Symptom = s6 };
 
-                context.DiseaseSymptoms.AddRange(ds1, ds2, ds3, ds4, ds5, ds6, ds7, ds8, ds9, ds10, ds11, ds12, ds13, ds14);
+                context.DiseaseSymptoms.AddRange(ds1, ds2, ds3, ds4, ds5, ds6, ds7, ds8, ds9, ds10, ds11, ds12, ds13, ds14, ds15);
                 context.SaveChanges();
             }
         }
