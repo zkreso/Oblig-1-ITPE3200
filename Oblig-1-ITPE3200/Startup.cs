@@ -17,11 +17,15 @@ namespace Oblig_1_ITPE3200
                 options.UseSqlite("Data source=Oblig.db");
             });
 
-            services.AddControllers().AddNewtonsoftJson(options =>
-            {
-                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
-                options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
-            });
+            services.AddControllers();
+
+            // Not needed since we are explicitly controlling what we will return with DTO's
+            // We'll never get nested objects if we don't want to
+            //services.AddControllers().AddNewtonsoftJson(options =>
+            //{
+            //    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+            //});
+            
             services.AddScoped<IObligRepository, ObligRepository>();
         }
 

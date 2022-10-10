@@ -22,15 +22,13 @@ namespace Oblig_1_ITPE3200.DAL
         {
             try
             {
-                Disease disease = await _db.Diseases.FindAsync(id);
-
-                DiseaseDTO diseaseDTO = new DiseaseDTO
+                DiseaseDTO diseaseDTO = await _db.Diseases.Select(d => new DiseaseDTO
                 {
-                    Id = disease.Id,
-                    Name = disease.Name,
-                    Description = disease.Description,
-                    Symptoms = disease.DiseaseSymptoms.Select(ds => ds.Symptom.Name).ToArray()
-                };
+                    Id = d.Id,
+                    Name = d.Name,
+                    Description = d.Description,
+                    Symptoms = d.DiseaseSymptoms.Select(ds => ds.Symptom.Name).ToArray()
+                }).FirstOrDefaultAsync(x => x.Id == id);
 
                 return diseaseDTO;
             }
@@ -118,11 +116,7 @@ namespace Oblig_1_ITPE3200.DAL
         {
             try
             {
-                List<SymptomDTO> allSymptoms = await _db.Symptoms.Select(s => new SymptomDTO
-                {
-                    Id = s.Id,
-                    Name = s.Name,
-                }).ToListAsync();
+                List<SymptomDTO> allSymptoms = await _db.Symptoms.MapSymptomToDTO().ToListAsync();
 
                 return allSymptoms;
             }
@@ -135,27 +129,17 @@ namespace Oblig_1_ITPE3200.DAL
         {
             List<SymptomDTO> symptoms = await _db.Symptoms
                 .Where(s => s.DiseaseSymptoms.Select(ds => ds.DiseaseId).Contains(id))
-                .Select(s => new SymptomDTO
-                {
-                    Id = s.Id,
-                    Name = s.Name
-                })
+                .MapSymptomToDTO()
                 .ToListAsync();
 
             return symptoms;
         }
         public async Task<List<SymptomDTO>> GetUnrelatedSymptoms(int diseaseId)
         {
-            List<Symptom> ufo = await _db.Symptoms.ToListAsync();
-
-            List<SymptomDTO> symptoms = ufo
+            List<SymptomDTO> symptoms = await _db.Symptoms
                 .Where(s => !s.DiseaseSymptoms.Select(ds => ds.DiseaseId).Contains(diseaseId))
-                .Select(s => new SymptomDTO
-                {
-                    Id = s.Id,
-                    Name = s.Name
-                })
-                .ToList();
+                .MapSymptomToDTO()
+                .ToListAsync();
 
             return symptoms;
         }
@@ -279,7 +263,11 @@ namespace Oblig_1_ITPE3200.DAL
                     return new List<DiseaseDTO>();
                 }
 
-                List<Disease> allDiseases = await _db.Diseases.ToListAsync();
+                List<Disease> allDiseases = await _db.Diseases
+                    .Include(d => d.DiseaseSymptoms)
+                    .ThenInclude(ds => ds.Symptom)
+                    .ToListAsync();
+
                 List<DiseaseDTO> results = allDiseases
                     .Where(d => symptomsArray.All(d.DiseaseSymptoms.Select(ds => ds.SymptomId).Contains))
                     .Select(d => new DiseaseDTO
