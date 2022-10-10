@@ -25,14 +25,14 @@ function skrivUtSymptoms(symptoms) {
     let ut = "";
     for (let symptom of symptoms) {
         ut += "<div class='form-check'>";
-        ut += "<input clss='form-check-input' name='symptoms' type='checkbox' value='" + symptom.id + "' id='" + symptom.name + "'";
+        ut += "<input class='form-check-input' name='symptoms' type='checkbox' value='" + symptom.id + "' id='" + symptom.name + "'";
         for (let disease of symptom.diseases) {
             if (disease.id == selecteddisease) {
                 ut += " checked";
             }
         }
         ut += ">";
-        ut += "<label class ='form-check-label' for='symptom" + symptom.id + "'>" + symptom.name + "</label>";
+        ut += "<label class ='form-check-label' for='" + symptom.name + "'>" + symptom.name + "</label>";
         ut += "</div>";
     }
     $("#symptomsdiv").html(ut);
@@ -48,7 +48,7 @@ function saveChanges() {
 
     $.post("oblig/UpdateDisease", disease, function (OK) {
         if (OK) {
-            window.location.href = 'index.html';
+            window.location.href = 'diseaselist.html';
         }
         else {
             $("#feil").html("Feil i db - prøv igjen senere");
@@ -63,7 +63,6 @@ function createSymptomsList() {
         if (entry.checked) {
             const symptom = {
                 id : entry.value,
-                name : entry.id
             };
             symptoms.push(symptom);
         }

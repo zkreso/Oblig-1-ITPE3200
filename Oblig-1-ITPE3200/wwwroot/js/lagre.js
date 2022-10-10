@@ -8,8 +8,8 @@ function skrivUtSymptoms(symptoms) {
     let ut = "";
     for (let symptom of symptoms) {
         ut += "<div class='form-check'>";
-        ut += "<input clss='form-check-input' name='symptoms' type='checkbox' value='" + symptom.id + "' id='" + symptom.name + "'>";
-        ut += "<label class ='form-check-label' for='symptom" + symptom.id + "'>" + symptom.name + "</label>";
+        ut += "<input class='form-check-input' name='symptoms' type='checkbox' value='" + symptom.id + "' id='" + symptom.name + "'>";
+        ut += "<label class ='form-check-label' for='" + symptom.name + "'>" + symptom.name + "</label>";
         ut += "</div>";
     }
     $("#symptomsdiv").html(ut);
@@ -24,7 +24,7 @@ function createDisease() {
 
     $.post("oblig/CreateDisease", disease, function (OK) {
         if (OK) {
-            window.location.href = 'index.html';
+            window.location.href = 'diseaselist.html';
         }
         else {
             $("#feil").html("Feil i db - prøv igjen senere");

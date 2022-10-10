@@ -9,9 +9,9 @@ function getalldiseases() {
 }
 
 function skrivUtDiseases(diseases) {
-    let ut = "<table class='table table-sm'>" +
+    let ut = "<table class='table'>" +
         "<thead><tr>" +
-        "<th scope='col'>Name</th><th scope='col'>Symptoms</th><th scope='col'>Edit</th><th scope='col'>Delete</th>" +
+        "<th scope='col'>Name</th><th scope='col'>Symptoms</th><th scope='col'></th>" +
         "</tr></thead><tbody>"
     for (let d of diseases) {
         ut += "<tr>" +
@@ -21,9 +21,9 @@ function skrivUtDiseases(diseases) {
             ut += symptom + ", ";
         }
         ut += "</td>" +
-            "<td><a href='endre.html?id=" + d.id + "' class='btn btn-primary'>Edit</a></td>" +
-            "<td><button class='btn btn-danger' onclick='deletedisease(" + d.id + ")'>Delete</button></td>" +
-            "</td></tr>";
+            "<td><a href='disease.html?id=" + d.id + "' class='link-primary'>View</a> | " +
+            "<a href='endre.html?id=" + d.id + "' class='link-primary'>Edit</a> | " +
+            "<a href='#' onclick='deletedisease(" + d.id + ")' class='link-danger'>Delete</a</td ></tr > ";
     }
     ut += "</tbody></table>"
     $("#diseases").html(ut);
@@ -33,7 +33,7 @@ function deletedisease(id) {
     const url = "oblig/DeleteDisease?id=" + id;
     $.get(url, function (OK) {
         if (OK) {
-            window.location.href = 'index.html';
+            window.location.href = 'diseaselist.html';
         }
         else {
             $("#feil").html("Feil i db - prøv igjen senere");

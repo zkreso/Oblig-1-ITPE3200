@@ -9,20 +9,19 @@ function getallsymptoms() {
 }
 
 function skrivUtSymptoms(symptoms) {
-    let ut = "<table class='table'>" +
-        "<thead><tr><th>Choose symptoms:</th><th></th></tr></thead><tbody>";
-    for (let s of symptoms) {
-        ut += "<tr><td>" + s.name + "</td>";
-        ut += "<td><input type='checkbox' name='symptoms' value='" + s.id + "'/></td></tr > ";
+    let ut = "";
+    for (let symptom of symptoms) {
+        ut += "<div class='form-check'>";
+        ut += "<input class='form-check-input' name='symptoms' type='checkbox' value='" + symptom.id + "' id='" + symptom.name + "'>";
+        ut += "<label class ='form-check-label' for='" + symptom.name + "'>" + symptom.name + "</label>";
+        ut += "</div>";
     }
-    ut += "</tbody></table>";
     $("#symptoms").html(ut);
 }
 
 function search() {
-    let resultsUt = "<h2>Matching diseases:</h2>" +
-        "<table class='table table-striped'>" +
-        "<tr><th>Disease</th><th>Symptoms</th></tr>";
+    
+    // Creating array of symptom id's to send to server
     let formData = document.getElementsByName("symptoms");
     let symptomsArray = [];
     for (let entry of formData) {
@@ -30,19 +29,29 @@ function search() {
             symptomsArray.push(entry.value);
         }
     }
-    // Source: Sending int array
-    // https://stackoverflow.com/questions/5489461/pass-array-to-mvc-action-via-ajax
+
+    // Creating table of matches to show to user
+    let resultsUt = "<h3>Matching diseases:</h3>" +
+        "<table class='table table-striped'>" +
+        "<tr><th>Disease</th><th>Symptoms</th></tr>";
+
     $.post("oblig/SearchDiseases", $.param({ symptomsArray }, true), function (diseases) {
-        if (diseases != null) {
-            for (let result of diseases) {
-                resultsUt += "<tr><td>" + result.name + "</td><td>";
-                for (let s of result.symptoms) {
-                    resultsUt += s.name + ", ";
-                }
-                resultsUt += "</td></tr>";
-            }
-            resultsUt += "</table>";
+        // Check for empty results
+        if (diseases == null) {
+            $("#results").html(resultsUt);
+            return;
         }
+
+        for (let result of diseases) {
+            resultsUt += "<tr><td>" +
+                "<a href='disease.html?id=" + result.id + "' class='link-primary'>" + result.name + "</a>" +
+                "</td><td>";
+            for (let s of result.symptoms) {
+                resultsUt += s.name + ", ";
+            }
+            resultsUt += "</td></tr>";
+        }
+        resultsUt += "</table>";
         $("#results").html(resultsUt);
     });
 }

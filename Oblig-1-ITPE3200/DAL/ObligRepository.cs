@@ -29,6 +29,7 @@ namespace Oblig_1_ITPE3200.DAL
                     Id = disease.Id,
                     Name = disease.Name,
                     Description = disease.Description,
+                    Symptoms = disease.DiseaseSymptoms.Select(ds => ds.Symptom.Name).ToArray()
                 };
 
                 return diseaseDTO;
