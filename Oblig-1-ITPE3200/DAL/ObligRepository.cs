@@ -114,6 +114,8 @@ namespace Oblig_1_ITPE3200.DAL
 
                 var oldDs = oldD.DiseaseSymptoms;
 
+                int i = 0;
+
                 // If lower symptoms count as last time
                 if (newSlist.Count < oldDs.Count)
                 {
@@ -123,17 +125,21 @@ namespace Oblig_1_ITPE3200.DAL
                     }
                 }
                 // If higher symptoms count as last time
-                //Not tested!!
+                //Does not work, have to implement context somehow
                 else if (newSlist.Count > oldDs.Count)
                 {
+                    i = oldDs.Count;
                     while (newSlist.Count > oldDs.Count)
                     {
-                        oldDs.Add(oldDs.ElementAt(1));
+                        _db.DiseaseSymptoms.
+                        oldDs[i].
+
+                        i++;
                     }
                 }
 
                 // Changing Id and symtom object in ds
-                int i = 0;
+                i = 0;
                 foreach (var s in newSlist)
                 {
                     oldDs[i].SymptomId = s.Id;
