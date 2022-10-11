@@ -125,17 +125,18 @@ namespace Oblig_1_ITPE3200.DAL
         }
         public async Task<List<SymptomDTO>> GetRelatedSymptoms(int id)
         {
-            List<SymptomDTO> symptoms = await _db.Symptoms
-                .Where(s => s.DiseaseSymptoms.Select(ds => ds.DiseaseId).Contains(id))
+            List<SymptomDTO> symptoms = await _db.DiseaseSymptoms
+                .Where(ds => ds.DiseaseId == id)
+                .Select(ds => ds.Symptom)
                 .MapSymptomToDTO()
                 .ToListAsync();
 
             return symptoms;
         }
-        public async Task<List<SymptomDTO>> GetUnrelatedSymptoms(int diseaseId)
+        public async Task<List<SymptomDTO>> GetUnrelatedSymptoms(int id)
         {
             List<SymptomDTO> symptoms = await _db.Symptoms
-                .Where(s => !s.DiseaseSymptoms.Select(ds => ds.DiseaseId).Contains(diseaseId))
+                .Where(s => !s.DiseaseSymptoms.Select(ds => ds.DiseaseId).Contains(id))
                 .MapSymptomToDTO()
                 .ToListAsync();
 
@@ -261,16 +262,14 @@ namespace Oblig_1_ITPE3200.DAL
                     return new List<DiseaseDTO>();
                 }
 
-                List<Disease> allDiseases = await _db.Diseases
-                    .Include(d => d.DiseaseSymptoms)
-                    .ThenInclude(ds => ds.Symptom)
-                    .ToListAsync();
-
-                List<DiseaseDTO> results = allDiseases
-                    .AsQueryable()
-                    .Where(d => symptomsArray.All(d.DiseaseSymptoms.Select(ds => ds.SymptomId).Contains))
+                List<DiseaseDTO> results = await _db.DiseaseSymptoms
+                    .Where(ds => symptomsArray.Contains(ds.SymptomId))
+                    .GroupBy(ds => ds.DiseaseId)
+                    .Where(x => x.Count() == symptomsArray.Count())
+                    .Select(x => x.Key)
+                    .Join(_db.Diseases, x => x, y => y.Id, (x, y) => y)
                     .MapDiseaseToDTO()
-                    .ToList();
+                    .ToListAsync();
 
                 return results;
             }
