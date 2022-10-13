@@ -128,11 +128,13 @@ namespace Oblig_1_ITPE3200.DAL
                 //Does not work, have to implement context somehow
                 else if (newSlist.Count > oldDs.Count)
                 {
-                    i = oldDs.Count;
+                    i = newSlist.Count-1;
                     while (newSlist.Count > oldDs.Count)
                     {
-                        _db.DiseaseSymptoms.
-                        oldDs[i].
+                        var innS = newSlist[i];
+                        var s = await _db.Symptoms.FindAsync(innS.Id);
+
+
 
                         i++;
                     }
@@ -143,7 +145,7 @@ namespace Oblig_1_ITPE3200.DAL
                 foreach (var s in newSlist)
                 {
                     oldDs[i].SymptomId = s.Id;
-                    oldDs[i].Symptom = s;
+                    oldDs[i].Symptom = await _db.Symptoms.FindAsync(s.Id);
 
                     i++;
                 }
