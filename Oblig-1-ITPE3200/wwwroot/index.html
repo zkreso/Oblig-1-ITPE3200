@@ -1,0 +1,54 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Diseasecalculator</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+    <script src="js/index.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <h1>Oblig</h1>
+            <div class="col-md">
+                <select id="dList">
+                    <option id="">Choose a symptom</option>
+                    <option id="runny_nose">Runny nose</option>
+                    <option id="sneezing">Sneezing</option>
+                    <option id="coughing">Coughing</option>
+                    <option id="high_temperature">High temperature</option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md">
+                <input id="outSymptom" type="text" style="width: 300px; height: 100px;"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md">
+                <button class="btn btn-primary" onclick="">Calculate</button>
+            </div>
+        </div>
+        <div class="row">
+            <div id="answer">
+
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md">
+                <a class="btn btn-danger" href="./admin.html">Admin</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="err" style="color: red;">
+
+    </div>
+
+</body>
+</html>

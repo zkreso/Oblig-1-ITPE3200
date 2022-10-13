@@ -46,7 +46,7 @@ function changeDisease() {
 
     $.post("oblig/ChangeDisease", {d, s}, function (OK) {
         if (OK) {
-            window.location.href = 'index.html';
+            window.location.href = 'admin.html';
         }
         else {
             $("#err").html("Something wrong happened in change in db");
