@@ -12,18 +12,16 @@
         <div class="row">
             <h1>Oblig</h1>
             <div class="col-md">
-                <select id="dList">
+                <select id="dList" onchange="addSymptom(this)">
                     <option id="">Choose a symptom</option>
-                    <option id="runny_nose">Runny nose</option>
-                    <option id="sneezing">Sneezing</option>
-                    <option id="coughing">Coughing</option>
-                    <option id="high_temperature">High temperature</option>
                 </select>
             </div>
         </div>
         <div class="row">
             <div class="col-md">
-                <input id="outSymptom" type="text" style="width: 300px; height: 100px;"/>
+                <div id="outSymptom" type="text" style="width: 300px; height: 100px; border: solid;">
+
+                </div>
             </div>
         </div>
         <div class="row">
@@ -32,7 +30,7 @@
             </div>
         </div>
         <div class="row">
-            <div id="answer">
+            <div id="answer" style="border: solid; width: 300px; height: 100px;">
 
             </div>
         </div>
