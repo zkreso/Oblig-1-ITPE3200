@@ -47,13 +47,14 @@ namespace Oblig_1_ITPE3200.DAL
         public async Task<List<Diagnose>> GetDiagnoser(Symptom symptom)
         {
             try
-            {
+            {   
                 List<Diagnose> diagnoser = await _db.Diagnoser.ToListAsync();
                 diagnoser = diagnoser.Where(d => d.SymptomDiagnoser
-                                .Select(sd => sd.DiagnoseId)
+                                .Select(sd => sd.SymptomId)
                                 .Contains(symptom.SymptomId))
                                 .ToList();
-                    
+                /**var symptom = from s in symptomer
+                              where s.SymptomDiagnoser.Select(s.SymptomId.)**/
 
                 //System.Console.WriteLine(symptomDiagnoseList.Count);
 
@@ -64,5 +65,6 @@ namespace Oblig_1_ITPE3200.DAL
                 return null;
             }
         }
+       
     }
 }

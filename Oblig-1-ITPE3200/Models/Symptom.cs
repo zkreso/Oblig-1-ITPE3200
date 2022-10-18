@@ -13,5 +13,6 @@ namespace Oblig_1_ITPE3200.Models
 
         //[JsonIgnore]
         public virtual List<SymptomDiagnose> SymptomDiagnoser { get; set; }
+
     }
 }
