@@ -47,5 +47,10 @@ namespace Oblig_1_ITPE3200.Controllers
             return await _db.ChangeDisease(d, s);
         }
 
+        public async Task<Disease> FindMatchingDisease (List<Symptom> sList)
+        {
+            return await _db.FindMatchingDisease(sList);
+        }
+
     }
 }

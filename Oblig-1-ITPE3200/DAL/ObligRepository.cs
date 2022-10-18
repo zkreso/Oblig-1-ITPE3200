@@ -170,5 +170,38 @@ namespace Oblig_1_ITPE3200.DAL
                 return false;
             }
         }
+
+
+        public async Task<Disease> FindMatchingDisease (List<Symptom> symptoms)
+        {
+            List<Disease> allDiseases = await _db.Diseases.ToListAsync();
+            List<int> scoreList = new List<int>(allDiseases.Count());
+            foreach (int i in scoreList)
+            {
+                scoreList[i] = 0;
+            }
+
+
+            int i = 0;
+            foreach (var s in symptoms)
+            {
+                foreach (var d in allDiseases)
+                {
+                    int j = 0;
+                    var ds = d.DiseaseSymptoms;
+                    if (s == ds[j].Symptom)
+                    {
+                        scoreList[i]++;
+                    }
+
+                    j++;
+                }
+                i++;
+            }
+
+            int maxIndex = scoreList.IndexOf(scoreList.Max());
+
+            return allDiseases[maxIndex];
+        }
     }
 }
