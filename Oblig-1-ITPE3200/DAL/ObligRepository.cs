@@ -65,19 +65,15 @@ namespace Oblig_1_ITPE3200.DAL
         {
             try
             {
+                await _db.DiseaseSymptoms.LoadAsync();
+                await _db.Symptoms.LoadAsync();
+                var oldD = await _db.Diseases.FindAsync(id);
                 List<Symptom> symptoms = new List<Symptom>();
 
-                Disease d = await _db.Diseases.FindAsync(id);
-
-                List<DiseaseSymptom> lds = d.DiseaseSymptoms.ToList();
-
-                foreach (DiseaseSymptom ds in lds)
+                foreach (var ds in oldD.DiseaseSymptoms)
                 {
-                    if (!symptoms.Contains(ds.Symptom))
-                    {
-                        symptoms.Add(ds.Symptom);
-                    }
-                }
+                    symptoms.Add(ds.Symptom);
+                } 
 
                 return symptoms;
             }
@@ -108,50 +104,29 @@ namespace Oblig_1_ITPE3200.DAL
         {
             try
             {
+                // Find old d
                 var oldD = await _db.Diseases.FindAsync(newD.Id);
 
-                newD.DiseaseSymptoms = oldD.DiseaseSymptoms;
+                var newDsList = new List<DiseaseSymptom>();
 
-                var oldDs = oldD.DiseaseSymptoms;
-
-                int i = 0;
-
-                // If lower symptoms count as last time
-                if (newSlist.Count < oldDs.Count)
-                {
-                    while (newSlist.Count < oldDs.Count)
-                    {
-                        oldDs.RemoveAt(oldDs.Count - 1);
-                    }
-                }
-                // If higher symptoms count as last time
-                //Does not work, have to implement context somehow
-                else if (newSlist.Count > oldDs.Count)
-                {
-                    i = newSlist.Count-1;
-                    while (newSlist.Count > oldDs.Count)
-                    {
-                        var innS = newSlist[i];
-                        var s = await _db.Symptoms.FindAsync(innS.Id);
-
-
-
-                        i++;
-                    }
-                }
-
-                // Changing Id and symtom object in ds
-                i = 0;
                 foreach (var s in newSlist)
                 {
-                    oldDs[i].SymptomId = s.Id;
-                    oldDs[i].Symptom = await _db.Symptoms.FindAsync(s.Id);
+                    var newDs = new DiseaseSymptom();
 
-                    i++;
+                    s.DiseaseSymptoms = newDsList;
+
+                    newDs.DiseaseId = oldD.Id;
+                    newDs.Disease = oldD;
+                    newDs.SymptomId = s.Id;
+                    newDs.Symptom = s;
+
                 }
+
+                oldD.DiseaseSymptoms = newDsList;
 
                 oldD.Name = newD.Name;
                 oldD.Description = newD.Description;
+
 
                 await _db.SaveChangesAsync();
                 return true;
