@@ -104,30 +104,64 @@ namespace Oblig_1_ITPE3200.DAL
         {
             try
             {
+                await _db.DiseaseSymptoms.LoadAsync();
+                await _db.Symptoms.LoadAsync();
+                await _db.Diseases.LoadAsync();
+
                 // Find old d
                 var oldD = await _db.Diseases.FindAsync(newD.Id);
 
-                var newDsList = new List<DiseaseSymptom>();
+                newD.DiseaseSymptoms = new List<DiseaseSymptom>();
 
+                // Adding each s into a new ds object list
+                bool first = true;
                 foreach (var s in newSlist)
                 {
-                    var newDs = new DiseaseSymptom();
+                    // Getting the s object in the db
+                    var newS = await _db.Symptoms.FindAsync(s.Id);
 
-                    s.DiseaseSymptoms = newDsList;
+                    // Running clean up of old ds in s ds list, only first time
+                    if (first)
+                    {
+                        // Collects ds to remove in list not to crash program
+                        var rm = new List<DiseaseSymptom>();
 
-                    newDs.DiseaseId = oldD.Id;
-                    newDs.Disease = oldD;
-                    newDs.SymptomId = s.Id;
-                    newDs.Symptom = s;
+                        foreach (var ds in newS.DiseaseSymptoms)
+                        {
+                            if (ds.DiseaseId == oldD.Id)
+                            {
+                                rm.Add(ds); // Adding which ds to delete in list
+                            }
+                        }
 
+                        // Removing ds from s ds list using the rm ds list
+                        foreach (var r in rm)
+                        {
+                            newS.DiseaseSymptoms.Remove(r);
+                        }
+
+                        // Turning this if-test off
+                        first = false;
+                    }
+
+                    //Creating new ds object with s and d
+                    var newDs = new DiseaseSymptom { Symptom = newS, Disease = newD };
+
+                    // If s object got fully emptied during deletion (no more links)
+                    // Have to initialize new list
+                    if (newS.DiseaseSymptoms == null)
+                    {
+                        newS.DiseaseSymptoms = new List<DiseaseSymptom>();
+                    }
+
+                    // Adding ds to both tables
+                    newS.DiseaseSymptoms.Add(newDs);
+                    newD.DiseaseSymptoms.Add(newDs);
                 }
 
-                oldD.DiseaseSymptoms = newDsList;
-
-                oldD.Name = newD.Name;
-                oldD.Description = newD.Description;
-
-
+                // Removing oldD for safety and saving new
+                _db.Diseases.Remove(oldD);
+                await _db.Diseases.AddAsync(newD);
                 await _db.SaveChangesAsync();
                 return true;
             }

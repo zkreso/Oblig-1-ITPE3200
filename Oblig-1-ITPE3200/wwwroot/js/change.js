@@ -19,31 +19,38 @@ function changeDisease() {
     const id = urlId.replace(/\D/g, "");
     const s = [];
 
+    let i = 0;
+
+    // Checking every inut type of chekcbox marked as checked
     $("input[type='checkbox']").each(function () {
+
         if ($(this).is(":checked")) {
+
+            //Saving id
             let sid = $(this).attr('id');
-            sid = sid ;
 
-            $("#symptoms label").each(function () {
-                if ($(this).attr('id') == sid) {
+            //Picking out label with id to get name of symptom
+            let label = $("label#"+sid);
+            if (label.attr('id') == sid) {
 
-                    s[sid - 1] = {
-                        id: sid,
-                        name: $(this).attr('value'),
-                    };
+                s[i] = { // Setting each s object on each spot in list
+                    id: sid,
+                    name: label.attr('value'),
+                };
 
-                }
-            });
-
+                i++;
+            }
         }
     });
 
+    // Creating d object
     const d = {
         id: $("#id").val(),
         name: $("#name").val(),
         description: $("#description").val(),
     };
 
+    // Pposting ChangeDisease with object d and s
     $.post("oblig/ChangeDisease", {d, s}, function (OK) {
         if (OK) {
             window.location.href = 'admin.html';

@@ -32,6 +32,7 @@ namespace Oblig_1_ITPE3200.DAL
                 disease1.DiseaseSymptoms.Add(new DiseaseSymptom { Symptom = symptom2 });
                 disease1.DiseaseSymptoms.Add(new DiseaseSymptom { Symptom = symptom3 });
 
+                disease2.DiseaseSymptoms.Add(new DiseaseSymptom { Symptom = symptom1 });
                 disease2.DiseaseSymptoms.Add(new DiseaseSymptom { Symptom = symptom3 });
                 disease2.DiseaseSymptoms.Add(new DiseaseSymptom { Symptom = symptom4 });
 
