@@ -176,9 +176,9 @@ namespace Oblig_1_ITPE3200.DAL
         {
             List<Disease> allDiseases = await _db.Diseases.ToListAsync();
             List<int> scoreList = new List<int>(allDiseases.Count());
-            foreach (int i in scoreList)
+            foreach (int k in scoreList)
             {
-                scoreList[i] = 0;
+                scoreList[k] = 0;
             }
 
 
