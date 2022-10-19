@@ -20,3 +20,38 @@ function addSymptom(s) {
 
     $("#outSymptom").append(name+"<br>");
 }
+
+function findMatchingDisease() {
+
+    /// CANT GATHER INFORMATION FROM LIST 
+    var str = $("#outSymptom").html().split("<br>");
+    str = str.split("\n");
+
+    const symptoms = formToSymptom(str);
+
+    $.post("oblig/FindMatchingDisease", symptoms, function (d) {
+        $("#answer").html(d.name); 
+    });
+
+}
+
+function formToSymptom(nameList) {
+    const symptomsList = [];
+
+    $.get("oblig/GetAllSymptoms", function (symptoms) {
+        for (let i = 0; i < symptoms.length; i++) {
+            let s = symptoms[i];
+
+            let j = 0;
+            for (n in nameList) {
+                if (n == s.name) {
+                    symptomsList[j] = s;
+                }
+
+                j++;
+            }
+        }
+    });
+
+    return symptomsList;
+}
