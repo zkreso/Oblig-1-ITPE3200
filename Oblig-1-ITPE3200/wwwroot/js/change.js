@@ -70,33 +70,40 @@ function getAllSymptoms(id) {
     $.get(url, function (tSymptoms) {
         // Getting all symptoms from symptoms-table
         $.get("oblig/GetAllSymptoms", function (symptoms) {
-
-            // Running through all symtoms from symptoms-table
-            for (let i = 0; i < symptoms.length; i++) {
-
-                // Setting s as the name of the symptom 
-                let s = symptoms[i];
-                let b = false;
-
-                // Running through the true symptoms list to check if s is in there
-                for (let j = 0; j < tSymptoms.length; j++){
-
-                    // Saving the true symtom as tS
-                    let tS = tSymptoms[j];
-
-                    // Checking if a match with s, if so set b to true and break out of for-loop
-                    if (tS.id == s.id) {
-                        b = true;
-                        break;
-                    }
-                }
-
-                // if tS was found in symptoms list, formatSymptoms with "checked" checkbox
-                if (b) {
-                    formatSymptom(s, true);
-                }
-                else {
+            if (tSymptoms == null) {
+                for (let i = 0; i < symptoms.length; i++) {
+                    let s = symptoms[i];
                     formatSymptom(s, false);
+                }
+            }
+            else {
+                // Running through all symtoms from symptoms-table
+                for (let i = 0; i < symptoms.length; i++) {
+
+                    // Setting s as the name of the symptom 
+                    let s = symptoms[i];
+                    let b = false;
+
+                    // Running through the true symptoms list to check if s is in there
+                    for (let j = 0; j < tSymptoms.length; j++) {
+
+                        // Saving the true symtom as tS
+                        let tS = tSymptoms[j];
+
+                        // Checking if a match with s, if so set b to true and break out of for-loop
+                        if (tS.id == s.id) {
+                            b = true;
+                            break;
+                        }
+                    }
+
+                    // if tS was found in symptoms list, formatSymptoms with "checked" checkbox
+                    if (b) {
+                        formatSymptom(s, true);
+                    }
+                    else {
+                        formatSymptom(s, false);
+                    }
                 }
             }
         });

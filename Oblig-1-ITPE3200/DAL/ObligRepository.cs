@@ -70,10 +70,17 @@ namespace Oblig_1_ITPE3200.DAL
                 var oldD = await _db.Diseases.FindAsync(id);
                 List<Symptom> symptoms = new List<Symptom>();
 
-                foreach (var ds in oldD.DiseaseSymptoms)
+                if (oldD.DiseaseSymptoms != null)
                 {
-                    symptoms.Add(ds.Symptom);
-                } 
+                    foreach (var ds in oldD.DiseaseSymptoms)
+                    {
+                        symptoms.Add(ds.Symptom);
+                    }
+                }
+                else
+                {
+                    return null;
+                }
 
                 return symptoms;
             }
@@ -120,29 +127,36 @@ namespace Oblig_1_ITPE3200.DAL
                     // Getting the s object in the db
                     var newS = await _db.Symptoms.FindAsync(s.Id);
 
+
+
                     // Running clean up of old ds in s ds list, only first time
                     if (first)
                     {
                         // Collects ds to remove in list not to crash program
                         var rm = new List<DiseaseSymptom>();
 
-                        foreach (var ds in newS.DiseaseSymptoms)
+                        // If s ds object already empty, no need to add to delete list
+                        if (newS.DiseaseSymptoms != null)
                         {
-                            if (ds.DiseaseId == oldD.Id)
+                            foreach (var ds in newS.DiseaseSymptoms)
                             {
-                                rm.Add(ds); // Adding which ds to delete in list
+                                if (ds.DiseaseId == oldD.Id)
+                                {
+                                    rm.Add(ds); // Adding which ds to delete in list
+                                }
                             }
+                            // Removing ds from s ds list using the rm ds list
+                            foreach (var r in rm)
+                            {
+                                newS.DiseaseSymptoms.Remove(r);
+                            }
+                            // Turning this if-test off
+                            first = false;
                         }
 
-                        // Removing ds from s ds list using the rm ds list
-                        foreach (var r in rm)
-                        {
-                            newS.DiseaseSymptoms.Remove(r);
-                        }
-
-                        // Turning this if-test off
-                        first = false;
                     }
+
+
 
                     //Creating new ds object with s and d
                     var newDs = new DiseaseSymptom { Symptom = newS, Disease = newD };
@@ -154,10 +168,14 @@ namespace Oblig_1_ITPE3200.DAL
                         newS.DiseaseSymptoms = new List<DiseaseSymptom>();
                     }
 
+
                     // Adding ds to both tables
                     newS.DiseaseSymptoms.Add(newDs);
                     newD.DiseaseSymptoms.Add(newDs);
                 }
+
+
+
 
                 // Removing oldD for safety and saving new
                 _db.Diseases.Remove(oldD);
