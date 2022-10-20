@@ -16,6 +16,7 @@ namespace Oblig_1_ITPE3200.DAL
 
         // Symptom CRUD
         Task<List<SymptomDTO>> GetAllSymptoms();
+        Task<List<SymptomDTO>> GetFilteredSymptoms(int[] symptomsArray);
         Task<List<SymptomDTO>> GetRelatedSymptoms(int id);
         Task<List<SymptomDTO>> GetUnrelatedSymptoms(int id);
 

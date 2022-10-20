@@ -1,13 +1,24 @@
 ﻿var selectedSymptoms = [];
 
 $(function () {
-    getallsymptoms();
+    refreshSymptomList();
 })
 
-function getallsymptoms() {
-    $.get("oblig/GetAllSymptoms", function (symptoms) {
-        printAllSymptoms(symptoms);
-    });
+function refreshSymptomList() {
+    if (selectedSymptoms.length == 0) {
+        $.get("oblig/GetAllSymptoms", function (symptoms) {
+            printAllSymptoms(symptoms);
+        });
+    } else {
+        let symptomsArray = [];
+        for (let symptom of selectedSymptoms) {
+            symptomsArray.push(symptom.id);
+        }
+
+        $.post("oblig/GetFilteredSymptoms", $.param({ symptomsArray }, true), function (symptoms) {
+            printAllSymptoms(symptoms);
+        });
+    }
 }
 
 function printAllSymptoms(symptoms) {
@@ -33,6 +44,7 @@ function select(sid, sname) {
 
     printSelectedSymptoms();
     search();
+    refreshSymptomList();
 }
 
 function deselect(sid) {
@@ -41,6 +53,7 @@ function deselect(sid) {
 
     printSelectedSymptoms();
     search();
+    refreshSymptomList();
 }
 
 function printSelectedSymptoms() {

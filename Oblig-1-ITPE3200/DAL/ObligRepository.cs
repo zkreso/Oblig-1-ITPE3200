@@ -123,6 +123,22 @@ namespace Oblig_1_ITPE3200.DAL
                 return null;
             }
         }
+        public async Task<List<SymptomDTO>> GetFilteredSymptoms(int[] symptomsArray)
+        {
+            try
+            {
+                List<SymptomDTO> symptoms = await _db.Symptoms
+                    .Where(s => !symptomsArray.Contains(s.Id))
+                    .MapSymptomToDTO()
+                    .ToListAsync();
+
+                return symptoms;
+            }
+            catch
+            {
+                return null;
+            }
+        }
         public async Task<List<SymptomDTO>> GetRelatedSymptoms(int id)
         {
             List<SymptomDTO> symptoms = await _db.DiseaseSymptoms

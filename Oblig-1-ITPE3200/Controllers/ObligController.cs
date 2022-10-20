@@ -45,6 +45,10 @@ namespace Oblig_1_ITPE3200.Controllers
         {
             return await _db.GetAllSymptoms();
         }
+        public async Task<List<SymptomDTO>> GetFilteredSymptoms(int[] symptomsArray)
+        {
+            return await _db.GetFilteredSymptoms(symptomsArray);
+        }
         public async Task<List<SymptomDTO>> GetRelatedSymptoms(int id)
         {
             return await _db.GetRelatedSymptoms(id);
