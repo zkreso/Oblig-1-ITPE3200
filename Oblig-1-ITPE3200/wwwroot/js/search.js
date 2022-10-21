@@ -68,7 +68,7 @@ function deselect(sid) {
 function printSelectedSymptoms() {
     let ut = "";
     if (selectedSymptoms.length == 0) {
-        ut += "<div class='text-muted'>No symptoms selected</div>";
+        ut += "<div class='text-muted'>None</div>";
     }
 
     for (let symptom of selectedSymptoms) {
@@ -80,7 +80,7 @@ function printSelectedSymptoms() {
 
 function search() {
     if (selectedSymptoms.length == 0) {
-        let ut = "<div class='text-muted'>No symptoms selected</div>";
+        let ut = "<div class='text-muted'>No symptoms selected - please select one or more symptoms from the symptom list</div>";
         $("#results").html(ut);
         return;
     }

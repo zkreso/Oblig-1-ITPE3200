@@ -43,21 +43,21 @@
         
         <h4 class="pb-2">Matching diseases</h4>
         <div id="results" class="p-3 border">
-            <div class="text-muted">No symptoms selected</div>
+            <div class="text-muted">No symptoms selected - please select one or more symptoms from the symptom list</div>
         </div>
         <div class="p-3 mb-3 border border-top-0 rounded-bottom bg-light">
             <h6>Selected symptoms (click to deselect)</h6>
             <div id="selectedsymptomsdiv">
-                <div class="text-muted">No symptoms selected</div>
+                <div class="text-muted">None</div>
             </div>
         </div>
         
         <h4 class="pb-2">Symptoms list</h4>
         <div id="filters" class="p-3 border border-bottom-0 rounded-top bg-light">
-            <form class="row align-items-center">
+            <form class="row align-items-center" onsubmit="return false;">
                 <div class="col-sm-5">
                     <label for="searchBox" class="visually-hidden">Search for symptom</label>
-                    <input type="search" class="form-control" id="searchBox" placeholder="Enter symptom name">
+                    <input type="search" class="form-control" id="searchBox" placeholder="Enter symptom name" on>
                 </div>
                 <div class="col-sm">
                     <button type="submit" class="btn btn-primary" onclick="refreshSymptomList()">Search symptoms by name</button>
