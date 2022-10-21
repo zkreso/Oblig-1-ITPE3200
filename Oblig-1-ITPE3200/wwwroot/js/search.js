@@ -1,22 +1,39 @@
 ﻿// Global variables
 
-var selectedSymptoms = [];
-// Selected symptoms (as objects). Used by crlient to create a list of selected symptoms
-
-var symptomIds = [];
-// Only the id's of the selected symptoms.
-// Used by server to calculate diagnosis and exclude from list of remaining symptoms
-
+var selectedSymptoms = []; // Objects - used by client only
+var symptomIds = []; // Just the id's - used by server only
 searchString = "";
-// Value of search box input
-// Used by server to exclude results not matching the string.
 
 // Initialize
+
 $(function () {
     generateSymptomsList();
 })
 
 // Functions
+
+function generateSymptomsList() {
+
+    // Makes sure to get the current value of the search box
+    searchString = $("#searchBox").val();
+
+    $.post("oblig/GetAllSymptoms", $.param({ symptomIds, searchString }, true), function (symptoms) {
+
+        let ut = "<table class='table table-hover'><thead><tr>" +
+            "<thead><tr>" +
+            "<th scope='col'>Id</th><th scope='col'>Name</th><th scope='col'>Select</th>" +
+            "</tr></thead><tbody>";
+
+        for (let symptom of symptoms) {
+            ut += "<tr>" +
+                "<th scope='row'>" + symptom.id + "</td>" +
+                "<td>" + symptom.name + "</td>" +
+                "<td><a href='#' onclick='select(" + symptom.id + ", \"" + symptom.name + "\")'>Select</td></tr>";
+        }
+
+        $("#symptoms").html(ut);
+    });
+}
 
 // "Selects" ie. adds a symptom to the selected symptoms
 function select(sid, sname) {
@@ -59,30 +76,6 @@ function clearSearch() {
     generateSymptomsList();
 }
 
-// Gets all symptoms with filters (if applicable) and prints them in a table
-function generateSymptomsList() {
-
-    // Makes sure to get the current value of the search box
-    searchString = $("#searchBox").val();
-
-    $.post("oblig/GetAllSymptoms", $.param({ symptomIds, searchString }, true), function (symptoms) {
-
-        let ut = "<table class='table table-hover'><thead><tr>" +
-            "<thead><tr>" +
-            "<th scope='col'>Id</th><th scope='col'>Name</th><th scope='col'>Select</th>" +
-            "</tr></thead><tbody>";
-
-        for (let symptom of symptoms) {
-            ut += "<tr>" +
-                "<th scope='row'>" + symptom.id + "</td>" +
-                "<td>" + symptom.name + "</td>" +
-                "<td><a href='#' onclick='select(" + symptom.id + ", \"" + symptom.name + "\")'>Select</td></tr>";
-        }
-
-        $("#symptoms").html(ut);
-    });
-}
-
 // Generates display of selected symptoms. Shows "none" if none are selected
 function printSelectedSymptoms() {
     let ut = "";
@@ -92,8 +85,8 @@ function printSelectedSymptoms() {
     }
 
     for (let symptom of selectedSymptoms) {
-        ut += "<button type='button' class='btn btn-primary m-1' onclick='deselect(" + symptom.id + ")'>" +
-            "<i class='bi bi-x-circle text-light'></i> " + symptom.name + "</button>";
+        ut += "<button type='button' class='btn btn-lg btn-primary m-1' onclick='deselect(" + symptom.id + ")'>" +
+            "<i class='bi bi-trash text-light'></i> " + symptom.name + "</button>";
     }
 
     $("#selectedsymptomsdiv").html(ut);
@@ -120,7 +113,8 @@ function calculateDiagnosis() {
         }
 
         // Otherwise, creates table of matching diseases
-        let ut = "<table class='table'>" +
+        let ut = "<h6 class='text-info'>" + diseases.length + " result(s) found</h6>" +
+            "<table class='table'>" +
             "<tr><th>Name</th><th>Symptoms</th></tr>";
 
         for (let result of diseases) {

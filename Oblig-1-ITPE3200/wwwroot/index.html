@@ -17,8 +17,8 @@
 <body>
     <!-- navbar code from bootstrap template https://getbootstrap.com/docs/5.2/examples/navbar-fixed/ -->
     <nav class="navbar navbar-expand navbar-light bg-light border-bottom fixed-top">
-        <div class="container-fluid">
-            <a class="navbar-brand mb-0 h1" href="index.html">Symptomkalkulator</a>
+        <div class="container align-items-center">
+            <a class="navbar-brand mb-0 h1" href="index.html"><i class="bi bi-calculator"></i> Symptomkalkulator</a>
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <ul class="navbar-nav me-auto mb-2 mb-md-0">
                     <li class="nav-item">
@@ -60,7 +60,7 @@
                     <input type="search" class="form-control" id="searchBox" placeholder="Enter symptom name" on>
                 </div>
                 <div class="col-sm">
-                    <button type="submit" class="btn btn-primary" onclick="generateSymptomsList()">Search symptoms by name</button>
+                    <button type="submit" class="btn btn-primary" onclick="generateSymptomsList()">Search</button>
                     <button type="button" class="btn btn-secondary" onclick="clearSearch()">Clear search</button>
                 </div>
             </form>

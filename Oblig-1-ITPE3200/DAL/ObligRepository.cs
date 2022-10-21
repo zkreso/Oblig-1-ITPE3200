@@ -76,10 +76,15 @@ namespace Oblig_1_ITPE3200.DAL
         {
             try
             {
-                Disease changedDisease = _db.Diseases.Find(disease.Id);
+                Disease changedDisease = _db.Diseases
+                    .Include(d => d.DiseaseSymptoms)
+                    .FirstOrDefault(x => x.Id == disease.Id);
 
                 changedDisease.Name = disease.Name;
                 changedDisease.Description = disease.Description;
+                changedDisease.DiseaseSymptoms.Clear();
+
+                changedDisease.DiseaseSymptoms = disease.DiseaseSymptoms?.ToList();
 
                 await _db.SaveChangesAsync();
                 return true;
