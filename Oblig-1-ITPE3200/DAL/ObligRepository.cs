@@ -33,12 +33,13 @@ namespace Oblig_1_ITPE3200.DAL
                 return null;
             }
         }
-        public async Task<List<DiseaseDTO>> GetAllDiseases()
+        public async Task<List<DiseaseDTO>> GetAllDiseases(string searchString)
         {
             try
             {
                 List<DiseaseDTO> allDiseases = await _db.Diseases
                     .MapDiseaseToDTO()
+                    .FilterBySearchString(searchString)
                     .ToListAsync();
 
                 return allDiseases;

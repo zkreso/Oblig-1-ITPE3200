@@ -22,9 +22,9 @@ namespace Oblig_1_ITPE3200.Controllers
         {
             return await _db.GetDisease(id);
         }
-        public async Task<List<DiseaseDTO>> GetAllDiseases()
+        public async Task<List<DiseaseDTO>> GetAllDiseases(string searchString)
         {
-            return await _db.GetAllDiseases();
+            return await _db.GetAllDiseases(searchString);
         }
         public async Task<bool> CreateDisease(Disease disease)
         {

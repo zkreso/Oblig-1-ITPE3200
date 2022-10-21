@@ -1,9 +1,26 @@
-﻿$(function () {
+﻿// Global variables
+searchString = "";
+
+// Initialize
+$(function () {
     getalldiseases();
 })
 
+
+// Functions
+function clearSearch() {
+    $("#searchBox").val("");
+    getalldiseases();
+}
+
 function getalldiseases() {
-    $.get("oblig/GetAllDiseases", function (diseases) {
+
+    // Makes sure to get the current value of the search box
+    searchString = $("#searchBox").val();
+
+    let url = "oblig/GetAllDiseases?searchString=" + searchString;
+
+    $.get(url, function (diseases) {
         skrivUtDiseases(diseases);
     });
 }
@@ -11,12 +28,13 @@ function getalldiseases() {
 function skrivUtDiseases(diseases) {
     let ut = "<table class='table'>" +
         "<thead><tr>" +
-        "<th scope='col'>Name</th><th scope='col'>Symptoms</th><th scope='col'></th>" +
+        "<th scope='col'>Id</th><th scope='col'>Name</th><th scope='col'>Symptoms</th><th scope='col'></th>" +
         "</tr></thead><tbody>"
     for (let d of diseases) {
         ut += "<tr>" +
-            "<th scope='row'>" + d.name + "</th>" +
-            "<td>"
+            "<th scope='row'>" + d.id + "</th>" +
+            "<td>" + d.name + "</td>" +
+            "<td>";
         for (let symptom of d.symptoms) {
             ut += symptom + ", ";
         }

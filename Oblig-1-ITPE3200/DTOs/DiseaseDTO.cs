@@ -1,4 +1,6 @@
-﻿using Oblig_1_ITPE3200.Models;
+﻿using Castle.Core.Internal;
+using Microsoft.EntityFrameworkCore;
+using Oblig_1_ITPE3200.Models;
 using System.Linq;
 
 namespace Oblig_1_ITPE3200.DTOs
@@ -15,6 +17,14 @@ namespace Oblig_1_ITPE3200.DTOs
                 Description = d.Description,
                 Symptoms = d.DiseaseSymptoms.Select(ds => ds.Symptom.Name).ToArray()
             });
+        }
+        public static IQueryable<DiseaseDTO> FilterBySearchString(this IQueryable<DiseaseDTO> diseases, string searchString)
+        {
+            if (searchString.IsNullOrEmpty())
+            {
+                return diseases;
+            }
+            return diseases.Where(d => EF.Functions.Like(d.Name, "%" + searchString + "%"));
         }
     }
     public class DiseaseDTO
