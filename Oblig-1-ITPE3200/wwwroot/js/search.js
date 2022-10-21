@@ -1,15 +1,15 @@
 ﻿// Global variables
 
-// Keeps track of selected symptoms (as objects). Used for:
-// - calculating diagnosis
-// - printing selected symptoms
-// - excluding from list of all symptoms
-var selectedSymptoms = []; 
+var selectedSymptoms = [];
+// Selected symptoms (as objects). Used by crlient to create a list of selected symptoms
 
-// Keeps track of the value of the search box
-// Used for filtering the list of all symptoms
-// Empty string is treated as null by server
+var symptomIds = [];
+// Only the id's of the selected symptoms.
+// Used by server to calculate diagnosis and exclude from list of remaining symptoms
+
 searchString = "";
+// Value of search box input
+// Used by server to exclude results not matching the string.
 
 // Initialize
 $(function () {
@@ -26,9 +26,7 @@ function select(sid, sname) {
     }
     selectedSymptoms.push(newSymptom);
 
-    printSelectedSymptoms();
-    calculateDiagnosis();
-    generateSymptomsList();
+    update(); // Updates what needs to be updated when selection changes
 }
 
 // "Deselects" ie. removes a symptom from selected symptoms
@@ -36,9 +34,23 @@ function deselect(sid) {
     let i = selectedSymptoms.findIndex(s => s.id == sid);
     selectedSymptoms.splice(i, 1);
 
-    printSelectedSymptoms();
-    calculateDiagnosis();
-    generateSymptomsList();
+    update(); // Updates what needs to be updated when selection changes
+}
+
+// Update function called when a symptom is selected or deselected
+function update() {
+    // Remakes array of selected symptom id's
+    symptomIds = [];
+
+    if (selectedSymptoms.length > 0) {
+        for (let symptom of selectedSymptoms) {
+            symptomIds.push(symptom.id);
+        }
+    }
+
+    printSelectedSymptoms(); // Refreshes display of selected symptoms
+    calculateDiagnosis(); // Recalculates diagnosis
+    generateSymptomsList(); // Refreshes display of remaining (unselected) symptoms
 }
 
 // Clears search box
@@ -47,42 +59,28 @@ function clearSearch() {
     generateSymptomsList();
 }
 
-// Gets the list of all symptoms from server
-// If some symptoms are selected, they are excluded
-// Also excludes symptoms not matching the search string
+// Gets all symptoms with filters (if applicable) and prints them in a table
 function generateSymptomsList() {
 
     // Makes sure to get the current value of the search box
     searchString = $("#searchBox").val();
 
-    // Generates array of symptom id's from the selected objects
-    let symptomIds = [];
-
-    if (selectedSymptoms.length > 0) {
-        for (let symptom of selectedSymptoms) {
-            symptomIds.push(symptom.id);
-        }
-    }
-
-    // Calls getall method with filters and passes results to print function
     $.post("oblig/GetAllSymptoms", $.param({ symptomIds, searchString }, true), function (symptoms) {
-        printAllSymptoms(symptoms);
-    });
-}
 
-// Generates table from received objects
-function printAllSymptoms(symptoms) {
-    let ut = "<table class='table table-hover'><thead><tr>" +
-        "<thead><tr>" +
-        "<th scope='col'>Id</th><th scope='col'>Name</th><th scope='col'>Select</th>" +
-        "</tr></thead><tbody>";
-    for (let symptom of symptoms) {
-        ut += "<tr>" +
-            "<th scope='row'>" + symptom.id + "</td>" +
-            "<td>" + symptom.name + "</td>" +
-            "<td><a href='#' onclick='select(" + symptom.id + ", \"" + symptom.name + "\")'>Select</td></tr>";
-    }
-    $("#symptoms").html(ut);
+        let ut = "<table class='table table-hover'><thead><tr>" +
+            "<thead><tr>" +
+            "<th scope='col'>Id</th><th scope='col'>Name</th><th scope='col'>Select</th>" +
+            "</tr></thead><tbody>";
+
+        for (let symptom of symptoms) {
+            ut += "<tr>" +
+                "<th scope='row'>" + symptom.id + "</td>" +
+                "<td>" + symptom.name + "</td>" +
+                "<td><a href='#' onclick='select(" + symptom.id + ", \"" + symptom.name + "\")'>Select</td></tr>";
+        }
+
+        $("#symptoms").html(ut);
+    });
 }
 
 // Generates display of selected symptoms. Shows "none" if none are selected
@@ -111,17 +109,10 @@ function calculateDiagnosis() {
         return;
     }
 
-    // Otherwise, generates array of symptom id's from the selected objects
-    let symptomIds = [];
-
-    for (let symptom of selectedSymptoms) {
-        symptomIds.push(symptom.id);
-    }
-
-    // Gets diseases containing symptoms matching all the selected ones
+    // Gets the diseases that contain every id in the array symptomIds
     $.post("oblig/SearchDiseases", $.param({ symptomIds }, true), function (diseases) {
 
-        // If no matches, shows mesage to user and returns
+        // If no matches, shows mesage instead of table
         if (diseases.length == 0) {
             let ut = "<div class='text-danger'>No matching diseases</div>";
             $("#results").html(ut);
