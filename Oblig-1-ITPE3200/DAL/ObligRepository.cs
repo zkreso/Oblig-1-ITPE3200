@@ -110,13 +110,33 @@ namespace Oblig_1_ITPE3200.DAL
         }
 
         // Symptom CRUD
-        public async Task<List<SymptomDTO>> GetAllSymptoms()
+        public async Task<List<SymptomDTO>> GetAllSymptoms(string searchString)
         {
             try
             {
-                List<SymptomDTO> allSymptoms = await _db.Symptoms.MapSymptomToDTO().ToListAsync();
+                List<SymptomDTO> allSymptoms = await _db.Symptoms
+                    .MapSymptomToDTO()
+                    .SearchSymptomDTO(searchString)
+                    .ToListAsync();
 
                 return allSymptoms;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+        public async Task<List<SymptomDTO>> GetFilteredSymptoms(int[] symptomsArray, string searchString)
+        {
+            try
+            {
+                List<SymptomDTO> symptoms = await _db.Symptoms
+                    .Where(s => !symptomsArray.Contains(s.Id))
+                    .MapSymptomToDTO()
+                    .SearchSymptomDTO(searchString)
+                    .ToListAsync();
+
+                return symptoms;
             }
             catch
             {

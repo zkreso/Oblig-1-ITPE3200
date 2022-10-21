@@ -1,4 +1,6 @@
-﻿using Oblig_1_ITPE3200.Models;
+﻿using Castle.Core.Internal;
+using Microsoft.EntityFrameworkCore;
+using Oblig_1_ITPE3200.Models;
 using System.Linq;
 
 namespace Oblig_1_ITPE3200.DTOs
@@ -14,6 +16,15 @@ namespace Oblig_1_ITPE3200.DTOs
                 Name = s.Name
             });
         }
+        public static IQueryable<SymptomDTO> SearchSymptomDTO(this IQueryable<SymptomDTO> symptoms, string searchString)
+        {
+            if (searchString.IsNullOrEmpty())
+            {
+                return symptoms;
+            }
+            return symptoms.Where(s => EF.Functions.Like(s.Name, "%" + searchString + "%"));
+        }
+
     }
     public class SymptomDTO
     {
