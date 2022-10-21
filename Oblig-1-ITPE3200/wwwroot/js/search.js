@@ -1,12 +1,21 @@
 ﻿var selectedSymptoms = [];
+searchString = "";
 
 $(function () {
     refreshSymptomList();
 })
 
+function clearSearch() {
+    $("#searchBox").val("");
+    refreshSymptomList();
+    console.log("hellooo");
+}
+
 function refreshSymptomList() {
+    searchString = $("#searchBox").val();
     if (selectedSymptoms.length == 0) {
-        $.get("oblig/GetAllSymptoms", function (symptoms) {
+        const url = "oblig/GetAllSymptoms?searchString=" + searchString;
+        $.get(url, function (symptoms) {
             printAllSymptoms(symptoms);
         });
     } else {
@@ -15,7 +24,7 @@ function refreshSymptomList() {
             symptomsArray.push(symptom.id);
         }
 
-        $.post("oblig/GetFilteredSymptoms", $.param({ symptomsArray }, true), function (symptoms) {
+        $.post("oblig/GetFilteredSymptoms", $.param({ symptomsArray, searchString }, true), function (symptoms) {
             printAllSymptoms(symptoms);
         });
     }
@@ -59,7 +68,7 @@ function deselect(sid) {
 function printSelectedSymptoms() {
     let ut = "";
     if (selectedSymptoms.length == 0) {
-        ut += "<p class='text-muted'>No symptoms selected</p>";
+        ut += "<div class='text-muted'>No symptoms selected</div>";
     }
 
     for (let symptom of selectedSymptoms) {
