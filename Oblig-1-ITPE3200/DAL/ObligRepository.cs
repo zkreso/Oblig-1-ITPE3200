@@ -38,12 +38,7 @@ namespace Oblig_1_ITPE3200.DAL
             try
             {
                 List<DiseaseDTO> allDiseases = await _db.Diseases
-                    .Select(d => new DiseaseDTO
-                    {
-                        Id = d.Id,
-                        Name = d.Name,
-                        Symptoms = d.DiseaseSymptoms.Select(s => s.Symptom.Name).ToArray()
-                    })
+                    .MapDiseaseToDTO()
                     .ToListAsync();
 
                 return allDiseases;
@@ -110,30 +105,14 @@ namespace Oblig_1_ITPE3200.DAL
         }
 
         // Symptom CRUD
-        public async Task<List<SymptomDTO>> GetAllSymptoms(string searchString)
-        {
-            try
-            {
-                List<SymptomDTO> allSymptoms = await _db.Symptoms
-                    .MapSymptomToDTO()
-                    .SearchSymptomDTO(searchString)
-                    .ToListAsync();
-
-                return allSymptoms;
-            }
-            catch
-            {
-                return null;
-            }
-        }
-        public async Task<List<SymptomDTO>> GetFilteredSymptoms(int[] symptomsArray, string searchString)
+        public async Task<List<SymptomDTO>> GetAllSymptoms(int[] symptomIds, string searchString)
         {
             try
             {
                 List<SymptomDTO> symptoms = await _db.Symptoms
-                    .Where(s => !symptomsArray.Contains(s.Id))
                     .MapSymptomToDTO()
-                    .SearchSymptomDTO(searchString)
+                    .FilterBySearchString(searchString)
+                    .ExcludeSymptomsById(symptomIds)
                     .ToListAsync();
 
                 return symptoms;
@@ -145,22 +124,37 @@ namespace Oblig_1_ITPE3200.DAL
         }
         public async Task<List<SymptomDTO>> GetRelatedSymptoms(int id)
         {
-            List<SymptomDTO> symptoms = await _db.DiseaseSymptoms
+            try
+            {
+                List<SymptomDTO> symptoms = await _db.DiseaseSymptoms
                 .Where(ds => ds.DiseaseId == id)
                 .Select(ds => ds.Symptom)
                 .MapSymptomToDTO()
                 .ToListAsync();
 
-            return symptoms;
+                return symptoms;
+            }
+            catch
+            {
+                return null;
+            }
         }
         public async Task<List<SymptomDTO>> GetUnrelatedSymptoms(int id)
         {
-            List<SymptomDTO> symptoms = await _db.Symptoms
+            try
+            {
+                List<SymptomDTO> symptoms = await _db.Symptoms
                 .Where(s => !s.DiseaseSymptoms.Select(ds => ds.DiseaseId).Contains(id))
                 .MapSymptomToDTO()
                 .ToListAsync();
 
-            return symptoms;
+                return symptoms;
+            }
+            catch
+            {
+                return null;
+            }
+
         }
 
         /* Unused/unnecessary methods
@@ -237,14 +231,14 @@ namespace Oblig_1_ITPE3200.DAL
         */
 
         // Joining table CRUD
-        public async Task<bool> CreateDiseaseSymptom(int DiseaseId, int SymptomId)
+        public async Task<bool> CreateDiseaseSymptom(int diseaseId, int symptomId)
         {
             try
             {
                 var newDiseaseSymptom = new DiseaseSymptom
                 {
-                    SymptomId = SymptomId,
-                    DiseaseId = DiseaseId
+                    SymptomId = symptomId,
+                    DiseaseId = diseaseId
                 };
 
                 _db.DiseaseSymptoms.Add(newDiseaseSymptom);
@@ -256,11 +250,11 @@ namespace Oblig_1_ITPE3200.DAL
                 return false;
             }
         }
-        public async Task<bool> DeleteDiseaseSymptom(int DiseaseId, int SymptomId)
+        public async Task<bool> DeleteDiseaseSymptom(int diseaseId, int symptomId)
         {
             try
             {
-                DiseaseSymptom diseaseSymptom = await _db.DiseaseSymptoms.FindAsync(DiseaseId, SymptomId);
+                DiseaseSymptom diseaseSymptom = await _db.DiseaseSymptoms.FindAsync(diseaseId, symptomId);
                 _db.DiseaseSymptoms.Remove(diseaseSymptom);
                 _db.SaveChanges();
                 return true;
@@ -272,20 +266,20 @@ namespace Oblig_1_ITPE3200.DAL
         }
 
         // Search method
-        public async Task<List<DiseaseDTO>> SearchDiseases(int[] symptomsArray)
+        public async Task<List<DiseaseDTO>> SearchDiseases(int[] symptomIds)
         {
             try
             {
                 // Return empty list if nothing is selected
-                if (symptomsArray.Length == 0)
+                if (symptomIds.Length == 0)
                 {
                     return new List<DiseaseDTO>();
                 }
 
                 List<DiseaseDTO> results = await _db.DiseaseSymptoms
-                    .Where(ds => symptomsArray.Contains(ds.SymptomId))
+                    .Where(ds => symptomIds.Contains(ds.SymptomId))
                     .GroupBy(ds => ds.DiseaseId)
-                    .Where(x => x.Count() == symptomsArray.Count())
+                    .Where(x => x.Count() == symptomIds.Count())
                     .Select(x => x.Key)
                     .Join(_db.Diseases, x => x, y => y.Id, (x, y) => y)
                     .MapDiseaseToDTO()

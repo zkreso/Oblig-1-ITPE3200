@@ -16,7 +16,7 @@ namespace Oblig_1_ITPE3200.DTOs
                 Name = s.Name
             });
         }
-        public static IQueryable<SymptomDTO> SearchSymptomDTO(this IQueryable<SymptomDTO> symptoms, string searchString)
+        public static IQueryable<SymptomDTO> FilterBySearchString(this IQueryable<SymptomDTO> symptoms, string searchString)
         {
             if (searchString.IsNullOrEmpty())
             {
@@ -24,7 +24,14 @@ namespace Oblig_1_ITPE3200.DTOs
             }
             return symptoms.Where(s => EF.Functions.Like(s.Name, "%" + searchString + "%"));
         }
-
+        public static IQueryable<SymptomDTO> ExcludeSymptomsById(this IQueryable<SymptomDTO> symptoms, int[] symptomsArray)
+        {
+            if (symptomsArray.Length == 0)
+            {
+                return symptoms;
+            }
+            return symptoms.Where(s => !symptomsArray.Contains(s.Id));
+        }
     }
     public class SymptomDTO
     {

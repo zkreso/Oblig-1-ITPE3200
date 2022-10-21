@@ -15,8 +15,7 @@ namespace Oblig_1_ITPE3200.DAL
         Task<bool> DeleteDisease(int id);
 
         // Symptom CRUD
-        Task<List<SymptomDTO>> GetAllSymptoms(string searchString);
-        Task<List<SymptomDTO>> GetFilteredSymptoms(int[] symptomsArray, string searchString);
+        Task<List<SymptomDTO>> GetAllSymptoms(int[] symptomIds, string searchString);
         Task<List<SymptomDTO>> GetRelatedSymptoms(int id);
         Task<List<SymptomDTO>> GetUnrelatedSymptoms(int id);
 
@@ -32,6 +31,6 @@ namespace Oblig_1_ITPE3200.DAL
         Task<bool> DeleteDiseaseSymptom(int DiseaseId, int SymptomId);
         
         // Search method
-        Task<List<DiseaseDTO>> SearchDiseases(int[] symptomsArray);
+        Task<List<DiseaseDTO>> SearchDiseases(int[] symptomIds);
     }
 }
