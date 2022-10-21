@@ -8,9 +8,9 @@ function getAllSymptoms() {
 
         for (let i = 0; i < sList.length; i++) {
 
-            ut += '<option id="' + sList[i].id + '">' + sList[i].name +'</option>';
+            ut += '<li id="' + sList[i].id + '">' + sList[i].name +'</li>';
         }
-        $("#dList").append(ut);
+        $("#symptoms").append(ut);
     });
 }
 
@@ -19,6 +19,26 @@ function addSymptom(s) {
     let name = $(s).val();
 
     $("#outSymptom").append(name+"<br>");
+}
+
+function searchSymptom() {
+    var input = document.getElementById("searchInput");
+    var filter = input.value.toUpperCase();
+
+    var ul = document.getElementById("symptoms");
+    var li = ul.getElementsByTagName('li');
+    var a;
+
+    for (let i = 0; i < li.length; i++) {
+        a = li[i].innerHTML;
+
+        if (a.toUpperCase().indexOf(filter) > -1) {
+            li[i].style.display = "";
+        }
+        else {
+            li[i].style.display = "none";
+        }
+    }
 }
 
 function findMatchingDisease() {

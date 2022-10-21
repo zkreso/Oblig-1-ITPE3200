@@ -10,14 +10,14 @@
 <body>
     <div class="container">
         <div class="row">
-            <h1>Oblig</h1>
             <div class="col-md">
-                <select id="dList" onchange="addSymptom(this)">
-                    <option id="">Choose a symptom</option>
-                </select>
+                <h1>Oblig</h1>
+
+                <input type="text" id="searchInput" onkeyup="searchSymptom()"/>
+                <ul id="symptoms">
+
+                </ul>
             </div>
-        </div>
-        <div class="row">
             <div class="col-md">
                 <div id="outSymptom" type="text" style="width: 300px; height: 100px; border: solid;">
 
