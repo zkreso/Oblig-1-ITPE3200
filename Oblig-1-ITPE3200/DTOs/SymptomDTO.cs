@@ -5,7 +5,6 @@ using System.Linq;
 
 namespace Oblig_1_ITPE3200.DTOs
 {
-    // Code of extensions class adapted from Finch, J.P. (2021), Entity Framework Core in Action (2nd edition). Manning
     public static class SymptomDTOExtensions
     {
         public static IQueryable<SymptomDTO> MapSymptomToDTO (this IQueryable<Symptom> symptoms)
@@ -24,13 +23,17 @@ namespace Oblig_1_ITPE3200.DTOs
             }
             return symptoms.Where(s => EF.Functions.Like(s.Name, "%" + searchString + "%"));
         }
-        public static IQueryable<SymptomDTO> ExcludeSymptomsById(this IQueryable<SymptomDTO> symptoms, int[] symptomsArray)
+        public static IQueryable<SymptomDTO> ExcludeSymptomsById(this IQueryable<SymptomDTO> symptoms, int[] symptomIds)
         {
-            if (symptomsArray.Length == 0)
+            if (symptomIds.IsNullOrEmpty())
             {
                 return symptoms;
             }
-            return symptoms.Where(s => !symptomsArray.Contains(s.Id));
+            if (symptomIds.Length == 0)
+            {
+                return symptoms;
+            }
+            return symptoms.Where(s => !symptomIds.Contains(s.Id));
         }
         public static IQueryable<SymptomDTO> OrderSymptomsBy(this IQueryable<SymptomDTO> symptoms, string orderBy)
         {

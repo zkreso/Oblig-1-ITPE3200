@@ -15,7 +15,8 @@ namespace Oblig_1_ITPE3200.DAL
         Task<bool> DeleteDisease(int id);
 
         // Symptom CRUD
-        Task<List<SymptomDTO>> GetAllSymptoms(int[] symptomIds, string searchString, string orderBy);
+        Task<List<SymptomDTO>> GetAllSymptoms();
+        Task<SymptomPage> GetSymptomPage(SymptomPageOptions options);
         Task<List<SymptomDTO>> GetRelatedSymptoms(int id);
         Task<List<SymptomDTO>> GetUnrelatedSymptoms(int id);
 

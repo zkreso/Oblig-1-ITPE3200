@@ -5,7 +5,6 @@ using System.Linq;
 
 namespace Oblig_1_ITPE3200.DTOs
 {
-    // Code of extensions class adapted from Finch, J.P. (2021), Entity Framework Core in Action (2nd edition). Manning
     public static class DiseaseDTOExtensions
     {
         public static IQueryable<DiseaseDTO> MapDiseaseToDTO (this IQueryable<Disease> diseases)

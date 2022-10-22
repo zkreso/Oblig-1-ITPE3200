@@ -111,18 +111,45 @@ namespace Oblig_1_ITPE3200.DAL
         }
 
         // Symptom CRUD
-        public async Task<List<SymptomDTO>> GetAllSymptoms(int[] symptomIds, string searchString, string orderBy)
+        public async Task<List<SymptomDTO>> GetAllSymptoms()
         {
             try
             {
                 List<SymptomDTO> symptoms = await _db.Symptoms
                     .MapSymptomToDTO()
-                    .FilterBySearchString(searchString)
-                    .ExcludeSymptomsById(symptomIds)
-                    .OrderSymptomsBy(orderBy)
                     .ToListAsync();
 
                 return symptoms;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+        public async Task<SymptomPage> GetSymptomPage(SymptomPageOptions options)
+        {
+            try
+            {
+                IQueryable<SymptomDTO> query = _db.Symptoms
+                    .MapSymptomToDTO()
+                    .FilterBySearchString(options.SearchString)
+                    .ExcludeSymptomsById(options.SymptomIds)
+                    .OrderSymptomsBy(options.OrderByOptions);
+
+                options.SetupRestOfDTO(query);
+
+                int pageNum = options.PageNum - 1;
+                int pageSize = options.PageSize;
+
+                if (pageNum != 0)
+                {
+                    query = query.Skip(pageNum * pageSize);
+                }
+                query = query.Take(pageSize);
+
+                List<SymptomDTO> symptoms = await query.ToListAsync();
+
+                return new SymptomPage(options, symptoms);
             }
             catch
             {
