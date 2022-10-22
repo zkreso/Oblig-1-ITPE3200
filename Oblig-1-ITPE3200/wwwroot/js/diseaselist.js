@@ -1,5 +1,5 @@
 ﻿// Global variables
-searchString = "";
+var searchString = "";
 
 // Initialize
 $(function () {

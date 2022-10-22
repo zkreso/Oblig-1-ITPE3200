@@ -32,6 +32,22 @@ namespace Oblig_1_ITPE3200.DTOs
             }
             return symptoms.Where(s => !symptomsArray.Contains(s.Id));
         }
+        public static IQueryable<SymptomDTO> OrderSymptomsBy(this IQueryable<SymptomDTO> symptoms, string orderBy)
+        {
+            switch (orderBy)
+            {
+                case "idAscending":
+                    return symptoms.OrderBy(s => s.Id);
+                case "idDescending":
+                    return symptoms.OrderByDescending(s => s.Id);
+                case "nameAscending":
+                    return symptoms.OrderBy(s => s.Name);
+                case "nameDescending":
+                    return symptoms.OrderByDescending(s => s.Name);
+                default:
+                    return symptoms.OrderBy(s => s.Id);
+            }
+        }
     }
     public class SymptomDTO
     {

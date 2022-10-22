@@ -111,7 +111,7 @@ namespace Oblig_1_ITPE3200.DAL
         }
 
         // Symptom CRUD
-        public async Task<List<SymptomDTO>> GetAllSymptoms(int[] symptomIds, string searchString)
+        public async Task<List<SymptomDTO>> GetAllSymptoms(int[] symptomIds, string searchString, string orderBy)
         {
             try
             {
@@ -119,6 +119,7 @@ namespace Oblig_1_ITPE3200.DAL
                     .MapSymptomToDTO()
                     .FilterBySearchString(searchString)
                     .ExcludeSymptomsById(symptomIds)
+                    .OrderSymptomsBy(orderBy)
                     .ToListAsync();
 
                 return symptoms;

@@ -41,9 +41,9 @@ namespace Oblig_1_ITPE3200.Controllers
         }
 
         // Symptom CRUD
-        public async Task<List<SymptomDTO>> GetAllSymptoms(int[] symptomIds, string searchString)
+        public async Task<List<SymptomDTO>> GetAllSymptoms(int[] symptomIds, string searchString, string orderBy)
         {
-            return await _db.GetAllSymptoms(symptomIds, searchString);
+            return await _db.GetAllSymptoms(symptomIds, searchString, orderBy);
         }
         public async Task<List<SymptomDTO>> GetRelatedSymptoms(int id)
         {

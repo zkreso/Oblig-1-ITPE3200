@@ -2,7 +2,7 @@
 
 var selectedSymptoms = []; // Objects - used by client only
 var symptomIds = []; // Just the id's - used by server only
-searchString = "";
+var searchString = "";
 
 // Initialize
 

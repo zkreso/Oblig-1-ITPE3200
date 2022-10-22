@@ -2,7 +2,8 @@
 
 var selectedSymptoms = []; // Objects - used by client only
 var symptomIds = []; // Just the id's - used by server only
-searchString = "";
+var searchString = "";
+var orderBy = "idAscending";
 
 // Initialize
 
@@ -17,11 +18,13 @@ function generateSymptomsList() {
     // Makes sure to get the current value of the search box
     searchString = $("#searchBox").val();
 
-    $.post("oblig/GetAllSymptoms", $.param({ symptomIds, searchString }, true), function (symptoms) {
+    $.post("oblig/GetAllSymptoms", $.param({ symptomIds, searchString, orderBy }, true), function (symptoms) {
 
         let ut = "<table class='table table-hover'><thead><tr>" +
             "<thead><tr>" +
-            "<th scope='col'>Id</th><th scope='col'>Name</th><th scope='col'>Select</th>" +
+            "<th scope='col'><a href='#' class='link-primary' onclick='sortById()'>Id</a></th>" +
+            "<th scope='col'><a href='#' class='link-primary' onclick='sortByName()'>Name</a></th>" +
+            "<th scope='col'>Select</th>" +
             "</tr></thead><tbody>";
 
         for (let symptom of symptoms) {
@@ -76,6 +79,25 @@ function clearSearch() {
     generateSymptomsList();
 }
 
+// Sorting functions
+function sortByName() {
+    if (orderBy === "nameAscending") {
+        orderBy = "nameDescending";
+    } else {
+        orderBy = "nameAscending";
+    }
+    generateSymptomsList();
+}
+
+function sortById() {
+    if (orderBy === "idAscending") {
+        orderBy = "idDescending";
+    } else {
+        orderBy = "idAscending";
+    }
+    generateSymptomsList();
+}
+
 // Generates display of selected symptoms. Shows "none" if none are selected
 function printSelectedSymptoms() {
     let ut = "";
@@ -113,7 +135,7 @@ function calculateDiagnosis() {
         }
 
         // Otherwise, creates table of matching diseases
-        let ut = "<h6 class='text-info'>" + diseases.length + " result(s) found</h6>" +
+        let ut = "<h6 class='text-primary'>" + diseases.length + " result(s) found</h6>" +
             "<table class='table'>" +
             "<tr><th>Name</th><th>Symptoms</th></tr>";
 

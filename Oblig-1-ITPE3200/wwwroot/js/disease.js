@@ -1,4 +1,4 @@
-﻿var selecteddisease = window.location.search.substring(4);
+﻿const selecteddisease = window.location.search.substring(4);
 
 $(function () {
     getDiseaseData();
