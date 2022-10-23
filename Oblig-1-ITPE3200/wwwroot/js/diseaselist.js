@@ -1,11 +1,7 @@
-﻿// Global variables
-var searchString = "";
-
-// Initialize
+﻿// Initialize
 $(function () {
     getalldiseases();
 })
-
 
 // Functions
 function clearSearch() {
@@ -15,10 +11,7 @@ function clearSearch() {
 
 function getalldiseases() {
 
-    // Makes sure to get the current value of the search box
-    searchString = $("#searchBox").val();
-
-    let url = "oblig/GetAllDiseases?searchString=" + searchString;
+    let url = "oblig/GetAllDiseases?searchString=" + $("#searchBox").val();
 
     $.get(url, function (diseases) {
         skrivUtDiseases(diseases);

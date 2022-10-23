@@ -310,12 +310,15 @@ namespace Oblig_1_ITPE3200.DAL
                     return new List<DiseaseDTO>();
                 }
 
-                List<DiseaseDTO> results = await _db.DiseaseSymptoms
+                int[] diseaseIds = await _db.DiseaseSymptoms
                     .Where(ds => symptomIds.Contains(ds.SymptomId))
                     .GroupBy(ds => ds.DiseaseId)
                     .Where(x => x.Count() == symptomIds.Count())
                     .Select(x => x.Key)
-                    .Join(_db.Diseases, x => x, y => y.Id, (x, y) => y)
+                    .ToArrayAsync();
+
+                List<DiseaseDTO> results = await _db.Diseases
+                    .Where(d => diseaseIds.Contains(d.Id))
                     .MapDiseaseToDTO()
                     .ToListAsync();
 
