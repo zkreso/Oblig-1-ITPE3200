@@ -1,4 +1,6 @@
-﻿function generateSymptomsList() {
+﻿// All functions used to create symptoms table display
+
+function generateSymptomsList() {
 
     // Making options object to send to server
     const options = {
@@ -14,7 +16,7 @@
     }
     // options object done
 
-    $.post("oblig/GetSymptomPage", options, function (page) {
+    $.post("oblig/GetSymptomsTable", options, function (page) {
         // Sets the page number to whatever the server calculated, in case it went out of range
         pageNum = page.pageData.pageNum;
 

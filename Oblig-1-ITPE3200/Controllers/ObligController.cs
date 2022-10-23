@@ -45,18 +45,15 @@ namespace Oblig_1_ITPE3200.Controllers
         {
             return await _db.GetAllSymptoms();
         }
-        public async Task<SymptomsTable> GetSymptomPage(SymptomsTableOptions options)
+        public async Task<SymptomsTable> GetSymptomsTable(SymptomsTableOptions options)
         {
-            return await _db.GetSymptomPage(options);
+            return await _db.GetSymptomsTable(options);
         }
         public async Task<List<SymptomDTO>> GetRelatedSymptoms(int id)
         {
             return await _db.GetRelatedSymptoms(id);
         }
-        public async Task<List<SymptomDTO>> GetUnrelatedSymptoms(int id)
-        {
-            return await _db.GetUnrelatedSymptoms(id);
-        }
+
         /* Unused/unneccessary methods
         public async Task<Symptom> GetSymptom(int id)
         {
@@ -74,8 +71,7 @@ namespace Oblig_1_ITPE3200.Controllers
         {
             return await _db.DeleteSymptom(id);
         }
-        */
-
+        
         // Joining table methods
         public async Task<bool> CreateDiseaseSymptom(int diseaseId, int symptomId)
         {
@@ -85,6 +81,7 @@ namespace Oblig_1_ITPE3200.Controllers
         {
             return await _db.DeleteDiseaseSymptom(diseaseId, symptomId);
         }
+        */
 
         // Search method
         public async Task<List<DiseaseDTO>> SearchDiseases(int[] symptomIds)

@@ -1,17 +1,17 @@
-﻿//// Global variables
+﻿// Global variables
 
 var selectedSymptoms = []; // Objects - used by client only
 var symptomIds = []; // Just the id's - used by server only
 var orderBy = "idAscending";
 var pageNum = 1;
 
-//// Initialize
+// Initialize
 
 $(function () {
     generateSymptomsList();
 });
 
-//// Functions
+// Functions
 
 function generateSymptomsList() {
 

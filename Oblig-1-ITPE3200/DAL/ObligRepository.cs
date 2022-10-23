@@ -126,7 +126,7 @@ namespace Oblig_1_ITPE3200.DAL
                 return null;
             }
         }
-        public async Task<SymptomsTable> GetSymptomPage(SymptomsTableOptions options)
+        public async Task<SymptomsTable> GetSymptomsTable(SymptomsTableOptions options)
         {
             try
             {
@@ -172,23 +172,6 @@ namespace Oblig_1_ITPE3200.DAL
             {
                 return null;
             }
-        }
-        public async Task<List<SymptomDTO>> GetUnrelatedSymptoms(int id)
-        {
-            try
-            {
-                List<SymptomDTO> symptoms = await _db.Symptoms
-                .Where(s => !s.DiseaseSymptoms.Select(ds => ds.DiseaseId).Contains(id))
-                .MapSymptomToDTO()
-                .ToListAsync();
-
-                return symptoms;
-            }
-            catch
-            {
-                return null;
-            }
-
         }
 
         /* Unused/unnecessary methods
@@ -262,7 +245,6 @@ namespace Oblig_1_ITPE3200.DAL
             }
 
         }
-        */
 
         // Joining table CRUD
         public async Task<bool> CreateDiseaseSymptom(int diseaseId, int symptomId)
@@ -298,6 +280,7 @@ namespace Oblig_1_ITPE3200.DAL
                 return false;
             }
         }
+        */
 
         // Search method
         public async Task<List<DiseaseDTO>> SearchDiseases(int[] symptomIds)
