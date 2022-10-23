@@ -5,7 +5,7 @@ namespace Oblig_1_ITPE3200.DTOs
 {
     // Adapted from https://github.com/JonPSmith/EfCoreinAction-SecondEdition repo of textbook:
     // Finch, J.P. (2021), Entity Framework Core in Action (2nd edition). Manning
-    public class SymptomPageOptions
+    public class SymptomsTableOptions
     {
         public const int DefaultPageSize = 10;
         private int _pageSize = DefaultPageSize;

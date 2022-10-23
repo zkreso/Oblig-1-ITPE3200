@@ -126,7 +126,7 @@ namespace Oblig_1_ITPE3200.DAL
                 return null;
             }
         }
-        public async Task<SymptomPage> GetSymptomPage(SymptomPageOptions options)
+        public async Task<SymptomsTable> GetSymptomPage(SymptomsTableOptions options)
         {
             try
             {
@@ -149,7 +149,7 @@ namespace Oblig_1_ITPE3200.DAL
 
                 List<SymptomDTO> symptoms = await query.ToListAsync();
 
-                return new SymptomPage(options, symptoms);
+                return new SymptomsTable(options, symptoms);
             }
             catch
             {

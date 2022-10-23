@@ -2,14 +2,14 @@
 
 namespace Oblig_1_ITPE3200.DTOs
 {
-    public class SymptomPage
+    public class SymptomsTable
     {
-        public SymptomPage(SymptomPageOptions pageData, List<SymptomDTO> symptomList)
+        public SymptomsTable(SymptomsTableOptions pageData, List<SymptomDTO> symptomList)
         {
             PageData = pageData;
             SymptomList = symptomList;
         }
-        public SymptomPageOptions PageData { get; private set; }
+        public SymptomsTableOptions PageData { get; private set; }
         public List<SymptomDTO> SymptomList { get; private set; }
     }
 }

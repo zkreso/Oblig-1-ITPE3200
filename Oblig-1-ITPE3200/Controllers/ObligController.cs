@@ -45,7 +45,7 @@ namespace Oblig_1_ITPE3200.Controllers
         {
             return await _db.GetAllSymptoms();
         }
-        public async Task<SymptomPage> GetSymptomPage(SymptomPageOptions options)
+        public async Task<SymptomsTable> GetSymptomPage(SymptomsTableOptions options)
         {
             return await _db.GetSymptomPage(options);
         }

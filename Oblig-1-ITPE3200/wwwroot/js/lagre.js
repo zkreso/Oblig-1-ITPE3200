@@ -1,37 +1,91 @@
-﻿// Global variables
+﻿//// Global variables
 
 var selectedSymptoms = []; // Objects - used by client only
 var symptomIds = []; // Just the id's - used by server only
-var searchString = "";
+var orderBy = "idAscending";
+var pageNum = 1;
 
-// Initialize
+//// Initialize
 
 $(function () {
     generateSymptomsList();
 });
 
-// Functions
+//// Functions
 
 function generateSymptomsList() {
 
-    searchString = $("#searchBox").val(); // Makes sure to get the current value of the search box
+    // Making options object to send to server
+    const options = {
+        orderByOptions: orderBy,
+        searchString: $("#searchBox").val(),
+        pageSize: $("#pagesizeselect").val(),
+        pageNum: pageNum
+    };
 
-    $.post("oblig/GetAllSymptoms", $.param({ symptomIds, searchString }, true), function (symptoms) {
+    for (let i = 0; i < symptomIds.length; i++) {       // Workaround for not being able to
+        var propertyname = "symptomIds[" + i + "]";     // send an array inside an object
+        options[propertyname] = symptomIds[i];
+    }
+    // options object done
 
-        let ut = "<table class='table table-hover'><thead><tr>" +
+    $.post("oblig/GetSymptomPage", options, function (page) {
+        // Sets the page number to whatever the server calculated, in case it went out of range
+        pageNum = page.pageData.pageNum;
+
+        // Show number of entries
+        let ut = "Showing <strong>" + page.symptomList.length + "</strong> of <strong>" + page.pageData.numEntries + "</strong> symptoms.";
+
+        // Table of symptoms
+        ut += "<table class='table table-hover'><thead><tr>" +
             "<thead><tr>" +
-            "<th scope='col'>Id</th><th scope='col'>Name</th><th scope='col'>Add</th>" +
+            "<th scope='col'><a href='#' class='link-primary' onclick='sortById()'>Id</a></th>" +
+            "<th scope='col'><a href='#' class='link-primary' onclick='sortByName()'>Name</a></th>" +
+            "<th scope='col'>Select</th>" +
             "</tr></thead><tbody>";
-
-        for (let symptom of symptoms) {
+        for (let symptom of page.symptomList) {
             ut += "<tr>" +
                 "<th scope='row'>" + symptom.id + "</td>" +
                 "<td>" + symptom.name + "</td>" +
-                "<td><a href='#' onclick='select(" + symptom.id + ", \"" + symptom.name + "\")'>Add</td></tr>";
+                "<td><a href='#' onclick='select(" + symptom.id + ", \"" + symptom.name + "\")'>Select</td></tr>";
+        }
+        $("#symptoms").html(ut);
+
+        // Page navigation
+        let utnav = "";
+
+        if (pageNum == 1) {
+            utnav += "<li class='page-item disabled'><span class='page-link'>Previous page</span></li>";
+        } else {
+            utnav += "<li class='page-item'><a class='page-link' href=#' onclick='prevPage()'>Previous page</a></li>";
         }
 
-        $("#symptoms").html(ut);
+        for (let i = 1; i < page.pageData.numPages + 1; i++) {
+            if (i == pageNum) {
+                utnav += "<li class='page-item active' aria-current='page'><span class='page-link'>" + i + "</span>";
+            } else {
+                utnav += "<li class='page-item'><a class='page-link' href='#' onclick='goToPage(" + i + ")'>" + i + "</a></li>";
+            }
+        }
+
+        if (pageNum == page.pageData.numPages) {
+            utnav += "<li class='page-item disabled'><span class='page-link'>Next page</span></li>";
+        } else {
+            utnav += "<li class='page-item'><a class='page-link' href=#' onclick='nextPage()'>Next page</a></li>";
+        }
+
+        $("#pagenav").html(utnav);
     });
+}
+
+function nextPage() {
+    pageNum++;
+    generateSymptomsList();
+}
+
+function prevPage() {
+    pageNum--;
+    generateSymptomsList();
 }
 
 // "Selects" ie. adds a symptom to the selected symptoms
@@ -42,7 +96,7 @@ function select(sid, sname) {
     }
     selectedSymptoms.push(newSymptom);
 
-    update(); // Updates what needs to be updated when selection changes
+    update();
 }
 
 // "Deselects" ie. removes a symptom from selected symptoms
@@ -50,7 +104,7 @@ function deselect(sid) {
     let i = selectedSymptoms.findIndex(s => s.id == sid);
     selectedSymptoms.splice(i, 1);
 
-    update(); // Updates what needs to be updated when selection changes
+    update();
 }
 
 // Update function called when a symptom is selected or deselected
@@ -65,12 +119,35 @@ function update() {
     }
 
     printSelectedSymptoms(); // Refreshes display of selected symptoms
+    // calculateDiagnosis();
     generateSymptomsList(); // Refreshes display of remaining (unselected) symptoms
 }
 
 // Clears search box
 function clearSearch() {
     $("#searchBox").val("");
+    pageNum = 1; // reset page when search is cleared
+    generateSymptomsList();
+}
+
+// Sorting functions
+function sortByName() {
+    if (orderBy === "nameAscending") {
+        orderBy = "nameDescending";
+    } else {
+        orderBy = "nameAscending";
+    }
+    pageNum = 1; // reset page when sorting is changed
+    generateSymptomsList();
+}
+
+function sortById() {
+    if (orderBy === "idAscending") {
+        orderBy = "idDescending";
+    } else {
+        orderBy = "idAscending";
+    }
+    pageNum = 1; // reset page when sorting is changed
     generateSymptomsList();
 }
 

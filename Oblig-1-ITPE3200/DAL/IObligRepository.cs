@@ -16,7 +16,7 @@ namespace Oblig_1_ITPE3200.DAL
 
         // Symptom CRUD
         Task<List<SymptomDTO>> GetAllSymptoms();
-        Task<SymptomPage> GetSymptomPage(SymptomPageOptions options);
+        Task<SymptomsTable> GetSymptomPage(SymptomsTableOptions options);
         Task<List<SymptomDTO>> GetRelatedSymptoms(int id);
         Task<List<SymptomDTO>> GetUnrelatedSymptoms(int id);
 
