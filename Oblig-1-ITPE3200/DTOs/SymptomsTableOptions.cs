@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Linq;
 
 namespace Oblig_1_ITPE3200.DTOs
 {
-    // Adapted from https://github.com/JonPSmith/EfCoreinAction-SecondEdition repo of textbook:
-    // Finch, J.P. (2021), Entity Framework Core in Action (2nd edition). Manning
+    // Adapted from https://github.com/JonPSmith/EfCoreinAction-SecondEdition repo of book:
+    // Smith, J.P. (2021), Entity Framework Core in Action (2nd edition). Manning
     public class SymptomsTableOptions
     {
         public const int DefaultPageSize = 10;
