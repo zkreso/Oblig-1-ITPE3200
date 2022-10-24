@@ -39,9 +39,14 @@ namespace Oblig_1_ITPE3200.Controllers
             return await _db.SlettEnDiagnoser(diagnoseId);
         }
 
-        public async Task<List<DiagnoseModel>> GetEnDiagnose(int diagnoseId)
+        public async Task<DiagnoseModel> GetEnDiagnose(int diagnoseId)
         {
             return await _db.GetEnDiagnose(diagnoseId);
+        }
+
+        public async Task<bool> UpdateSymptomer(string[] symptomList)
+        {
+            return await _db.UpdateSymptomer(symptomList);
         }
     }
 }

@@ -67,7 +67,6 @@ namespace Oblig_1_ITPE3200.DAL
             try
             {
                 var diagnose = await _db.Diagnoser.FindAsync(diagnoseId);
-                Console.WriteLine("1: " + diagnose.DiagnoseNavn);
                 _db.Diagnoser.Remove(diagnose);
                 _db.SaveChanges();
                 return true;
@@ -78,19 +77,47 @@ namespace Oblig_1_ITPE3200.DAL
             }
         }
 
-        public async Task<List<DiagnoseModel>> GetEnDiagnose(int diagnoseId)
+        //public async Task<List<DiagnoseModel>> GetEnDiagnose(int diagnoseId)
+        public async Task<DiagnoseModel> GetEnDiagnose(int diagnoseId)
         {
             try
             {
-                List<DiagnoseModel> diagnoser = await _db.Diagnoser.MapToDiagnoseModel().ToListAsync();
-                diagnoser = diagnoser.Where(d => d.DiagnoseId == diagnoseId).ToList();
+                var diagnose = await _db.Diagnoser.MapToDiagnoseModel().SingleAsync(d => d.DiagnoseId == diagnoseId);
+                
+                //List<DiagnoseModel> diagnoser = await _db.Diagnoser.MapToDiagnoseModel().ToListAsync();
+                //diagnoser = diagnoser.Where(d => d.DiagnoseId == diagnoseId).ToList();
                 //var diagnose = await _db.Diagnoser.FindAsync(diagnoseId);
                 //List<string> symptomNavn = diagnose.SymptomDiagnoser.Select(sd => sd.Symptom.SymptomNavn).ToList();
-                return diagnoser;
+                return diagnose;
             }
             catch
             {
                 return null;
+            }
+        }
+
+        public async Task<bool> UpdateSymptomer(string[] symptomList)
+        {
+            try
+            {
+                int id = int.Parse(symptomList[0]);
+                var diagnoseModel = await _db.Diagnoser.MapToDiagnoseModel().SingleAsync(d => d.DiagnoseId == id);
+                var diagnose = await _db.Diagnoser.FindAsync(id);
+                //var diagnose = await _db.Diagnoser.MapToDianoseModel().FindAsync(int.Parse(symptomList[0]));
+                List<SymptomDiagnose> symptomDiagnoser = diagnose.SymptomDiagnoser.Where(sd => sd.DiagnoseId==diagnose.DiagnoseId).ToList();
+                foreach(string i in symptomList)
+                {
+                    symptomDiagnoser.Where(sd => sd.Symptom.SymptomNavn = i)
+                }
+                List<Symptom> symptomer = symptomDiagnoser.Select(sd => sd.Symptom).ToList();
+
+
+
+                return true;
+            }
+            catch
+            {
+                return false;
             }
         }
     }

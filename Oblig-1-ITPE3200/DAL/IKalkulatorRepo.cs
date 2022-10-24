@@ -16,6 +16,8 @@ namespace Oblig_1_ITPE3200.DAL
 
         Task<bool> SlettEnDiagnoser(int diagnoseId);
 
-        Task<List<DiagnoseModel>> GetEnDiagnose(int diagnoseId);
+        Task<DiagnoseModel> GetEnDiagnose(int diagnoseId);
+
+        Task<bool> UpdateSymptomer(string[] symptomList);
     }
 }
