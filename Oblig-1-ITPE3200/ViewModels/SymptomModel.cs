@@ -13,8 +13,7 @@ namespace Oblig_1_ITPE3200.ViewModels
             return symptomSource.Select(ss => new SymptomModel
             {
                 SymptomId = ss.SymptomId,
-                SymptomNavn = ss.SymptomNavn,
-                DiagnoseNavnene = ss.SymptomDiagnoser.Select(sd => sd.Symptom.SymptomNavn).ToArray()
+                SymptomNavn = ss.SymptomNavn
             });
         }
     }
@@ -23,14 +22,12 @@ namespace Oblig_1_ITPE3200.ViewModels
         public int SymptomId { get; set; }
         public string SymptomNavn { get; set; }
 
-        public string[] DiagnoseNavnene { get; set; }
 
         public SymptomModel() { }
         public SymptomModel(Symptom s)
         {
             SymptomId = s.SymptomId;
             SymptomNavn = s.SymptomNavn;
-            DiagnoseNavnene = s.SymptomDiagnoser.Select(sd => sd.Symptom.SymptomNavn).ToArray();
         }
     }
 }

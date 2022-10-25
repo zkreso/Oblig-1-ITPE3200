@@ -1,61 +1,71 @@
 ﻿$(() => {
-    editTable();
+    getDiagnose();
+    getSymptoms();
 })
 
-let id = window.location.search.substring(1); // id = id=1
-console.log(id.substring(3));
+const id = window.location.search.substring(4);
 
-let ut = "";
-const editTable = () => {
-    let url = "kalkulator/getEnDiagnose?diagnose" + id; //has to have diagnose in url!!!!!!
+const getDiagnose = () => {
+    let url = "kalkulator/getEnDiagnose?diagnoseid=" + id; //has to have "diagnose" in url!!!!!!
     
     $.get(url, diagnose => {
+        $("#id").val(diagnose.diagnoseId);
+        $("#description").val(diagnose.description);
         $("#diagnoseNavn").html("Diagnose: " + diagnose.diagnoseNavn);
-        for (let navn of diagnose.symptomNavnene) {
-            ut += `<input class="symptomCheckbox" type="checkbox" id=${navn} value=${navn} onchange="checkList()" checked>
-                    <label for=${navn}>${navn}</label><br>`
-        }
-        $("#table").html(ut);
     })
 }
 
-let added = [];
-let ut2 = "";
-const addSymptom = () => {
-    let inputValue = $("#inputSymptom").val();
-    console.log(inputValue);
-    if (inputValue !== "") {
-        added.push(inputValue);
-    }
-    for (let item of added) {
-        ut2 += `<input class="symptomCheckbox" type="checkbox" id=${item} value=${item} onchange="checkList()" checked>
-                    <label for=${item}>${item}</label><br>`;
-    }
-    $("#table2").html(ut2);
-    added = [];
-    
-    $("#inputSymptom").val("");
+const getSymptoms = () => {
+    let url = "kalkulator/getRelevantSymptoms?diagnoseid=" + id;
+    $.get(url, symptoms => {
+        formatSyptoms(symptoms);        
+    })
 }
 
-
-const checkList = () => {
-    
+const formatSyptoms = symptoms => {
+    let table = `<table class="table table-striped"><tr><th>Relevant symptoms</th><th></th></tr>`;
+    for (let s of symptoms) {
+        table += `<tr><td>${s.symptomNavn}</td>
+                    <td><button id=${s.symptomId} value="remove" class="btn btn-danger" onclick="remove(${s.symptomId})">Remove</button></td></tr>`;
+    }
+    table += "</table>";
+    $("#table").html(table);
 }
 
-const sendSymptomer = () => {
-    let symptomList = [id.substring(3)];
-    $("input[type='checkbox']:checked").each(function () {
-        symptomList.push($(this).val());
-    });
-    console.log(symptomList);
+const remove = symptomId => {
+    const symptomDiagnose = {
+        diagnoseId: id,
+        symptomId: symptomId
+    }
 
-    $.post("kalkulator/updateSymptomer", $.param({ symptomList }, true), OK => {
+    $.post("kalkulator/removeSymptomDiagnose", symptomDiagnose, OK => {
         if (OK) {
-            $("#tilbakeMelding").html("symptoms have updated.");
+            getSymptoms();
+        }
+        else {
+            $("#symptomStatus").html("something wrong with the database, please try later");
+        }
+    })
+}
+
+
+const confirm = () => {
+    let description = $("#description").val();
+    $.post("kalkulator/updateDescription?diagnoseid="+id+"&description="+description, OK => {
+        if (OK) {
+            window.location.href = "admin.html";
         }
         else {
             $("#tilbakeMelding").html("something wrong with the database, please try later");
         }
     })
 }
+
+/**if (OK) {
+            $("#tilbakeMelding").html("symptoms have updated.");
+        }
+        else {
+            $("#tilbakeMelding").html("something wrong with the database, please try later");
+        }
+**/
 

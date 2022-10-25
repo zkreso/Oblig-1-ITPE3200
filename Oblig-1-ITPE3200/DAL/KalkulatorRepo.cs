@@ -84,10 +84,6 @@ namespace Oblig_1_ITPE3200.DAL
             {
                 var diagnose = await _db.Diagnoser.MapToDiagnoseModel().SingleAsync(d => d.DiagnoseId == diagnoseId);
                 
-                //List<DiagnoseModel> diagnoser = await _db.Diagnoser.MapToDiagnoseModel().ToListAsync();
-                //diagnoser = diagnoser.Where(d => d.DiagnoseId == diagnoseId).ToList();
-                //var diagnose = await _db.Diagnoser.FindAsync(diagnoseId);
-                //List<string> symptomNavn = diagnose.SymptomDiagnoser.Select(sd => sd.Symptom.SymptomNavn).ToList();
                 return diagnose;
             }
             catch
@@ -110,6 +106,53 @@ namespace Oblig_1_ITPE3200.DAL
 
 
 
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public async Task<bool> UpdateDescription(int diagnoseId, string description)
+        {
+            try
+            {
+                Console.WriteLine("id " + diagnoseId);
+                var diagnose = await _db.Diagnoser.FindAsync(diagnoseId);
+                diagnose.Description = description;
+                _db.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public async Task<List<SymptomModel>> GetRelevantSymptoms(int diagnoseId)
+        {
+            try
+            {
+                List<SymptomModel> symptoms = await _db.SymptomDiagnoser
+                                                .Where(sd => sd.DiagnoseId == diagnoseId)
+                                                .Select(sd => sd.Symptom)
+                                                .MapToSymptomModel()
+                                                .ToListAsync();
+                return symptoms;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public async Task<bool> RemoveSymptomDiagnose(SymptomDiagnose symptomDiagnose)
+        {
+            try
+            {
+                _db.SymptomDiagnoser.Remove(symptomDiagnose);
+                _db.SaveChanges();
                 return true;
             }
             catch

@@ -19,5 +19,11 @@ namespace Oblig_1_ITPE3200.DAL
         Task<DiagnoseModel> GetEnDiagnose(int diagnoseId);
 
         Task<bool> UpdateSymptomer(string[] symptomList);
+
+        Task<bool> UpdateDescription(int diagnoseId, string description);
+
+        Task<List<SymptomModel>> GetRelevantSymptoms(int diagnoseId);
+
+        Task<bool> RemoveSymptomDiagnose(SymptomDiagnose symptomDiagnose);
     }
 }

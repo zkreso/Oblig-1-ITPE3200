@@ -10,13 +10,20 @@
 <body>
     <div class="container">
         <h3 id="diagnoseNavn"></h3>
+        <hr />
+        <form>
+            <input type="hidden" id="id" />
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea class="form-control" type="text" id="description" rows="3"></textarea>
+            </div>
+        </form>
+        <h5>Symptoms</h5>
         <div id="table"></div>
-        <div id="table2"></div>
-        <input type="text" id="inputSymptom">
-        <button onclick="addSymptom()">Add</button>
+        <div id="symptomStatus"></div>
         <div>
             <br />
-            <button class="btn btn-success" onclick="sendSymptomer()">Confirm</button>
+            <button class="btn btn-success" onclick="confirm()">Save changes</button>
             <a class="btn btn-primary" href="admin.html">Back</a>
         </div>
         <div id="tilbakeMelding"></div>
