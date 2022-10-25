@@ -105,10 +105,7 @@ namespace Oblig_1_ITPE3200.DAL
                 var diagnose = await _db.Diagnoser.FindAsync(id);
                 //var diagnose = await _db.Diagnoser.MapToDianoseModel().FindAsync(int.Parse(symptomList[0]));
                 List<SymptomDiagnose> symptomDiagnoser = diagnose.SymptomDiagnoser.Where(sd => sd.DiagnoseId==diagnose.DiagnoseId).ToList();
-                foreach(string i in symptomList)
-                {
-                    symptomDiagnoser.Where(sd => sd.Symptom.SymptomNavn = i)
-                }
+                
                 List<Symptom> symptomer = symptomDiagnoser.Select(sd => sd.Symptom).ToList();
 
 
