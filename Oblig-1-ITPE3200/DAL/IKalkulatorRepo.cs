@@ -10,7 +10,7 @@ namespace Oblig_1_ITPE3200.DAL
     public interface IKalkulatorRepo
     {       
         Task<List<DiagnoseModel>> GetDiagnoser();
-        Task<List<Symptom>> GetSymptomer();
+        Task<List<SymptomModel>> GetSymptomer();
 
         Task<List<DiagnoseModel>> SearchDiagnoser(string[] symptomArray);
 
@@ -18,12 +18,18 @@ namespace Oblig_1_ITPE3200.DAL
 
         Task<DiagnoseModel> GetEnDiagnose(int diagnoseId);
 
-        Task<bool> UpdateSymptomer(string[] symptomList);
-
         Task<bool> UpdateDescription(int diagnoseId, string description);
 
         Task<List<SymptomModel>> GetRelevantSymptoms(int diagnoseId);
 
+        Task<List<SymptomModel>> GetIrrelevantSymptoms(int diagnoseId);
+
         Task<bool> RemoveSymptomDiagnose(SymptomDiagnose symptomDiagnose);
+
+        Task<bool> AddSymptomDiagnose(SymptomDiagnose symptomDiagnose);
+            
+        Task<bool> AddNewSymptom(string symptomNavn, int diagnoseId);
+
+        Task<DiagnoseModel> CreateEnDiagnose(Diagnose diagnose);
     }
 }

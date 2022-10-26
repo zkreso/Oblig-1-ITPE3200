@@ -33,11 +33,11 @@ namespace Oblig_1_ITPE3200.DAL
 
         }
 
-        public async Task<List<Symptom>> GetSymptomer()
+        public async Task<List<SymptomModel>> GetSymptomer()
         {
             try
             {
-                List<Symptom> s = await _db.Symptomer.ToListAsync();
+                List<SymptomModel> s = await _db.Symptomer.MapToSymptomModel().ToListAsync();
                 return s;
             }
             catch
@@ -77,7 +77,6 @@ namespace Oblig_1_ITPE3200.DAL
             }
         }
 
-        //public async Task<List<DiagnoseModel>> GetEnDiagnose(int diagnoseId)
         public async Task<DiagnoseModel> GetEnDiagnose(int diagnoseId)
         {
             try
@@ -92,33 +91,10 @@ namespace Oblig_1_ITPE3200.DAL
             }
         }
 
-        public async Task<bool> UpdateSymptomer(string[] symptomList)
-        {
-            try
-            {
-                int id = int.Parse(symptomList[0]);
-                var diagnoseModel = await _db.Diagnoser.MapToDiagnoseModel().SingleAsync(d => d.DiagnoseId == id);
-                var diagnose = await _db.Diagnoser.FindAsync(id);
-                //var diagnose = await _db.Diagnoser.MapToDianoseModel().FindAsync(int.Parse(symptomList[0]));
-                List<SymptomDiagnose> symptomDiagnoser = diagnose.SymptomDiagnoser.Where(sd => sd.DiagnoseId==diagnose.DiagnoseId).ToList();
-                
-                List<Symptom> symptomer = symptomDiagnoser.Select(sd => sd.Symptom).ToList();
-
-
-
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
         public async Task<bool> UpdateDescription(int diagnoseId, string description)
         {
             try
             {
-                Console.WriteLine("id " + diagnoseId);
                 var diagnose = await _db.Diagnoser.FindAsync(diagnoseId);
                 diagnose.Description = description;
                 _db.SaveChanges();
@@ -147,17 +123,80 @@ namespace Oblig_1_ITPE3200.DAL
             }
         }
 
+        public async Task<List<SymptomModel>> GetIrrelevantSymptoms(int diagnoseId)
+        {
+            try
+            {
+                List<SymptomModel> symptoms = await _db.Symptomer
+                                                .Where(s => !s.SymptomDiagnoser.Select(sd => sd.DiagnoseId).Contains(diagnoseId))
+                                                .MapToSymptomModel()
+                                                .ToListAsync();
+                return symptoms;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
         public async Task<bool> RemoveSymptomDiagnose(SymptomDiagnose symptomDiagnose)
         {
             try
             {
                 _db.SymptomDiagnoser.Remove(symptomDiagnose);
+                await _db.SaveChangesAsync();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public async Task<bool> AddSymptomDiagnose(SymptomDiagnose symptomDiagnose)
+        {
+            try
+            {
+                await _db.SymptomDiagnoser.AddAsync(symptomDiagnose);
                 _db.SaveChanges();
                 return true;
             }
             catch
             {
                 return false;
+            }
+        }
+
+        public async Task<bool> AddNewSymptom(string symptomNavn, int diagnoseId)
+        {
+            try
+            {
+                var newSymptom = new Symptom { SymptomNavn = symptomNavn };
+                var diagnose = await _db.Diagnoser.FindAsync(diagnoseId);
+                var newSymptomDiagnose = new SymptomDiagnose { Symptom = newSymptom, Diagnose = diagnose };
+                await _db.SymptomDiagnoser.AddAsync(newSymptomDiagnose);
+                _db.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public async Task<DiagnoseModel> CreateEnDiagnose(Diagnose diagnose)
+        {
+            try
+            {
+                var newDiagnose = new Diagnose { DiagnoseNavn = diagnose.DiagnoseNavn, Description = diagnose.Description };
+                await _db.Diagnoser.AddAsync(newDiagnose);
+                _db.SaveChanges();
+                var diagnoseModel = await _db.Diagnoser.MapToDiagnoseModel().FirstAsync(d => d.DiagnoseId == newDiagnose.DiagnoseId);
+                return diagnoseModel;
+            }
+            catch
+            {
+                return null;
             }
         }
     }

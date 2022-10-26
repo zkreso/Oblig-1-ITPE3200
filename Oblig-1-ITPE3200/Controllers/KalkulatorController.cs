@@ -24,7 +24,7 @@ namespace Oblig_1_ITPE3200.Controllers
             return await _db.GetDiagnoser();
         }
 
-        public async Task<List<Symptom>> GetSymptomer()
+        public async Task<List<SymptomModel>> GetSymptomer()
         {
             return await _db.GetSymptomer();
         }
@@ -44,11 +44,6 @@ namespace Oblig_1_ITPE3200.Controllers
             return await _db.GetEnDiagnose(diagnoseId);
         }
 
-        public async Task<bool> UpdateSymptomer(string[] symptomList)
-        {
-            return await _db.UpdateSymptomer(symptomList);
-        }
-
         public async Task<bool> UpdateDescription(int diagnoseId, string description)
         {
             return await _db.UpdateDescription(diagnoseId, description);
@@ -59,9 +54,29 @@ namespace Oblig_1_ITPE3200.Controllers
             return await _db.GetRelevantSymptoms(diagnoseId);
         }
 
+        public async Task<List<SymptomModel>> GetIrrelevantSymptoms(int diagnoseId)
+        {
+            return await _db.GetIrrelevantSymptoms(diagnoseId);
+        }
+
         public async Task<bool> RemoveSymptomDiagnose(SymptomDiagnose symptomDiagnose)
         {
             return await _db.RemoveSymptomDiagnose(symptomDiagnose);
+        }
+
+        public async Task<bool> AddSymptomDiagnose(SymptomDiagnose symptomDiagnose)
+        {
+            return await _db.AddSymptomDiagnose(symptomDiagnose);
+        }
+
+        public async Task<bool> AddNewSymptom(string symptomNavn, int diagnoseId)
+        {
+            return await _db.AddNewSymptom(symptomNavn, diagnoseId);
+        }
+
+        public async Task<DiagnoseModel> CreateEnDiagnose(Diagnose diagnose)
+        {
+            return await _db.CreateEnDiagnose(diagnose);
         }
     }
 }

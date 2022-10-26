@@ -1,0 +1,31 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Add new diagnose</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+    <script src="js/addNewDiagnose.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>New Diagnose</h1>
+        <form>
+            <div class="form-group">
+                <label for="diagnoseName">Name</label>
+                <input type="text" class="form-control" id="diagnoseName">
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <input type="text" class="form-control" id="description">
+            </div>
+        </form>
+        <button onclick="createEnDiagnose()" class="btn btn-primary">Generate new diagnose</button>
+        <br>
+        <div id="table"></div>
+        <div id="symptomTable"></div>
+        <button class="btn btn-success" onclick="confirm()">Confirm</button>
+        <a class="btn btn-primary" href="admin.html">Go back</a>
+    </div>
+</body>
+</html>
