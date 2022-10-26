@@ -59,6 +59,18 @@ namespace Oblig_1_ITPE3200.DAL
             }
         }
 
+        public async Task<Symptom> GetSymptom(int id)
+        {
+            try
+            {
+                Symptom symptom = await _db.Symptoms.FindAsync(id);
+                return symptom;
+            }
+            catch
+            {
+                return null;
+            }
+        }
 
         // Gets all symptoms linked to one disease
         public async Task<List<Symptom>> GetSymptomsDisease (int id)

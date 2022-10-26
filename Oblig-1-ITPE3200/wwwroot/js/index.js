@@ -4,23 +4,103 @@
 
 function getAllSymptoms() {
     $.get("oblig/GetAllSymptoms", function (sList) {
-        let ut = "";
-
-        for (let i = 0; i < sList.length; i++) {
-
-            ut += '<li id="' + sList[i].id + '">' + sList[i].name +'</li>';
-        }
-        $("#symptoms").append(ut);
+        formatSymptoms(sList);
     });
 }
 
-function addSymptom(s) {
-    let id = $(s).attr("id");
-    let name = $(s).val();
 
-    $("#outSymptom").append(name+"<br>");
+// ----- Formatting of objects ------
+
+function formatSymptoms(sList) {
+    let ut = "<table class='table'><thead>" +
+        "<tr scope='col'><th>ID</th>" +
+        "<th scope = 'col' > Name</th> " +
+        "<th></th>" +
+        "</tr></thead>";
+
+    ut += "<tbody>";
+
+    for (let i = 0; i < sList.length; i++) {
+        let s = sList[i];
+        ut += "<tr id='" + s.id + "'><th scope='row'>" + s.id + "</th>" +
+            "<td>" + s.name + "</td>" +
+            "<td><a href='#' id='" + s.id + "' onclick='addSymptom(this)'>Add</a></td>" +
+            "</tr>";
+    }
+
+    ut += "</tbody></table>";
+
+    $("#symptoms").html(ut);
 }
 
+function formatSymptom(s) {
+    let ut = "<tr id='" + s.id + "'><th scope='row'>" + s.id + "</th>" +
+        "<td>" + s.name + "</td>" +
+        "<td><a href='#' id='" + s.id + "' onclick='addSymptom(this)'>Add</a></td>" +
+        "</tr>";
+
+    let counter = 1;
+    if ($("tr").length > 0) {
+        $("tr").each(function () {
+            if (s.id < this.id) {
+                $(ut).insertBefore(this);
+            }
+            else {
+                if (counter == $("tr").length) {
+                    $("tbody").append(ut);
+                }
+            }
+
+            counter++;
+        });
+    }
+    else {
+        $("tbody").append(ut);
+    }
+
+}
+
+
+// ----- Adding, removing different objects html -----
+
+function addSymptom(a) {
+    let ut = "<button id='" + a.id + "' type='button' class='btn btn-primary' onclick='remSympTag(this)'>";
+
+    let url = "oblig/GetSymptom?id=" + a.id;
+    $.get(url, function (s) {
+        let name = s.name;
+
+        ut += name + "</button>";
+
+        $("#selected").append(ut);
+    });
+
+    let tr = $(a).closest('tr');
+    $(tr).css("display", "none");
+}
+
+function remSympTag(button) {
+    let id = button.id;
+    let url = "oblig/GetSymptom?id=" + id;
+    $.get(url, function (s) {
+        formatSymptom(s);
+    });
+
+    $(button).css("display", "none");
+}
+
+
+
+
+
+
+
+
+
+
+
+// ------- Search functions and other later projects -------
+// Not correct
 function searchSymptom() {
     var input = document.getElementById("searchInput");
     var filter = input.value.toUpperCase();

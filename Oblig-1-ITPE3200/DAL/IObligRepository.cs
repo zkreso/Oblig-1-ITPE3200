@@ -13,5 +13,6 @@ namespace Oblig_1_ITPE3200.DAL
         Task<bool> DeleteDisease(int id);
         Task<bool> ChangeDisease(Disease d, List<Symptom> sList);
         Task<Disease> FindMatchingDisease(List<Symptom> symptoms);
+        Task<Symptom> GetSymptom(int id);
     }
 }

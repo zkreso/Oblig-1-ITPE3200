@@ -8,38 +8,38 @@
     <script src="js/index.js"></script>
 </head>
 <body>
-    <div class="container">
-        <div class="row">
-            <div class="col-md">
-                <h1>Oblig</h1>
-
-                <input type="text" id="searchInput" onkeyup="searchSymptom()"/>
-                <ul id="symptoms">
-
+    <nav class="navbar navbar-expand-lg bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Disease Calculator</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-targ>
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="./admin.html">Admin</a>
+                    </li>
                 </ul>
             </div>
-            <div class="col-md">
-                <div id="outSymptom" type="text" style="width: 300px; height: 100px; border: solid;">
+        </div>
+    </nav>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg">
+                <div id="selected">
+
+                </div>
+
+                <input type="text" id="searchInput" onkeyup="searchSymptom()" placeholder="Search"/>
+
+                <div id="symptoms">
 
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md">
-                <button class="btn btn-primary" onclick="findMatchingDisease()">Calculate</button>
-            </div>
-        </div>
-        <div class="row">
-            <div id="answer" style="border: solid; width: 300px; height: 100px;">
-
-            </div>
-        </div>
-    </div>
-
-    <div class="container">
-        <div class="row">
-            <div class="col-md">
-                <a class="btn btn-danger" href="./admin.html">Admin</a>
+            <div class="row">
+                <div class="col-md">
+                    <button class="btn btn-primary" onclick="findMatchingDisease()">Calculate</button>
+                </div>
             </div>
         </div>
     </div>
