@@ -10,7 +10,7 @@ const symptom = () => {
 }
 
 const format = symptomList => {
-    let ut = `<select class="form-control form-control-lg" id="symptom" onchange="getSymptom()" ><option disabled selected value>Velg symptomer</option>`;
+    let ut = `<select class="form-control form-control-lg" id="symptom" onchange="getSymptom()" ><option disabled selected value>Choose symptomes</option>`;
     for (let s of symptomList) {
         //has to have '' to embrace value when there is space in value!!!!!
         ut += `<option value='${s.symptomId}${s.symptomNavn}'>${s.symptomNavn}</option>`;

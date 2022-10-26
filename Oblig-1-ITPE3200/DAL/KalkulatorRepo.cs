@@ -184,19 +184,18 @@ namespace Oblig_1_ITPE3200.DAL
             }
         }
 
-        public async Task<DiagnoseModel> CreateEnDiagnose(Diagnose diagnose)
+        public async Task<bool> CreateEnDiagnose(Diagnose diagnose)
         {
             try
             {
                 var newDiagnose = new Diagnose { DiagnoseNavn = diagnose.DiagnoseNavn, Description = diagnose.Description };
                 await _db.Diagnoser.AddAsync(newDiagnose);
                 _db.SaveChanges();
-                var diagnoseModel = await _db.Diagnoser.MapToDiagnoseModel().FirstAsync(d => d.DiagnoseId == newDiagnose.DiagnoseId);
-                return diagnoseModel;
+                return true;
             }
             catch
             {
-                return null;
+                return false;
             }
         }
     }

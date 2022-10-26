@@ -30,6 +30,6 @@ namespace Oblig_1_ITPE3200.DAL
             
         Task<bool> AddNewSymptom(string symptomNavn, int diagnoseId);
 
-        Task<DiagnoseModel> CreateEnDiagnose(Diagnose diagnose);
+        Task<bool> CreateEnDiagnose(Diagnose diagnose);
     }
 }

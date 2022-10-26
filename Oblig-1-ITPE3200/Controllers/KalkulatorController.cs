@@ -74,7 +74,7 @@ namespace Oblig_1_ITPE3200.Controllers
             return await _db.AddNewSymptom(symptomNavn, diagnoseId);
         }
 
-        public async Task<DiagnoseModel> CreateEnDiagnose(Diagnose diagnose)
+        public async Task<bool> CreateEnDiagnose(Diagnose diagnose)
         {
             return await _db.CreateEnDiagnose(diagnose);
         }
