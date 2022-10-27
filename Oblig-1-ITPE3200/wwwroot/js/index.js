@@ -98,48 +98,24 @@ function searchSymptom() {
     }
 }
 
+
+// funke ikk
 function findMatchingDisease() {
+    let ids = [];
 
-    var str = $("#outSymptom").html().split("<br>");
-
-    // Removing spaces and \n in the strings from the div
-    for (let i = 0; i < str.length; i++) {
-        let s = str[i];
-        s = s.replace(/\s/g, '');
-        str[i] = s;
-
-        // If string is empty, remove from list
-        if (s == "") {
-            str.splice(i, 1);
-        }
-    }
-
-    // SOMETHING WRONG IN HERE
-    const symptoms = formToSymptom(str);
-
-    $.post("oblig/FindMatchingDisease", symptoms, function (d) {
-        $("#answer").html(d.name); 
+    $("#selected button").each(function () {
+        ids.push(this.id);
     });
 
-}
+    $.post("oblig/FindMatchingDisease", ids, function (d) {
+        $("#result").html(d.name);
+    })
 
-function formToSymptom(nameList) {
-    const symptomsList = [];
-
-    $.get("oblig/GetAllSymptoms", function (symptoms) {
-        for (let i = 0; i < symptoms.length; i++) {
-            let s = symptoms[i];
-
-            let j = 0;
-            for (n in nameList) {
-                if (n == s.name) {
-                    symptomsList[j] = s;
-                }
-
-                j++;
-            }
+    /*$.ajax("oblig/FindMatchingDisease", {
+        type: 'POST',
+        traditional: true,
+        data: {
+            ids
         }
-    });
-
-    return symptomsList;
+    })*/
 }

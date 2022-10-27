@@ -4,6 +4,7 @@ using Oblig_1_ITPE3200.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 
 namespace Oblig_1_ITPE3200.DAL
@@ -202,36 +203,51 @@ namespace Oblig_1_ITPE3200.DAL
         }
 
 
-        public async Task<Disease> FindMatchingDisease (List<Symptom> symptoms)
+        public async Task<Disease> FindMatchingDisease (List<int> ids)
         {
-            List<Disease> allDiseases = await _db.Diseases.ToListAsync();
-            List<int> scoreList = new List<int>(allDiseases.Count());
-            foreach (int k in scoreList)
+            try
             {
-                scoreList[k] = 0;
-            }
 
+                List<Symptom> symptoms = null;
 
-            int i = 0;
-            foreach (var s in symptoms)
-            {
-                foreach (var d in allDiseases)
+                foreach (int id in ids)
                 {
-                    int j = 0;
-                    var ds = d.DiseaseSymptoms;
-                    if (s == ds[j].Symptom)
-                    {
-                        scoreList[i]++;
-                    }
-
-                    j++;
+                    symptoms.Add(await _db.Symptoms.FindAsync(id));
                 }
-                i++;
+
+                List<Disease> allDiseases = await _db.Diseases.ToListAsync();
+                List<int> scoreList = new List<int>(allDiseases.Count());
+                foreach (int k in scoreList)
+                {
+                    scoreList[k] = 0;
+                }
+
+
+                int i = 0;
+                foreach (var s in symptoms)
+                {
+                    foreach (var d in allDiseases)
+                    {
+                        int j = 0;
+                        var ds = d.DiseaseSymptoms;
+                        if (s == ds[j].Symptom)
+                        {
+                            scoreList[i]++;
+                        }
+
+                        j++;
+                    }
+                    i++;
+                }
+
+                int maxIndex = scoreList.IndexOf(scoreList.Max());
+
+                return allDiseases[maxIndex];
             }
-
-            int maxIndex = scoreList.IndexOf(scoreList.Max());
-
-            return allDiseases[maxIndex];
+            catch
+            {
+                return null;
+            }
         }
     }
 }
