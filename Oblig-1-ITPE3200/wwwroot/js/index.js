@@ -12,13 +12,13 @@ function getAllSymptoms() {
 // ----- Formatting of objects ------
 
 function formatSymptoms(sList) {
-    let ut = "<table class='table'><thead>" +
+    let ut = "<table class='table' id='table'><thead>" +
         "<tr scope='col'><th>ID</th>" +
         "<th scope = 'col' > Name</th> " +
         "<th></th>" +
         "</tr></thead>";
 
-    ut += "<tbody>";
+    ut += "<tbody id='tbody'>";
 
     for (let i = 0; i < sList.length; i++) {
         let s = sList[i];
@@ -61,37 +61,39 @@ function remSympTag(button) {
         }
     });
 
+    button.id = "NaN";
     $(button).css("display", "none");
 }
 
 
 
-
-
-
-
-
-
-
-
 // ------- Search functions and other later projects -------
-// Not correct
 function searchSymptom() {
     var input = document.getElementById("searchInput");
     var filter = input.value.toUpperCase();
 
-    var ul = document.getElementById("symptoms");
-    var li = ul.getElementsByTagName('li');
+    var tbody = document.getElementById("tbody");
+    var trL = tbody.getElementsByTagName('tr');
     var a;
 
-    for (let i = 0; i < li.length; i++) {
-        a = li[i].innerHTML;
+    for (let i = 0; i < trL.length; i++) {
+        a = trL[i].innerHTML;
 
         if (a.toUpperCase().indexOf(filter) > -1) {
-            li[i].style.display = "";
+            $("#selected button").each(function () {
+
+                // Checking if symptom is checked, then no show
+                // Does not work with multiple selected symptoms
+                if (trL[i].id == this.id) {
+                    trL[i].style.display = "none";
+                }
+                else {
+                    trL[i].style.display = "";
+                }
+            })
         }
         else {
-            li[i].style.display = "none";
+            trL[i].style.display = "none";
         }
     }
 }
