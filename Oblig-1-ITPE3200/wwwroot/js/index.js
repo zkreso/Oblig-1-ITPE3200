@@ -33,33 +33,6 @@ function formatSymptoms(sList) {
     $("#symptoms").html(ut);
 }
 
-function formatSymptom(s) {
-    let ut = "<tr id='" + s.id + "'><th scope='row'>" + s.id + "</th>" +
-        "<td>" + s.name + "</td>" +
-        "<td><a href='#' id='" + s.id + "' onclick='addSymptom(this)'>Add</a></td>" +
-        "</tr>";
-
-    let counter = 1;
-    if ($("tr").length > 0) {
-        $("tr").each(function () {
-            if (s.id < this.id) {
-                $(ut).insertBefore(this);
-            }
-            else {
-                if (counter == $("tr").length) {
-                    $("tbody").append(ut);
-                }
-            }
-
-            counter++;
-        });
-    }
-    else {
-        $("tbody").append(ut);
-    }
-
-}
-
 
 // ----- Adding, removing different objects html -----
 
@@ -81,9 +54,11 @@ function addSymptom(a) {
 
 function remSympTag(button) {
     let id = button.id;
-    let url = "oblig/GetSymptom?id=" + id;
-    $.get(url, function (s) {
-        formatSymptom(s);
+
+    $("tr").each(function () {
+        if (this.id == id) {
+            $(this).css("display", "");
+        }
     });
 
     $(button).css("display", "none");
