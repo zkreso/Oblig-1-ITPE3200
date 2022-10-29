@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Castle.Core.Logging;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Oblig_1_ITPE3200.DAL;
 using Oblig_1_ITPE3200.Models;
 using System.Collections.Generic;
@@ -11,9 +13,12 @@ namespace Oblig_1_ITPE3200.Controllers
     {
         private readonly IObligRepository _db;
 
-        public ObligController(IObligRepository db)
+        private ILogger<ObligController> _log;
+
+        public ObligController(IObligRepository db, ILogger<ObligController> log)
         {
             _db = db;
+            _log = log;
         }
 
         public async Task<List<Disease>> GetAllDiseases()
