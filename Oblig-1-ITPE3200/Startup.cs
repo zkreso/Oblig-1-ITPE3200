@@ -13,10 +13,19 @@ namespace Oblig_1_ITPE3200
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<DB>(options => options.UseSqlite("Data source=Oblig.db"));
-            services.AddControllers().AddNewtonsoftJson(options =>
-                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-            );
+            services.AddDbContext<DB>(options => {
+                options.UseSqlite("Data source=Oblig.db");
+            });
+
+            services.AddControllers();
+
+            // Not needed since we are explicitly controlling what we will return with DTO's
+            // We'll never get nested objects if we don't want to
+            //services.AddControllers().AddNewtonsoftJson(options =>
+            //{
+            //    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+            //});
+            
             services.AddScoped<IObligRepository, ObligRepository>();
         }
 

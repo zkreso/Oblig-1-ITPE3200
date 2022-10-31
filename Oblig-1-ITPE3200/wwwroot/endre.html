@@ -3,11 +3,11 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Search</title>
+    <title>Edit disease</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css" integrity="sha384-xeJqLiuOvjUBq3iGOjvSQSIlwrpqjSHXpduPd6rQpuiM3f5/ijby8pCsnbu5S81n" crossorigin="anonymous">
-    <script src="js/index.js"></script>
+    <script src="js/endre.js"></script>
     <script src="js/symptomstable.js"></script>
     <style>
         body {
@@ -23,7 +23,7 @@
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <ul class="navbar-nav me-auto mb-2 mb-md-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="index.html">Home</a>
+                        <a class="nav-link" aria-current="page" href="index.html">Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="diseaselist.html">Disease list</a>
@@ -37,21 +37,26 @@
     </nav>
     <!-- end of navbar -->
     <div class="container">
-
-        <header class="mb-3">
-            <h1 class="pb-2">Symptomkalkulator</h1>
-            <p class="col-6">
-                Select one or more symptoms from the symptoms table below. Diseases with all the selected symptoms will be shown automatically.
-                Click on a selected symptom to deselect it. You may also search for symptoms by name.
-            </p>
-        </header>
-
-        <h5 class="pb-2">Matching diseases</h5>
-        <div id="results" class="p-3 border">
-            <div class="text-muted">No symptoms selected - please select one or more symptoms from the symptom list</div>
+        <h1>Edit disease details</h1>
+        <div class="p-3 mt-3 rounded-top border border-bottom-0 bg-light">
+            <form>
+                <input type="hidden" id="id" />
+                <div class="mb-3">
+                    <label for="name" class="form-label">Disease name</label>
+                    <input type="text" class="form-control" id="name">
+                </div>
+                <div class="mb-3">
+                    <label for="name" class="form-label">Disease description</label>
+                    <input type="text" class="form-control" id="description">
+                </div>
+            </form>
         </div>
-        <div class="p-3 mb-3 border border-top-0 rounded-bottom bg-light">
-            <h6>Selected symptoms (click to deselect)</h6>
+        <div class="bg-light border p-3">
+            <button type="submit" onclick="saveChanges()" class="btn btn-primary">Save changes</button>
+            <a href="diseaselist.html" class="btn btn-danger">Discard changes</a>
+        </div>
+        <div class="p-3 mb-3 border border-top-0 rounded-bottom">
+            <h6>Associated symptoms (click to remove)</h6>
             <div id="selectedsymptomsdiv">
                 <div class="text-muted">None</div>
             </div>
@@ -71,12 +76,14 @@
                 </div>
             </form>
         </div>
+
         <!-- output table -->
         <div class="p-3 border">
             <div id="symptoms">
 
             </div>
         </div>
+
         <!-- paging -->
         <div class="p-3 mb-3 border border-top-0 rounded-bottom bg-light">
             <div class="row justify-content-start align-items-center">
@@ -95,6 +102,9 @@
                     </select>
                 </div>
             </div>
+        </div>
+        <div class="mb-3" id="#feil">
+
         </div>
 
     </div>
