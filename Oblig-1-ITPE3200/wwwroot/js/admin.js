@@ -1,12 +1,24 @@
 ﻿// Prints all diseases in table from start
 $(function () {
-    getAllDiseases();
-})
+    $.post("oblig/IsLoggedIn", function (OK) {
+        if (OK) {
+            getAllDiseases();
+        }
+        else {
+            window.location.href = "login.html";
+        }
+    });
+});
 
 // Gets all diseases from db
 function getAllDiseases() {
     $.get("oblig/GetAllDiseases", function (diseases) {
         formatDiseases(diseases);
+    })
+    .fail(function (e) {
+        if (e.staus == 401) {
+            window.location.href = "index.html";
+        }
     });
 }
 
@@ -41,6 +53,14 @@ function deleteDisease(id) {
             $("#err").html("Serverside error during delete")
         }
 
+    });
+}
+
+function logOut() {
+    $.get("oblig/LogOut", function (OK) {
+        if (OK) {
+            window.location.href = "index.html";
+        }
     });
 }
 

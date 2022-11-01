@@ -1,4 +1,12 @@
-﻿function logIn() {
+﻿$(function () {
+    $.post("oblig/IsLoggedIn", function (OK) {
+        if (OK) {
+            window.location.href = "admin.html";
+        }
+    });
+});
+
+function logIn() {
     const usernameOk = validateUsername($("#username").val());
     const passwordOk = validatePassword($("#password").val());
 
@@ -10,7 +18,7 @@
 
         $.post("oblig/LogIn", user, function (OK) {
             if (OK) {
-                changeSite();
+                window.location.href = 'admin.html';
             }
             else {
                 $("#err").html("Wrong in username and password.");
@@ -20,9 +28,5 @@
             $("#err").html("Something wrong accured on server. Try again later.");
         });
     }
-}
-
-function changeSite() {
-    window.location.href = 'admin.html';
 }
 
