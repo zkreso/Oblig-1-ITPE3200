@@ -14,9 +14,11 @@ namespace Oblig_1_ITPE3200.DAL
             {
                 var context = serviceScope.ServiceProvider.GetService<DB>();
 
+                // Resets db on every launch
                 context.Database.EnsureDeleted();
                 context.Database.EnsureCreated();
 
+                // Creating symptoms and diseases for db
                 var disease1 = new Disease { Name = "Common cold", Description = "Very Common, especially if cold."};
                 var disease2 = new Disease { Name = "Influenza" , Description = "Very bad disease. Not good."};
 
@@ -36,8 +38,20 @@ namespace Oblig_1_ITPE3200.DAL
                 disease2.DiseaseSymptoms.Add(new DiseaseSymptom { Symptom = symptom3 });
                 disease2.DiseaseSymptoms.Add(new DiseaseSymptom { Symptom = symptom4 });
 
+                // Adding diseases to db
                 context.Diseases.Add(disease1);
                 context.Diseases.Add(disease2);
+
+                // Making accoutns for login
+                var user = new Users();
+                user.Username = "admin";
+                var password = "Admin123";
+                byte[] salt = ObligRepository.MakeSalt();
+                byte[] hash = ObligRepository.MakeHash(password, salt);
+                user.Password = hash;
+                user.Salt = salt;
+                context.Users.Add(user);
+
                 context.SaveChanges();
             }
         }

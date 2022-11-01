@@ -1,21 +1,24 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using Microsoft.EntityFrameworkCore;
 using Oblig_1_ITPE3200.Models;
-using System;
+using System.Security.Cryptography;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
+using System;
+using Microsoft.Extensions.Logging;
 
 namespace Oblig_1_ITPE3200.DAL
 {
     public class ObligRepository : IObligRepository
     {
         private readonly DB _db;
+        private ILogger<ObligRepository> _log;
 
-        public ObligRepository(DB db)
+        public ObligRepository(DB db, ILogger<ObligRepository> log)
         {
             _db = db;
+            _log = log;
         }
 
         // Gets all diseases from Diseases-table
@@ -26,8 +29,9 @@ namespace Oblig_1_ITPE3200.DAL
                 List<Disease> allDiseases = await _db.Diseases.ToListAsync();
                 return allDiseases;
             }
-            catch
+            catch (Exception e)
             {
+                _log.LogInformation(e.Message);
                 return null;
             }
         }
@@ -40,8 +44,9 @@ namespace Oblig_1_ITPE3200.DAL
                 List<Symptom> allSymptoms = await _db.Symptoms.ToListAsync();
                 return allSymptoms;
             }
-            catch
+            catch (Exception e)
             {
+                _log.LogInformation(e.Message);
                 return null;
             }
         }
@@ -54,8 +59,9 @@ namespace Oblig_1_ITPE3200.DAL
                 Disease disease = await _db.Diseases.FindAsync(id);
                 return disease;
             }
-            catch
+            catch (Exception e)
             {
+                _log.LogInformation(e.Message);
                 return null;
             }
         }
@@ -67,8 +73,9 @@ namespace Oblig_1_ITPE3200.DAL
                 Symptom symptom = await _db.Symptoms.FindAsync(id);
                 return symptom;
             }
-            catch
+            catch (Exception e)
             {
+                _log.LogInformation(e.Message);
                 return null;
             }
         }
@@ -97,8 +104,9 @@ namespace Oblig_1_ITPE3200.DAL
 
                 return symptoms;
             }
-            catch
+            catch (Exception e)
             {
+                _log.LogInformation(e.Message);
                 return null;
             }
         }
@@ -113,8 +121,9 @@ namespace Oblig_1_ITPE3200.DAL
                 await _db.SaveChangesAsync();
                 return true;
             }
-            catch
+            catch (Exception e)
             {
+                _log.LogInformation(e.Message);
                 return false;
             }
         }
@@ -196,8 +205,9 @@ namespace Oblig_1_ITPE3200.DAL
                 await _db.SaveChangesAsync();
                 return true;
             }
-            catch
+            catch (Exception e)
             {
+                _log.LogInformation(e.Message);
                 return false;
             }
         }
@@ -244,10 +254,53 @@ namespace Oblig_1_ITPE3200.DAL
 
                 return allDiseases[maxIndex];
             }
-            catch
+            catch (Exception e)
             {
+                _log.LogInformation(e.Message);
                 return null;
             }
+        }
+
+        // Log in stuff
+
+        public static byte[] MakeHash(string password, byte[] salt)
+        {
+            return KeyDerivation.Pbkdf2(
+                password: password,
+                salt: salt,
+                prf: KeyDerivationPrf.HMACSHA512,
+                iterationCount: 1000,
+                numBytesRequested: 32);
+        }
+
+        public static byte[] MakeSalt()
+        {
+            var csp = new RNGCryptoServiceProvider();
+            var salt = new byte[24];
+            csp.GetBytes(salt);
+            return salt;
+        }
+        
+        public async Task<bool> LogIn(User user)
+        {
+            try
+            {
+                Users foundUser = await _db.Users.FirstOrDefaultAsync(u => u.Username == user.Username);
+
+                byte[] hash = MakeHash(user.Password, foundUser.Salt);
+                bool ok = hash.SequenceEqual(foundUser.Password);
+                if (ok)
+                {
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception e)
+            {
+                _log.LogInformation(e.Message);
+                return false;
+            }
+
         }
     }
 }

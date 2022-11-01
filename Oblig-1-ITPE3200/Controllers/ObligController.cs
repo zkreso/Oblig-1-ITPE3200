@@ -101,5 +101,17 @@ namespace Oblig_1_ITPE3200.Controllers
             return Ok(disease);
         }
 
+        public async Task<ActionResult> LogIn (User user)
+        {
+            bool b = await _db.LogIn(user);
+
+            if (!b)
+            {
+                _log.LogInformation("Did not find matching user.");
+                return NotFound("Did not find user.");
+            }
+            return Ok(b);
+        }
+
     }
 }

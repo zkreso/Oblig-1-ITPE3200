@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'Oblig-1-ITPE3200' " />
+
+  <ItemGroup>
+    <Compile Remove="DAL\RNGCryptoServiceProvider.cs" />
+  </ItemGroup>
   <ItemGroup>
     <None Remove="Controllers\" />
     <None Remove="Models\" />

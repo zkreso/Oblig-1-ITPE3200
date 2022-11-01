@@ -11,19 +11,23 @@
 <body>
     <div class="container">
         <h1>Login</h1>
-        <div class="col-md">
-            <a class="btn btn-secondary" href="index.html">Back</a>
-            <form class="form">
+        <a class="btn btn-secondary" href="index.html">Back</a>
+        <form class="form">
+            <div class="form-group">
                 <label for="username">Username</label>
                 <input type="text" id="username" onchange="validateUsername(this.value)" />
-                <div id="errUser" style="color:red;"></div>
+                <span id="errUser" style="color:red;"></span>
+            </div>
+            <div class="form-group">
                 <label for="password">Password</label>
                 <input type="password" id="password" onchange="validatePassword(this.value)" />
-                <div id="errPass" style="color:red;"></div>
+                <span id="errPass" style="color:red;"></span>
+            </div>
+            <div class="form-group">
                 <button class="btn btn-primary" onclick="logIn()">Log in</button>
-                <div id="err" style="color:red;"></div>
-            </form>
-        </div>
+            </div>
+            <span id="err" style="color:red;"></span>
+        </form>
     </div>
 </body>
 </html>
