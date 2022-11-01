@@ -6,10 +6,11 @@
         const user = {
             username: $("#username").val(),
             password: $("#password").val()
-        }
+        };
+
         $.post("oblig/LogIn", user, function (OK) {
             if (OK) {
-                window.location.href = 'index.html';
+                changeSite();
             }
             else {
                 $("#err").html("Wrong in username and password.");
@@ -19,5 +20,9 @@
             $("#err").html("Something wrong accured on server. Try again later.");
         });
     }
+}
+
+function changeSite() {
+    window.location.href = 'admin.html';
 }
 
