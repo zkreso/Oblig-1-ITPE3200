@@ -112,7 +112,7 @@ function findMatchingDisease() {
     $.post("oblig/FindMatchingDisease", $.param({ ids }), function (dList) {
         let ut = "";
         for (let i = 0; i < dList.length; i++) {
-            ut += dList[i].name + ",";
+            ut += dList[i].name + ", ";
         }
         $("#result").html(ut);
     })
