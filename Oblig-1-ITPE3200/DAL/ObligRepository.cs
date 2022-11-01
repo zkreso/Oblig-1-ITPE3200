@@ -7,6 +7,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using System;
 using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore.Internal;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using System.Net.Sockets;
 
 namespace Oblig_1_ITPE3200.DAL
 {
@@ -213,46 +216,61 @@ namespace Oblig_1_ITPE3200.DAL
         }
 
 
-        public async Task<Disease> FindMatchingDisease (List<int> ids)
+        public async Task<List<Disease>> FindMatchingDisease (List<int> ids)
         {
             try
             {
+                //Loading in dbs
+                await _db.Symptoms.LoadAsync();
+                await _db.DiseaseSymptoms.LoadAsync();
 
-                List<Symptom> symptoms = null;
+                List<Symptom> symptoms = new List<Symptom>();
 
+                //Finding symptoms that where sent from client and adding them to list
                 foreach (int id in ids)
                 {
-                    symptoms.Add(await _db.Symptoms.FindAsync(id));
+                    Symptom s = await _db.Symptoms.FindAsync(id);
+                    symptoms.Add(s);
                 }
 
                 List<Disease> allDiseases = await _db.Diseases.ToListAsync();
-                List<int> scoreList = new List<int>(allDiseases.Count());
-                foreach (int k in scoreList)
-                {
-                    scoreList[k] = 0;
-                }
+                int[] scoreList = new int[allDiseases.Count()];
 
-
+                // Checking for each symptom if it matches with every disease
                 int i = 0;
                 foreach (var s in symptoms)
                 {
+                    // Checking every disease
+                    int j = 0;
                     foreach (var d in allDiseases)
                     {
-                        int j = 0;
+                        // Checking every symptom in disease
                         var ds = d.DiseaseSymptoms;
-                        if (s == ds[j].Symptom)
+                        foreach (var dSymptom in ds)
                         {
-                            scoreList[i]++;
+                            if (s == dSymptom.Symptom)
+                            {
+                                scoreList[j]++;
+                            }
                         }
-
                         j++;
                     }
                     i++;
                 }
 
-                int maxIndex = scoreList.IndexOf(scoreList.Max());
+                var maxList = new List<Disease>();
+                var max = scoreList.Max();
 
-                return allDiseases[maxIndex];
+                // Finding multiple disease with a maximum score
+                for (i = 0; i < scoreList.Length; i++)
+                {
+                    if (scoreList[i] == max)
+                    {
+                        maxList.Add(allDiseases[i]);
+                    }
+                }
+
+                return maxList;
             }
             catch (Exception e)
             {
@@ -261,8 +279,8 @@ namespace Oblig_1_ITPE3200.DAL
             }
         }
 
-        // Log in stuff
 
+        // Log in stuff
         public static byte[] MakeHash(string password, byte[] salt)
         {
             return KeyDerivation.Pbkdf2(

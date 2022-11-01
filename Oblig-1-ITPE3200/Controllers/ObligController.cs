@@ -106,14 +106,22 @@ namespace Oblig_1_ITPE3200.Controllers
 
         public async Task<ActionResult> FindMatchingDisease (List<int> ids)
         {
-            Disease disease = await _db.FindMatchingDisease(ids);
-            
-            if (disease == null)
+            try
             {
-                _log.LogInformation("Did not find matching disease with IDs.");
-                return NotFound("Did not find matching disease with symptom IDs");
+                List<Disease> diseases = await _db.FindMatchingDisease(ids);
+
+                if (diseases == null)
+                {
+                    _log.LogInformation("Did not find matching disease with IDs.");
+                    return NotFound("Did not find matching disease with symptom IDs");
+                }
+                return Ok(diseases);
             }
-            return Ok(disease);
+            catch (Exception e)
+            {
+                _log.LogInformation("Matching disease function failed. " + e.Message);
+                return BadRequest(e.Message);
+            }
         }
 
         public async Task<ActionResult> LogIn (User user)

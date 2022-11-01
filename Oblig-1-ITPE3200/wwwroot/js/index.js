@@ -99,7 +99,7 @@ function searchSymptom() {
 }
 
 
-// funke ikk
+// funke masse bra
 function findMatchingDisease() {
     let ids = [];
 
@@ -107,15 +107,11 @@ function findMatchingDisease() {
         ids.push(this.id);
     });
 
-    $.post("oblig/FindMatchingDisease", ids, function (d) {
-        $("#result").html(d.name);
-    })
-
-    /*$.ajax("oblig/FindMatchingDisease", {
-        type: 'POST',
-        traditional: true,
-        data: {
-            ids
+    $.post("oblig/FindMatchingDisease", $.param({ ids }), function (dList) {
+        let ut = "";
+        for (let i = 0; i < dList.length; i++) {
+            ut += dList[i].name + ",";
         }
-    })*/
+        $("#result").html(ut);
+    });
 }

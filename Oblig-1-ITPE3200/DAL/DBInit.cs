@@ -22,7 +22,7 @@ namespace Oblig_1_ITPE3200.DAL
                 var disease1 = new Disease { Name = "Common cold", Description = "Very Common, especially if cold."};
                 var disease2 = new Disease { Name = "Influenza" , Description = "Very bad disease. Not good."};
 
-                var symptom1 = new Symptom { Name = "Runny nose" }; // Cold
+                var symptom1 = new Symptom { Name = "Runny nose" }; // Cold and flu
                 var symptom2 = new Symptom { Name = "Sneezing" }; // Cold
                 var symptom3 = new Symptom { Name = "Coughing" }; // Cold and flu
                 var symptom4 = new Symptom { Name = "High temperature" }; // Flu
