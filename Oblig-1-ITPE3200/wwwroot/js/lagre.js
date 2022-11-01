@@ -39,13 +39,13 @@ function generateSymptomsList() {
         // Table of symptoms
         ut += "<table class='table table-hover'><thead><tr>" +
             "<thead><tr>" +
-            "<th scope='col'><a href='#' class='link-primary' onclick='sortById()'>Id</a></th>" +
+            // "<th scope='col'><a href='#' class='link-primary' onclick='sortById()'>Id</a></th>" +
             "<th scope='col'><a href='#' class='link-primary' onclick='sortByName()'>Name</a></th>" +
             "<th scope='col'>Select</th>" +
             "</tr></thead><tbody>";
         for (let symptom of page.symptomList) {
             ut += "<tr>" +
-                "<th scope='row'>" + symptom.id + "</td>" +
+                // "<th scope='row'>" + symptom.id + "</td>" +
                 "<td>" + symptom.name + "</td>" +
                 "<td><a href='#' onclick='select(" + symptom.id + ", \"" + symptom.name + "\")'>Select</td></tr>";
         }
@@ -126,7 +126,7 @@ function update() {
 // Clears search box
 function clearSearch() {
     $("#searchBox").val("");
-    pageNum = 1; // reset page when search is cleared
+    pageNum = 1; // Reset page when search is cleared
     generateSymptomsList();
 }
 
@@ -137,7 +137,7 @@ function sortByName() {
     } else {
         orderBy = "nameAscending";
     }
-    pageNum = 1; // reset page when sorting is changed
+    pageNum = 1; // Reset page when sorting is changed
     generateSymptomsList();
 }
 
@@ -147,7 +147,7 @@ function sortById() {
     } else {
         orderBy = "idAscending";
     }
-    pageNum = 1; // reset page when sorting is changed
+    pageNum = 1; // Reset page when sorting is changed
     generateSymptomsList();
 }
 
