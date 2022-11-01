@@ -101,11 +101,13 @@ function searchSymptom() {
 
 // funke masse bra
 function findMatchingDisease() {
-    let ids = [];
+    const ids = [];
 
     $("#selected button").each(function () {
         ids.push(this.id);
     });
+
+    let b = true;
 
     $.post("oblig/FindMatchingDisease", $.param({ ids }), function (dList) {
         let ut = "";
@@ -113,5 +115,8 @@ function findMatchingDisease() {
             ut += dList[i].name + ",";
         }
         $("#result").html(ut);
-    });
+    })
+        .fail(function () {
+            $("#result").html("");
+        });
 }

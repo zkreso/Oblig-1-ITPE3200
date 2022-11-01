@@ -220,6 +220,12 @@ namespace Oblig_1_ITPE3200.DAL
         {
             try
             {
+                // Checks if list is empty 
+                //(Comes from the problem of not removing old divs, just hiding them)
+                if (ids.Count() == 0)
+                {
+                    return null;
+                }
                 //Loading in dbs
                 await _db.Symptoms.LoadAsync();
                 await _db.DiseaseSymptoms.LoadAsync();
