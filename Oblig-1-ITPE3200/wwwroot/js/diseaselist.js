@@ -35,9 +35,9 @@ function skrivUtDiseases(diseases) {
         }
         ut += "</td>" +
             "<td>" +
-            "<a href='disease.html?id=" + d.id + "' class='btn btn-primary' role='button'>View</a> " +
-            "<a href='endre.html?id=" + d.id + "' class='btn btn-primary' role='button'>Edit</a> " +
-            "<a href='#' onclick='deletedisease(" + d.id + ")' class='btn btn-danger' role='button'>Delete</a</td></tr>";
+            "<a href='disease.html?id=" + d.id + "' class='btn btn-outline-primary' role='button'>View</a> " +
+            "<a href='endre.html?id=" + d.id + "' class='btn btn-outline-primary' role='button'>Edit</a> " +
+            "<a href='#' onclick='deletedisease(" + d.id + ")' class='btn btn-outline-danger' role='button'>Delete</a</td></tr>";
     }
     ut += "</tbody></table>"
     $("#diseases").html(ut);

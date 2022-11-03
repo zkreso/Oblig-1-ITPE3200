@@ -35,9 +35,7 @@ function generateSymptomsList() {
             ut += "<tr>" +
                 // "<th scope='row'>" + symptom.id + "</td>" +
                 "<td>" + symptom.name + "</td>" +
-                "<td><a href='#' class='btn btn-primary' role='button' onclick='select(" + symptom.id + ", \"" + symptom.name + "\")'>Select</a></td></tr>";
-
-        }
+                "<td><a href='#' class='btn btn-outline-danger' role='button' onclick='select(" + symptom.id + ", \"" + symptom.name + "\")'>Select</a></td></tr>";
         $("#symptoms").html(ut);
 
         // Page navigation
