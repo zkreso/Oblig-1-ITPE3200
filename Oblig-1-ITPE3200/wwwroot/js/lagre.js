@@ -11,73 +11,6 @@ $(function () {
     generateSymptomsList();
 });
 
-// Functions
-
-function generateSymptomsList() {
-
-    // Making options object to send to server
-    const options = {
-        orderByOptions: orderBy,
-        searchString: $("#searchBox").val(),
-        pageSize: $("#pagesizeselect").val(),
-        pageNum: pageNum
-    };
-
-    for (let i = 0; i < symptomIds.length; i++) {       // Workaround for not being able to
-        var propertyname = "symptomIds[" + i + "]";     // send an array inside an object
-        options[propertyname] = symptomIds[i];
-    }
-    // options object done
-
-    $.post("oblig/GetSymptomPage", options, function (page) {
-        // Sets the page number to whatever the server calculated, in case it went out of range
-        pageNum = page.pageData.pageNum;
-
-        // Show number of entries
-        let ut = "Showing <strong>" + page.symptomList.length + "</strong> of <strong>" + page.pageData.numEntries + "</strong> symptoms.";
-
-        // Table of symptoms
-        ut += "<table class='table table-hover'><thead><tr>" +
-            "<thead><tr>" +
-            "<th scope='col'><a href='#' class='link-primary' onclick='sortById()'>Id</a></th>" +
-            "<th scope='col'><a href='#' class='link-primary' onclick='sortByName()'>Name</a></th>" +
-            "<th scope='col'>Select</th>" +
-            "</tr></thead><tbody>";
-        for (let symptom of page.symptomList) {
-            ut += "<tr>" +
-                "<th scope='row'>" + symptom.id + "</td>" +
-                "<td>" + symptom.name + "</td>" +
-                "<td><a href='#' onclick='select(" + symptom.id + ", \"" + symptom.name + "\")'>Select</td></tr>";
-        }
-        $("#symptoms").html(ut);
-
-        // Page navigation
-        let utnav = "";
-
-        if (pageNum == 1) {
-            utnav += "<li class='page-item disabled'><span class='page-link'>Previous page</span></li>";
-        } else {
-            utnav += "<li class='page-item'><a class='page-link' href=#' onclick='prevPage()'>Previous page</a></li>";
-        }
-
-        for (let i = 1; i < page.pageData.numPages + 1; i++) {
-            if (i == pageNum) {
-                utnav += "<li class='page-item active' aria-current='page'><span class='page-link'>" + i + "</span>";
-            } else {
-                utnav += "<li class='page-item'><a class='page-link' href='#' onclick='goToPage(" + i + ")'>" + i + "</a></li>";
-            }
-        }
-
-        if (pageNum == page.pageData.numPages) {
-            utnav += "<li class='page-item disabled'><span class='page-link'>Next page</span></li>";
-        } else {
-            utnav += "<li class='page-item'><a class='page-link' href=#' onclick='nextPage()'>Next page</a></li>";
-        }
-
-        $("#pagenav").html(utnav);
-    });
-}
-
 function nextPage() {
     pageNum++;
     generateSymptomsList();
@@ -181,7 +114,9 @@ function createDisease() {
         else {
             $("#feil").html("Feil i db - prøv igjen senere");
         }
-    });
+    }).fail(() => {
+        $("#feil").html("Feil i db, prøv senere.");
+    })
 }
 
 function createDsList() {

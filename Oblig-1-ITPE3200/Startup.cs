@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -25,8 +26,18 @@ namespace Oblig_1_ITPE3200
             //{
             //    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
             //});
-            
+
             services.AddScoped<IObligRepository, ObligRepository>();
+
+            // Session
+            services.AddSession(options =>
+            {
+                options.Cookie.Name = ".AdventureWorks.Session";
+                options.IdleTimeout = TimeSpan.FromSeconds(1800); // 30 Minutes
+                options.Cookie.IsEssential = true;
+            });
+
+            services.AddDistributedMemoryCache();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -37,6 +48,8 @@ namespace Oblig_1_ITPE3200
                 app.UseDeveloperExceptionPage();
                 DBInit.initialize(app);
             }
+
+            app.UseSession();
 
             app.UseStaticFiles();
 

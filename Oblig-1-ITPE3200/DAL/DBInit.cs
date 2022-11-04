@@ -51,6 +51,16 @@ namespace Oblig_1_ITPE3200.DAL
                 var ds14 = new DiseaseSymptom { Disease = d7, Symptom = s11 };
                 var ds15 = new DiseaseSymptom { Disease = d7, Symptom = s6 };
 
+                // Adding users to db
+                var user = new Users();
+                user.Username = "admin";
+                var password = "Admin123";
+                byte[] salt = ObligRepository.MakeSalt();
+                byte[] hash = ObligRepository.MakeHash(password, salt);
+                user.Password = hash;
+                user.Salt = salt;
+                context.Users.Add(user);
+
                 context.DiseaseSymptoms.AddRange(ds1, ds2, ds3, ds4, ds5, ds6, ds7, ds8, ds9, ds10, ds11, ds12, ds13, ds14, ds15);
                 context.SaveChanges();
             }
