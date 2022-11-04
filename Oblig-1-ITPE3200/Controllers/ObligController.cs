@@ -1,8 +1,11 @@
+using Microsoft.AspNetCore.Http;
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+
 using Oblig_1_ITPE3200.DAL;
 using Oblig_1_ITPE3200.DTOs;
 using Oblig_1_ITPE3200.Models;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -13,6 +16,8 @@ namespace Oblig_1_ITPE3200.Controllers
     {
         private readonly IObligRepository _db;
 
+        private const string _loggedOn = "loggedOn";
+        
         private readonly ILogger<ObligController> _log;
 
         public ObligController(IObligRepository db, ILogger<ObligController> log)
@@ -38,13 +43,13 @@ namespace Oblig_1_ITPE3200.Controllers
             return Ok(diseaseDTO);
         }
 
-        /**public async Task<List<DiseaseDTO>> GetAllDiseases(string searchString)
-        {
-            return await _db.GetAllDiseases(searchString);
-        }**/
-
         public async Task<ActionResult> GetAllDiseases(string searchString)
         {
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString(_loggedOn)))
+            {
+                return Unauthorized();
+            }
+
             List<DiseaseDTO> diseaseDTOList = await _db.GetAllDiseases(searchString);
             if(diseaseDTOList == null)
             {
@@ -54,13 +59,13 @@ namespace Oblig_1_ITPE3200.Controllers
             return Ok(diseaseDTOList);
         }
 
-        /**public async Task<bool> CreateDisease(Disease disease)
-        {
-            return await _db.CreateDisease(disease);
-        }**/
-
         public async Task<ActionResult> CreateDisease(Disease disease)
         {
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString(_loggedOn)))
+            {
+                return Unauthorized();
+            }
+            
             bool returOK = await _db.CreateDisease(disease);
 
             if (!returOK)
@@ -71,13 +76,13 @@ namespace Oblig_1_ITPE3200.Controllers
             return Ok("Disease is created");
         }
 
-        /**public async Task<bool> UpdateDisease(Disease disease)
-        {
-            return await _db.UpdateDisease(disease);
-        }**/
-
         public async Task<ActionResult> UpdateDisease(Disease disease)
         {
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString(_loggedOn)))
+            {
+                return Unauthorized();
+            }
+
             bool returOK = await _db.UpdateDisease(disease);
             if(!returOK)
             {
@@ -87,13 +92,13 @@ namespace Oblig_1_ITPE3200.Controllers
             return Ok("Disease is updated");
         }
 
-        /**public async Task<bool> DeleteDisease(int id)
-        {
-            return await _db.DeleteDisease(id);
-        }**/
-
         public async Task<ActionResult> DeleteDisease(int id)
         {
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString(_loggedOn)))
+            {
+                return Unauthorized();
+            }
+
             bool returOK = await _db.DeleteDisease(id);
             if(!returOK)
             {
@@ -104,10 +109,6 @@ namespace Oblig_1_ITPE3200.Controllers
         }
 
         // Symptom CRUD
-        /**public async Task<List<SymptomDTO>> GetAllSymptoms()
-        {
-            return await _db.GetAllSymptoms();
-        }**/
 
         public async Task<ActionResult> GetAllSymptoms()
         {
@@ -120,11 +121,6 @@ namespace Oblig_1_ITPE3200.Controllers
             return Ok(symptomDTOList);
         }
 
-        /**public async Task<SymptomsTable> GetSymptomsTable(SymptomsTableOptions options)
-        {
-            return await _db.GetSymptomsTable(options);
-        }**/
-
         public async Task<ActionResult> GetSymptomsTable(SymptomsTableOptions options)
         {
             SymptomsTable symptomsTable = await _db.GetSymptomsTable(options);
@@ -135,11 +131,6 @@ namespace Oblig_1_ITPE3200.Controllers
             }
             return Ok(symptomsTable);
         }
-
-        /**public async Task<List<SymptomDTO>> GetRelatedSymptoms(int id)
-        {
-            return await _db.GetRelatedSymptoms(id);
-        }**/
 
         public async Task<ActionResult> GetRelatedSymptoms(int id)
         {
@@ -182,11 +173,6 @@ namespace Oblig_1_ITPE3200.Controllers
         */
 
         // Search method
-        /**public async Task<List<DiseaseDTO>> SearchDiseases(int[] symptomIds)
-        {
-            return await _db.SearchDiseases(symptomIds);
-        }**/
-
         public async Task<ActionResult> SearchDiseases(int[] symptomIds)
         {
             List<DiseaseDTO> diseaseDTOs = await _db.SearchDiseases(symptomIds);
@@ -196,6 +182,65 @@ namespace Oblig_1_ITPE3200.Controllers
                 return NotFound("Don't find disease list");
             }
             return Ok(diseaseDTOs);
+        }
+
+        // Login functions
+        
+        public async Task<ActionResult> LogIn(User user)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    bool b = await _db.LogIn(user);
+                    if (!b)
+                    {
+                        _log.LogInformation("Log in failed with user=" + user.Username);
+                        HttpContext.Session.SetString(_loggedOn, "");
+                        return Ok(false);
+                    }
+                    HttpContext.Session.SetString(_loggedOn, "LoggedOn");
+                    return Ok(true);
+                }
+                _log.LogInformation("Something wrong in inputvalidation, user=" + user.Username);
+                return BadRequest("Something wrong in inputvalidation");
+            }
+            catch (Exception e)
+            {
+                _log.LogInformation(e.Message);
+                return BadRequest("Something wrong on server.");
+            }
+        }
+
+        public bool LogOut()
+        {
+            try
+            {
+                HttpContext.Session.SetString(_loggedOn, "");
+                return true;
+            }
+            catch (Exception e)
+            {
+                _log.LogInformation(e.Message);
+                return false;
+            }
+        }
+
+        public ActionResult IsLoggedIn()
+        {
+            try
+            {
+                if (HttpContext.Session.GetString(_loggedOn) == "LoggedOn")
+                {
+                    return Ok(true);
+                }
+                return Ok(false);
+            }
+            catch (Exception e)
+            {
+                _log.LogInformation(e.Message);
+                return BadRequest("Something wrong with server. Try again later.");
+            }
         }
     }
 }

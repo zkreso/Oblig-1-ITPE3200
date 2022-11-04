@@ -1,9 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using Microsoft.EntityFrameworkCore;
 using Oblig_1_ITPE3200.DTOs;
 using Oblig_1_ITPE3200.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 
 namespace Oblig_1_ITPE3200.DAL
@@ -309,6 +311,47 @@ namespace Oblig_1_ITPE3200.DAL
             catch
             {
                 return null;
+            }
+        }
+
+
+        public static byte[] MakeHash(string password, byte[] salt)
+        {
+            return KeyDerivation.Pbkdf2(
+                password: password,
+                salt: salt,
+                prf: KeyDerivationPrf.HMACSHA512,
+                iterationCount: 1000,
+                numBytesRequested: 32);
+        }
+
+        public static byte[] MakeSalt()
+        {
+            var csp = new RNGCryptoServiceProvider();
+            var salt = new byte[24];
+            csp.GetBytes(salt);
+            return salt;
+        }
+
+        public async Task<bool> LogIn(User user)
+        {
+            try
+            {
+                Users foundUser = await _db.Users.FirstOrDefaultAsync(u =>
+                                                u.Username == user.Username);
+
+                byte[] hash = MakeHash(user.Password, foundUser.Salt);
+                bool ok = hash.SequenceEqual(foundUser.Password);
+                if (ok)
+                {
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception e)
+            {
+                //_log.LogInformation("Could not log in. " + e.Message);
+                return false;
             }
         }
     }

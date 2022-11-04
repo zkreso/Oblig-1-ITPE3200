@@ -31,5 +31,6 @@ namespace Oblig_1_ITPE3200.DAL
         */
         // Search method
         Task<List<DiseaseDTO>> SearchDiseases(int[] symptomIds);
+        Task<bool> LogIn(User user);
     }
 }
