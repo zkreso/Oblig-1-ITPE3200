@@ -16,5 +16,7 @@ function getDiseaseData() {
         }
         ut += "</ul>";
         $("#symptoms").html(ut);
+    }).fail(() => {
+        $("#feil").html("Feil i db, prøv senere.");
     });
 }

@@ -62,7 +62,9 @@ function generateSymptomsList() {
         }
 
         $("#pagenav").html(utnav);
-    });
+    }).fail(() => {
+        $("#feil").html("Feil i db, prøv senere.");
+    })
 }
 
 function nextPage() {
