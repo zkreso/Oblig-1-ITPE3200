@@ -20,6 +20,11 @@ namespace Oblig_1_ITPE3200.Controllers
         // Disease CRUD
         public async Task<DiseaseDTO> GetDisease(int id)
         {
+            if (!ModelState.IsValid)
+            {
+                // _log.LogInformation("Feil i inputvalidering");
+                // return BadRequest("Feil i inputvalidering");
+            }
             return await _db.GetDisease(id);
         }
         public async Task<List<DiseaseDTO>> GetAllDiseases(string searchString)
@@ -28,15 +33,30 @@ namespace Oblig_1_ITPE3200.Controllers
         }
         public async Task<bool> CreateDisease(Disease disease)
         {
+            if (!ModelState.IsValid)
+            {
+                // _log.LogInformation("Feil i inputvalidering");
+                // return BadRequest("Feil i inputvalidering");
+            }
             return await _db.CreateDisease(disease);
         }
 
         public async Task<bool> UpdateDisease(Disease disease)
         {
+            if (!ModelState.IsValid)
+            {
+                // _log.LogInformation("Feil i inputvalidering");
+                // return BadRequest("Feil i inputvalidering");
+            }
             return await _db.UpdateDisease(disease);
         }
         public async Task<bool> DeleteDisease(int id)
         {
+            if (!ModelState.IsValid)
+            {
+                // _log.LogInformation("Feil i inputvalidering");
+                // return BadRequest("Feil i inputvalidering");
+            }
             return await _db.DeleteDisease(id);
         }
 
@@ -47,6 +67,11 @@ namespace Oblig_1_ITPE3200.Controllers
         }
         public async Task<SymptomsTable> GetSymptomsTable(SymptomsTableOptions options)
         {
+            if (!ModelState.IsValid)
+            {
+                // _log.LogInformation("Feil i inputvalidering");
+                // return BadRequest("Feil i inputvalidering");
+            }
             return await _db.GetSymptomsTable(options);
         }
         public async Task<List<SymptomDTO>> GetRelatedSymptoms(int id)
