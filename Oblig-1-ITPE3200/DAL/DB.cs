@@ -5,6 +5,15 @@ using Oblig_1_ITPE3200.Models;
 
 namespace Oblig_1_ITPE3200.DAL
 {
+
+    public class Users
+    {
+        public int Id { get; set; }
+        public string Username { get; set; }
+        public byte[] Password { get; set; }
+        public byte[] Salt { get; set; }
+    }
+
     public class DB : DbContext
     {
         public DB(DbContextOptions<DB> options) : base(options)
@@ -14,6 +23,10 @@ namespace Oblig_1_ITPE3200.DAL
         public DbSet<Disease> Diseases { get; set; }
         public DbSet<Symptom> Symptoms { get; set; }
         public DbSet<DiseaseSymptom> DiseaseSymptoms { get; set; }
+
+        // Users for login
+        public DbSet<Users> Users { get; set; }
+
 
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //{
