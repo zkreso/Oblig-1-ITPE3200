@@ -15,7 +15,9 @@ function getalldiseases() {
 
     $.get(url, function (diseases) {
         skrivUtDiseases(diseases);
-    });
+    }).fail(() => {
+        $("#feil").html("Feil i db, prøv senere.");
+    })
 }
 
 function skrivUtDiseases(diseases) {
@@ -49,5 +51,7 @@ function deletedisease(id) {
         else {
             $("#feil").html("Feil i db - prøv igjen senere");
         }
-    });
+    }).fail(() => {
+        $("#feil").html("Feil i db, prøv senere.");
+    })
 };
