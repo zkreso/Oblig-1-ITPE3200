@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace Oblig_1_ITPE3200.DTOs
@@ -11,14 +12,19 @@ namespace Oblig_1_ITPE3200.DTOs
         private int _pageSize = DefaultPageSize;
         private int _pageNum = 1;
 
+        [RegularExpression(@"[0-9a-zA-ZæøåÆØÅ. \-\'\!\?]{0,999}")]
         public string OrderByOptions { get; set; }
         public int[] SymptomIds { get; set; }
+        [RegularExpression(@"[0-9a-zA-ZæøåÆØÅ. \-\'\!\?]{0,99}")]
         public string SearchString { get; set; }
+
+        [RegularExpression(@"^[1-9]([0-9]){0,3}$")]
         public int PageNum
         {
             get { return _pageNum; }
             set { _pageNum = value; }
         }
+        [RegularExpression(@"^(5|10|20)")]
         public int PageSize { 
             get { return _pageSize; }
             set { _pageSize = value; }

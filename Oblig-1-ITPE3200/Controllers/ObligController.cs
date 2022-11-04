@@ -27,10 +27,6 @@ namespace Oblig_1_ITPE3200.Controllers
         }
 
         // Disease CRUD
-        /**public async Task<DiseaseDTO> GetDisease(int id)
-        {
-            return await _db.GetDisease(id);
-        }**/
 
         public async Task<ActionResult> GetDisease(int id)
         {
@@ -49,7 +45,11 @@ namespace Oblig_1_ITPE3200.Controllers
             {
                 return Unauthorized();
             }
-
+            if (!ModelState.IsValid)
+            {
+                _log.LogInformation("Feil i inputvalidering");
+                return BadRequest("Feil i inputvalidering");
+            }
             List<DiseaseDTO> diseaseDTOList = await _db.GetAllDiseases(searchString);
             if(diseaseDTOList == null)
             {
@@ -64,6 +64,11 @@ namespace Oblig_1_ITPE3200.Controllers
             if (string.IsNullOrEmpty(HttpContext.Session.GetString(_loggedOn)))
             {
                 return Unauthorized();
+            }
+            if (!ModelState.IsValid)
+            {
+                _log.LogInformation("Feil i inputvalidering");
+                return BadRequest("Feil i inputvalidering");
             }
             
             bool returOK = await _db.CreateDisease(disease);
@@ -82,7 +87,12 @@ namespace Oblig_1_ITPE3200.Controllers
             {
                 return Unauthorized();
             }
-
+            if (!ModelState.IsValid)
+            {
+                _log.LogInformation("Feil i inputvalidering");
+                return BadRequest("Feil i inputvalidering");
+            }
+            
             bool returOK = await _db.UpdateDisease(disease);
             if(!returOK)
             {
@@ -98,7 +108,12 @@ namespace Oblig_1_ITPE3200.Controllers
             {
                 return Unauthorized();
             }
-
+            if (!ModelState.IsValid)
+            {
+                _log.LogInformation("Feil i inputvalidering");
+                return BadRequest("Feil i inputvalidering");
+            }
+            
             bool returOK = await _db.DeleteDisease(id);
             if(!returOK)
             {
@@ -123,6 +138,12 @@ namespace Oblig_1_ITPE3200.Controllers
 
         public async Task<ActionResult> GetSymptomsTable(SymptomsTableOptions options)
         {
+            if (!ModelState.IsValid)
+            {
+                _log.LogInformation("Feil i inputvalidering");
+                return BadRequest("Feil i inputvalidering");
+            }
+            
             SymptomsTable symptomsTable = await _db.GetSymptomsTable(options);
             if(symptomsTable == null)
             {
