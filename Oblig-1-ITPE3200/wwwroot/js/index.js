@@ -66,5 +66,7 @@ function calculateDiagnosis() {
         ut += "</table>";
 
         $("#results").html(ut);
-    });
+    }).fail(() => {
+        $("#feil").html("Feil i db, prøv senere.");
+    })
 }

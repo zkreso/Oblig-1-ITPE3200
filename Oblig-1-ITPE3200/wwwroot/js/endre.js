@@ -36,7 +36,9 @@ function getDiseaseData() {
             selectedSymptoms.push(newSymptom);
         }
         update();
-    });
+    }).fail(() => {
+        $("#feil").html("Feil i db, prøv senere.");
+    })
 }
 
 // Update function called when a symptom is selected or deselected
@@ -70,7 +72,9 @@ function saveChanges() {
         else {
             $("#feil").html("Feil i db - prøv igjen senere");
         }
-    });
+    }).fail(() => {
+        $("#feil").html("Feil i db, prøv senere.");
+    })
 }
 
 function createDsList() {
