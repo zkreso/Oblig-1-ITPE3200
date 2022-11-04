@@ -10,7 +10,7 @@ namespace Oblig_1_ITPE3200.DAL
         // Disease CRUD
         Task<DiseaseDTO> GetDisease(int id);
         Task<List<DiseaseDTO>> GetAllDiseases(string searchString);
-        Task<bool> CreateDisease(Disease disease);
+        Task<DiseaseDTO> CreateDisease(Disease disease);
         Task<bool> UpdateDisease(Disease disease);
         Task<bool> DeleteDisease(int id);
 
@@ -30,7 +30,7 @@ namespace Oblig_1_ITPE3200.DAL
         Task<bool> DeleteDiseaseSymptom(int DiseaseId, int SymptomId);
         */
         // Search method
-        Task<List<DiseaseDTO>> SearchDiseases(int[] symptomIds);
-        Task<bool> LogIn(User user);
+        Task<List<DiseaseDTO>> SearchDiseases(List<Symptom> selectedSymptoms);
+        Task<bool> LogIn(UserDTO user);
     }
 }

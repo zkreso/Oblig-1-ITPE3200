@@ -1,0 +1,57 @@
+<header class="mb-3">
+    <h1 class="pb-2">Symptomkalkulator</h1>
+    <p class="col-lg-6 col-sm-12">
+        Select one or more symptoms from the symptoms table below. Diseases with all the selected symptoms will be shown automatically.
+        Click on a selected symptom to deselect it. You may also search for symptoms by name.
+    </p>
+</header>
+
+<h5 class="pb-2">Matching diseases</h5>
+<div id="results" class="p-3 border">
+    <ng-container *ngIf="(anyselected$ | async); else noneselected">
+        <ng-container *ngIf="(diseases$ | async) as diseases; else laster">
+            <ng-container *ngIf="diseases.length != 0; else nomatches">
+                <h6 class="text-primary">{{diseases.length}} result(s) found</h6>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Symptoms</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let disease of diseases">
+                            <td>
+                                <a class="link" [routerLink]="['disease-details/', disease.id]">{{disease.name}}</a>
+                            </td>
+                            <td>
+                                {{disease.symptoms.join(', ')}}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </ng-container>
+        </ng-container>
+    </ng-container>
+</div>
+
+<!-- conditional templates -->
+
+<ng-template #noneselected>
+    <div class="text-muted">No symptoms selected - please select one or more symptoms from the symptom list</div>
+</ng-template>
+
+<ng-template #nomatches>
+    <div class='text-danger'>No matching diseases</div>
+</ng-template>
+
+<ng-template #laster>
+    <div class="text-center">
+        <div class="spinner-border justify-content-center m-1" role="status">
+            <span class="visually-hidden">Calculating...</span>
+        </div>
+        <div>
+            Calculating...
+        </div>
+    </div>
+</ng-template>

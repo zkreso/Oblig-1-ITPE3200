@@ -1,0 +1,13 @@
+<h1>Diseases</h1>
+
+<app-searchbar
+    [placeholder]="searchPlaceholder"
+    [label]="searchLabel"
+    (clickSearch)="search($event)"
+    (clickClear)="clearSearch()"
+    (search$)="search($event)">
+</app-searchbar>
+
+<app-diseasetable [vm]="diseases$ | async"
+                  (clickDeleteDisease)="deleteDisease($event)">
+</app-diseasetable>

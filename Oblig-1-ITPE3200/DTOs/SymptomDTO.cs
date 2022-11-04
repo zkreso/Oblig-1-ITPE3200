@@ -1,6 +1,7 @@
 ﻿using Castle.Core.Internal;
 using Microsoft.EntityFrameworkCore;
 using Oblig_1_ITPE3200.Models;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Oblig_1_ITPE3200.DTOs
@@ -23,17 +24,17 @@ namespace Oblig_1_ITPE3200.DTOs
             }
             return symptoms.Where(s => EF.Functions.Like(s.Name, "%" + searchString + "%"));
         }
-        public static IQueryable<SymptomDTO> ExcludeSymptomsById(this IQueryable<SymptomDTO> symptoms, int[] symptomIds)
+        public static IQueryable<SymptomDTO> ExcludeSymptoms(this IQueryable<SymptomDTO> symptoms, List<SymptomDTO> selectedSymptoms)
         {
-            if (symptomIds.IsNullOrEmpty())
+            if (selectedSymptoms.IsNullOrEmpty())
             {
                 return symptoms;
             }
-            if (symptomIds.Length == 0)
+            if (selectedSymptoms.Count() == 0)
             {
                 return symptoms;
             }
-            return symptoms.Where(s => !symptomIds.Contains(s.Id));
+            return symptoms.Where(s => !selectedSymptoms.Select(s => s.Id).ToArray().Contains(s.Id));
         }
         public static IQueryable<SymptomDTO> OrderSymptomsBy(this IQueryable<SymptomDTO> symptoms, string orderBy)
         {

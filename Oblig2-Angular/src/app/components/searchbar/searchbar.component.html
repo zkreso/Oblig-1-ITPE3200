@@ -1,0 +1,12 @@
+<div class="p-3 border border-bottom-0 rounded-top bg-light">
+    <form class="form-inline row align-items-center" (ngSubmit)="search()">
+        <div class="col-4">
+            <label for="searchBox" class="visually-hidden">{{label}}</label>
+            <input type="search" class="form-control" [placeholder]=placeholder [formControl]="searchStringControl">
+        </div>
+        <div class="col">
+            <button type="submit" class="btn btn-primary">Search</button> 
+            <button type="reset" class="btn btn-secondary mx-1" (click)="clear()">Clear search</button>
+        </div>
+    </form>
+</div>

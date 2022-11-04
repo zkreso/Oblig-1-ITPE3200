@@ -1,0 +1,49 @@
+<div *ngIf="vm" class="p-3 mb-3 border border-top-0 rounded-bottom bg-light">
+    <div class="row justify-content-start align-items-center">
+
+        <!-- page selection -->
+        <div class="col-auto">
+            <ul class="pagination mb-0">
+
+                <!-- previous page -->
+                <li *ngIf="vm.pageNum == 1" class="page-item disabled arrow">
+                    <span class="page-link">Previous page</span>
+                </li>
+                <li *ngIf="vm.pageNum != 1" class="page-item pointer" (click)="prevPage()">
+                    <span class="page-link">Previous page</span>
+                </li>
+
+                <!-- page numbers -->
+                <ng-container *ngFor="let i of arr(vm!.numPages!)">
+                    <li *ngIf="vm.pageNum == i" class="page-item active" style="cursor: default" aria-current="page">
+                        <span class="page-link">{{i}}</span>
+                    </li>
+                    <li *ngIf="vm.pageNum != i" class="page-item" style="cursor: pointer">
+                        <a class="page-link" (click)="goToPage(i)">{{i}}</a>
+                    </li>
+                </ng-container>
+
+                <!-- next page -->
+                <li *ngIf="vm.pageNum == vm.numPages" class="page-item disabled arrow">
+                    <span class="page-link">Next page</span>
+                </li>
+                <li *ngIf="vm.pageNum != vm.numPages" class="page-item pointer" (click)="nextPage()">
+                    <span class="page-link">Next page</span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- page size selection -->
+        <div class="col-auto">Results per page:</div>
+        <div class="col-auto">
+            <select class="form-select" aria-label="Page size selection" (change)="changePageSize()" [formControl]="pageSizeControl">
+                <option value="5">5</option>
+                <option selected value="10">10</option>
+                <option value="20">20</option>
+            </select>
+        </div>
+
+    </div>
+</div>
+
+       
