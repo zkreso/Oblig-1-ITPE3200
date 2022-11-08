@@ -12,8 +12,8 @@ export class Login {
 
   constructor(private http: HttpClient, private router: Router, private fb: FormBuilder) {
     this.form = fb.group({
-      username: ["", Validators.required],
-      password: ["", Validators.pattern("[0-9]{6,15}")]
+      username: ["", Validators.pattern('[A-Za-zÆØÅæøå. ]{2,20}')],
+      password: ["", Validators.pattern('[A-Za-z0-9]{8,}')]
     });
   }
 

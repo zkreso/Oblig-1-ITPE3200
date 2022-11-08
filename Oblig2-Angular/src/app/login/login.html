@@ -4,15 +4,15 @@
     <div class="form-group">
       <label for="username">Username</label>
       <input class="form-control" formControlName="username" />
-      <span *ngIf="this.form.controls['username'].status=='INVALID'" style="color:red;">Username</span>
+      <span *ngIf="this.form.controls['username'].status == 'INVALID'" style="color:red;">Username is invalid</span>
     </div>
     <div class="form-group">
       <label for="password">Password</label>
       <input class="form-control" formControlName="password" />
-      <span *ngIf="this.form.controls['password'].status == 'INVALID'" style="color:red;">Password</span>
+      <span *ngIf="this.form.controls['password'].status == 'INVALID'" style="color:red;">Password must have at least 8 chracters</span>
     </div>
     <div class="form-group">
-      <button type="submit" class="btn btn-primary">Log in</button>
+      <button type="submit" [disabled]="!form.valid" class="btn btn-primary">Log in</button>
     </div>
     <span id="err" style="color:red;"></span>
   </form>
