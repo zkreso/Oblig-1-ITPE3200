@@ -11,7 +11,8 @@ using System.Threading.Tasks;
 
 namespace Oblig_1_ITPE3200.Controllers
 {
-    [Route("[controller]/[action]")]
+    [ApiController]
+    [Route("api/[controller]")]
     public class ObligController : ControllerBase
     {
         private readonly IObligRepository _db;
@@ -28,6 +29,7 @@ namespace Oblig_1_ITPE3200.Controllers
 
         // Disease CRUD
 
+        [HttpGet]
         public async Task<ActionResult> GetDisease(int id)
         {
             DiseaseDTO diseaseDTO = await _db.GetDisease(id);
@@ -39,6 +41,7 @@ namespace Oblig_1_ITPE3200.Controllers
             return Ok(diseaseDTO);
         }
 
+        [HttpGet]
         public async Task<ActionResult> GetAllDiseases(string searchString)
         {
             if (string.IsNullOrEmpty(HttpContext.Session.GetString(_loggedOn)))
@@ -125,6 +128,7 @@ namespace Oblig_1_ITPE3200.Controllers
 
         // Symptom CRUD
 
+        [HttpGet]
         public async Task<ActionResult> GetAllSymptoms()
         {
             List<SymptomDTO> symptomDTOList = await _db.GetAllSymptoms();
@@ -136,6 +140,7 @@ namespace Oblig_1_ITPE3200.Controllers
             return Ok(symptomDTOList);
         }
 
+        [HttpGet]
         public async Task<ActionResult> GetSymptomsTable(SymptomsTableOptions options)
         {
             if (!ModelState.IsValid)
@@ -153,6 +158,7 @@ namespace Oblig_1_ITPE3200.Controllers
             return Ok(symptomsTable);
         }
 
+        [HttpGet]
         public async Task<ActionResult> GetRelatedSymptoms(int id)
         {
             List<SymptomDTO> symptomDTOs = await _db.GetRelatedSymptoms(id);
