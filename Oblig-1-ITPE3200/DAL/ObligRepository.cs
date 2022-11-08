@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Oblig_1_ITPE3200.DTOs;
 using Oblig_1_ITPE3200.Models;
@@ -333,6 +334,7 @@ namespace Oblig_1_ITPE3200.DAL
             return salt;
         }
 
+        [HttpPost]
         public async Task<bool> LogIn(User user)
         {
             try
