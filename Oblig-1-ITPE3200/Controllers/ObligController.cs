@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Http;
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-
 using Oblig_1_ITPE3200.DAL;
 using Oblig_1_ITPE3200.DTOs;
 using Oblig_1_ITPE3200.Models;
@@ -11,8 +10,9 @@ using System.Threading.Tasks;
 
 namespace Oblig_1_ITPE3200.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
+    //[ApiController]
+    //[Route("api/[controller]")]
+    [Route("[controller]/[action]")]
     public class ObligController : ControllerBase
     {
         private readonly IObligRepository _db;
@@ -29,7 +29,6 @@ namespace Oblig_1_ITPE3200.Controllers
 
         // Disease CRUD
 
-        [HttpGet]
         public async Task<ActionResult> GetDisease(int id)
         {
             DiseaseDTO diseaseDTO = await _db.GetDisease(id);
@@ -41,7 +40,6 @@ namespace Oblig_1_ITPE3200.Controllers
             return Ok(diseaseDTO);
         }
 
-        [HttpGet]
         public async Task<ActionResult> GetAllDiseases(string searchString)
         {
             if (string.IsNullOrEmpty(HttpContext.Session.GetString(_loggedOn)))
@@ -128,7 +126,6 @@ namespace Oblig_1_ITPE3200.Controllers
 
         // Symptom CRUD
 
-        [HttpGet]
         public async Task<ActionResult> GetAllSymptoms()
         {
             List<SymptomDTO> symptomDTOList = await _db.GetAllSymptoms();
@@ -140,7 +137,6 @@ namespace Oblig_1_ITPE3200.Controllers
             return Ok(symptomDTOList);
         }
 
-        [HttpGet]
         public async Task<ActionResult> GetSymptomsTable(SymptomsTableOptions options)
         {
             if (!ModelState.IsValid)
@@ -158,7 +154,6 @@ namespace Oblig_1_ITPE3200.Controllers
             return Ok(symptomsTable);
         }
 
-        [HttpGet]
         public async Task<ActionResult> GetRelatedSymptoms(int id)
         {
             List<SymptomDTO> symptomDTOs = await _db.GetRelatedSymptoms(id);
@@ -212,7 +207,6 @@ namespace Oblig_1_ITPE3200.Controllers
         }
 
         // Login functions
-        
         public async Task<ActionResult> LogIn(User user)
         {
             try

@@ -21,12 +21,24 @@ export class Login {
     console.log("login() starts");
     console.log(this.form);
 
-    const user = new User();
-    user.Username = this.form.value.username
-    user.Password = this.form.value.password;
-
+    const user = this.makeUser();
     console.log("Found user: \n" + user.Username + "\n" + user.Password);
 
+    this.http.post("oblig/LogIn", user)
+      .subscribe(retur => {
+        this.router.navigate(["/"]);
+      },
+        error => console.log(error)
+      );
+  }
+
+  makeUser(): User {
+    const user = new User();
+
+    user.Username = this.form.value.username;
+    user.Password = this.form.value.password;
+
+    return user;
   }
 
 }
