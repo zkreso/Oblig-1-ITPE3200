@@ -26,7 +26,7 @@ export class Login {
 
     this.http.post("oblig/LogIn", user)
       .subscribe(retur => {
-        this.router.navigate(["/"]);
+        this.router.navigate(["/diseaselist"]);
       },
         error => console.log(error)
       );

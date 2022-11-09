@@ -1,0 +1,21 @@
+<div class="container">
+  <h1>Diseases</h1>
+  <div id="filters" class="p-3 mt-3 border rounded bg-light">
+    <form class="row form-inline align-items-center" onsubmit="return false;">
+      <div class="col-4">
+        <label for="searchBox" class="visually-hidden">Search for disease</label>
+        <input type="search" class="form-control" id="searchBox" placeholder="Disease name" on>
+      </div>
+      <div class="col">
+        <button type="submit" class="btn btn-primary" onclick="getalldiseases()">Search</button>
+        <button type="button" class="btn btn-secondary" onclick="clearSearch()">Clear search</button>
+      </div>
+    </form>
+  </div>
+  <div class="p-3">
+    <div id="diseases">
+
+    </div>
+  </div>
+  <div id="#feil"></div>
+</div>

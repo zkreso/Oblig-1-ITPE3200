@@ -12,5 +12,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="src\app\meny\" />
+    <Folder Include="src\app\diseaselist\" />
   </ItemGroup>
 </Project>

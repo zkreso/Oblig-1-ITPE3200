@@ -4,15 +4,19 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
+import { FrontPage } from './frontpage/frontpage';
 import { Login } from './login/login';
 import { Meny } from './meny/meny';
+import { DiseaseList } from './diseaselist/diseaselist';
 import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
   declarations: [
     AppComponent,
+    FrontPage,
     Login,
-    Meny
+    Meny,
+    DiseaseList
   ],
   imports: [
     BrowserModule,
