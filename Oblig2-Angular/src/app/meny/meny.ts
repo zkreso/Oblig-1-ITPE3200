@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivationStart, Router } from '@angular/router';
 
 @Component({
   selector: 'app-nav-meny',
@@ -11,12 +10,37 @@ export class Meny {
   isExpanded = false;
   session = false;
 
-  constructor(private http: HttpClient, private router: Router, private fb: FormBuilder) { }
+  constructor(private http: HttpClient, private router: Router) {
+    router.events.subscribe(event => {
+      if (event instanceof ActivationStart) {
+        console.log("Routing changed");
+        this.isLoggedIn();
+      }
+    });
+  }
 
-  ngOnInit() {
-    this.http.get("oblig/IsLoggedIn")
+  isLoggedIn() {
+    this.http.get<boolean>("api/oblig/IsLoggedIn/")
       .subscribe(retur => {
-        this.session = true;
+        if (retur) {
+          console.log("Retur is true");
+          this.session = true;
+        }
+        else {
+          console.log("Retur is false")
+        }
+      },
+        error => console.log(error)
+      );
+  }
+
+  logout() {
+    this.http.get<boolean>("api/LogOut/")
+      .subscribe(retur => {
+        if (retur) {
+          this.session = false;
+          console.log("Logged out");
+        }
       },
         error => console.log(error)
       );

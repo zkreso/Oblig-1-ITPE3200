@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators, FormBuilder } from "@angular/forms";
 import { User } from "./User";
+import { Meny } from '../meny/meny';
 
 @Component({
   templateUrl: "login.html"
@@ -24,9 +25,16 @@ export class Login {
     const user = this.makeUser();
     console.log("Found user: \n" + user.Username + "\n" + user.Password);
 
-    this.http.post("oblig/LogIn", user)
+    var juser = JSON.stringify(user);
+
+    this.http.get<boolean>("api/LogIn/"+user)
       .subscribe(retur => {
-        this.router.navigate(["/diseaselist"]);
+        if (retur) {
+          this.router.navigate(["/diseaselist"]);
+        }
+        else {
+          console.log("Did not login");
+        }
       },
         error => console.log(error)
       );

@@ -334,7 +334,6 @@ namespace Oblig_1_ITPE3200.DAL
             return salt;
         }
 
-        [HttpPost]
         public async Task<bool> LogIn(User user)
         {
             try

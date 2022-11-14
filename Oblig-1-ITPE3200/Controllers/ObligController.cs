@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Http;
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Oblig_1_ITPE3200.DAL;
 using Oblig_1_ITPE3200.DTOs;
@@ -10,9 +11,9 @@ using System.Threading.Tasks;
 
 namespace Oblig_1_ITPE3200.Controllers
 {
-    //[ApiController]
-    //[Route("api/[controller]")]
-    [Route("[controller]/[action]")]
+    [ApiController]
+    [Route("api/[controller]")]
+    //[Route("[controller]/[action]")]
     public class ObligController : ControllerBase
     {
         private readonly IObligRepository _db;
@@ -29,6 +30,7 @@ namespace Oblig_1_ITPE3200.Controllers
 
         // Disease CRUD
 
+        [HttpGet, Route("GetDisease/{id}")]
         public async Task<ActionResult> GetDisease(int id)
         {
             DiseaseDTO diseaseDTO = await _db.GetDisease(id);
@@ -40,6 +42,7 @@ namespace Oblig_1_ITPE3200.Controllers
             return Ok(diseaseDTO);
         }
 
+        [HttpGet, Route("GetAllDiseases")]
         public async Task<ActionResult> GetAllDiseases(string searchString)
         {
             if (string.IsNullOrEmpty(HttpContext.Session.GetString(_loggedOn)))
@@ -60,6 +63,7 @@ namespace Oblig_1_ITPE3200.Controllers
             return Ok(diseaseDTOList);
         }
 
+        [HttpPost, Route("CreateDisease")]
         public async Task<ActionResult> CreateDisease(Disease disease)
         {
             if (string.IsNullOrEmpty(HttpContext.Session.GetString(_loggedOn)))
@@ -82,6 +86,7 @@ namespace Oblig_1_ITPE3200.Controllers
             return Ok("Disease is created");
         }
 
+        [HttpPut, Route("UpdateDisease")]
         public async Task<ActionResult> UpdateDisease(Disease disease)
         {
             if (string.IsNullOrEmpty(HttpContext.Session.GetString(_loggedOn)))
@@ -103,6 +108,7 @@ namespace Oblig_1_ITPE3200.Controllers
             return Ok("Disease is updated");
         }
 
+        [HttpDelete, Route("DeleteDisease/{id}")]
         public async Task<ActionResult> DeleteDisease(int id)
         {
             if (string.IsNullOrEmpty(HttpContext.Session.GetString(_loggedOn)))
@@ -126,6 +132,7 @@ namespace Oblig_1_ITPE3200.Controllers
 
         // Symptom CRUD
 
+        [HttpGet, Route("GetAllSymptoms")]
         public async Task<ActionResult> GetAllSymptoms()
         {
             List<SymptomDTO> symptomDTOList = await _db.GetAllSymptoms();
@@ -137,6 +144,7 @@ namespace Oblig_1_ITPE3200.Controllers
             return Ok(symptomDTOList);
         }
 
+        [HttpGet, Route("GetSymptomsTable")]
         public async Task<ActionResult> GetSymptomsTable(SymptomsTableOptions options)
         {
             if (!ModelState.IsValid)
@@ -154,6 +162,7 @@ namespace Oblig_1_ITPE3200.Controllers
             return Ok(symptomsTable);
         }
 
+        [HttpGet, Route("GetRelatedSymptoms/{id}")]
         public async Task<ActionResult> GetRelatedSymptoms(int id)
         {
             List<SymptomDTO> symptomDTOs = await _db.GetRelatedSymptoms(id);
@@ -195,6 +204,7 @@ namespace Oblig_1_ITPE3200.Controllers
         */
 
         // Search method
+        [HttpGet, Route("SearchDisease/{symptomIds}")]
         public async Task<ActionResult> SearchDiseases(int[] symptomIds)
         {
             List<DiseaseDTO> diseaseDTOs = await _db.SearchDiseases(symptomIds);
@@ -207,10 +217,12 @@ namespace Oblig_1_ITPE3200.Controllers
         }
 
         // Login functions
+        [HttpGet, Route("LogIn/{user}")]
         public async Task<ActionResult> LogIn(User user)
         {
             try
             {
+
                 if (ModelState.IsValid)
                 {
                     bool b = await _db.LogIn(user);
@@ -233,20 +245,22 @@ namespace Oblig_1_ITPE3200.Controllers
             }
         }
 
-        public bool LogOut()
+        [HttpPut, Route("LogOut")]
+        public ActionResult LogOut()
         {
             try
             {
                 HttpContext.Session.SetString(_loggedOn, "");
-                return true;
+                return Ok(true);
             }
             catch (Exception e)
             {
                 _log.LogInformation(e.Message);
-                return false;
+                return Ok(false);
             }
         }
 
+        [HttpGet, Route("IsLoggedIn")]
         public ActionResult IsLoggedIn()
         {
             try
