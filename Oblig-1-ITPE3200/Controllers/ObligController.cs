@@ -217,7 +217,8 @@ namespace Oblig_1_ITPE3200.Controllers
         }
 
         // Login functions
-        [HttpGet, Route("LogIn/{user}")]
+        // [HttpGet, Route("LogIn/{user})"] cant get this to work
+        [HttpPost, Route("LogIn")]
         public async Task<ActionResult> LogIn(User user)
         {
             try

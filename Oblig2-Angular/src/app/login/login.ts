@@ -25,9 +25,8 @@ export class Login {
     const user = this.makeUser();
     console.log("Found user: \n" + user.Username + "\n" + user.Password);
 
-    var juser = JSON.stringify(user);
-
-    this.http.get<boolean>("api/LogIn/"+user)
+    // Should be a get call, but cant get it to work
+    this.http.post<boolean>("api/oblig/LogIn/", user)
       .subscribe(retur => {
         if (retur) {
           this.router.navigate(["/diseaselist"]);

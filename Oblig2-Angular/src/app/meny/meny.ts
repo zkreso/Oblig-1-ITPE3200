@@ -23,11 +23,11 @@ export class Meny {
     this.http.get<boolean>("api/oblig/IsLoggedIn/")
       .subscribe(retur => {
         if (retur) {
-          console.log("Retur is true");
+          console.log("Session is valid");
           this.session = true;
         }
         else {
-          console.log("Retur is false")
+          console.log("Session is not valid")
         }
       },
         error => console.log(error)
