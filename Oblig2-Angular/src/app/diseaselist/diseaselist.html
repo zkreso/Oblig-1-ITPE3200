@@ -14,7 +14,24 @@
   </div>
   <div class="p-3">
     <div id="diseases">
-
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Name</th>
+            <th scope="col">Symptoms</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody *ngFor="let d in diseases">
+          <tr>
+            <td scope="col">{{d.Id}}</td>
+            <td scope="col">{{d.Name}}</td>
+            <td></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
   <div id="#feil"></div>

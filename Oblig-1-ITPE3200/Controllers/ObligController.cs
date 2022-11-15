@@ -42,7 +42,7 @@ namespace Oblig_1_ITPE3200.Controllers
             return Ok(diseaseDTO);
         }
 
-        [HttpGet, Route("GetAllDiseases")]
+        [HttpGet, Route("GetAllDiseases/{searchString}")]
         public async Task<ActionResult> GetAllDiseases(string searchString)
         {
             if (string.IsNullOrEmpty(HttpContext.Session.GetString(_loggedOn)))
