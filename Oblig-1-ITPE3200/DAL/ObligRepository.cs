@@ -300,6 +300,7 @@ namespace Oblig_1_ITPE3200.DAL
 
                 IQueryable<Disease> query = _db.Diseases;
 
+
                 foreach(Symptom symptom in selectedSymptoms)
                 {
                     query = query.Where(d => d.DiseaseSymptoms.Select(ds => ds.SymptomId).Contains(symptom.Id));
@@ -340,6 +341,7 @@ namespace Oblig_1_ITPE3200.DAL
         {
             try
             {
+            
                 User foundUser = await _db.Users.FirstOrDefaultAsync(u => u.Username == user.Username);
 
                 byte[] hash = MakeHash(user.Password, foundUser.Salt);

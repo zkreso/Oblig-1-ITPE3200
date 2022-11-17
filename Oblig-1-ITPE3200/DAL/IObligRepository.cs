@@ -30,6 +30,7 @@ namespace Oblig_1_ITPE3200.DAL
         Task<bool> DeleteDiseaseSymptom(int DiseaseId, int SymptomId);
         */
         // Search method
+
         Task<List<DiseaseDTO>> SearchDiseases(List<Symptom> selectedSymptoms);
         Task<bool> LogIn(UserDTO user);
     }
