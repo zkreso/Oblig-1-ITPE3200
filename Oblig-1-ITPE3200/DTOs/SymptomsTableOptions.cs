@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
@@ -14,7 +15,7 @@ namespace Oblig_1_ITPE3200.DTOs
 
         [RegularExpression(@"[0-9a-zA-ZæøåÆØÅ. \-\'\!\?]{0,999}")]
         public string OrderByOptions { get; set; }
-        public int[] SymptomIds { get; set; }
+        public List<SymptomDTO> SelectedSymptoms { get; set; }
         [RegularExpression(@"[0-9a-zA-ZæøåÆØÅ. \-\'\!\?]{0,99}")]
         public string SearchString { get; set; }
 
