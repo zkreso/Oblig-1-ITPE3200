@@ -52,7 +52,7 @@ namespace Oblig_1_ITPE3200.DAL
                 var ds15 = new DiseaseSymptom { Disease = d7, Symptom = s6 };
 
                 // Adding users to db
-                var user = new Users();
+                var user = new User();
                 user.Username = "admin";
                 var password = "Admin123";
                 byte[] salt = ObligRepository.MakeSalt();

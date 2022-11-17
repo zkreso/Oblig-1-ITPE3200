@@ -1,0 +1,23 @@
+<app-selectedsymptoms [selectedSymptoms]="selectedSymptoms$ | async"
+                      (clickRemoveSymptom)="removeSymptom($event)">
+</app-selectedsymptoms>
+
+<h5 class="pb-2">Symptoms list</h5>
+
+<app-searchbar [placeholder]="searchPlaceholder"
+               [label]="searchLabel"
+               (clickSearch)="search($event)"
+               (clickClear)="clearSearch()">
+</app-searchbar>
+
+<app-symptomstable [symptoms]="symptoms$ | async"
+                   [loading]="loading$ | async"
+                   (clickAddSymptom)="addSymptom($event)">
+</app-symptomstable>
+
+<app-pagingbar [vm]="(options$ | async)"
+               (clickNextPage)="nextPage()"
+               (clickPrevPage)="prevPage()"
+               (clickPageNum)="goToPage($event)"
+               (clickPageSize)="setPageSize($event)">
+</app-pagingbar>

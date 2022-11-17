@@ -1,0 +1,24 @@
+<div class="container">
+    <ng-container *ngIf="disease$ | async as disease">
+        <header class="mb-3">
+            <div class="fw-light">Disease</div>
+            <h1>
+                {{disease.name}}
+            </h1>
+        </header>
+        <h6>Description:</h6>
+        <p class="mb-3">
+            {{disease.description}}
+        </p>
+        <h6>Symptoms:</h6>
+        <ul>
+            <li *ngFor="let symptom of disease.symptoms">
+                {{symptom}}
+            </li>
+        </ul>
+        <p class="pt-3">
+            <a onclick="history.back()" class="link-secondary pointer">Back</a>
+        </p>
+    </ng-container>
+</div>
+

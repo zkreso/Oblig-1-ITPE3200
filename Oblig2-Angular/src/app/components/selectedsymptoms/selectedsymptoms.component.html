@@ -1,0 +1,11 @@
+<div class="mb-3" *ngIf="selectedSymptoms">
+    <div *ngIf="selectedSymptoms.length > 0" class="p-3 border border-top-0 rounded-bottom bg-light">
+        <h6>Selected symptoms (click to deselect)</h6>
+        <app-button *ngFor="let symptom of selectedSymptoms"
+                    text="{{symptom.name}}"
+                    bootstrapClasses="btn btn-lg btn-primary m-1"
+                    iconClasses="bi bi-trash text-light"
+                    (btnClick)="removeSymptom(symptom)">
+        </app-button>
+    </div>
+</div>

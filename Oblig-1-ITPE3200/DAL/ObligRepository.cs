@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 using Oblig_1_ITPE3200.DTOs;
 using Oblig_1_ITPE3200.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
@@ -289,7 +291,7 @@ namespace Oblig_1_ITPE3200.DAL
         public async Task<List<DiseaseDTO>> SearchDiseases(List<Symptom> selectedSymptoms)
         {
             try
-            {
+            {                
                 // Return empty list if nothing is selected
                 if (selectedSymptoms.Count() == 0)
                 {
@@ -298,7 +300,8 @@ namespace Oblig_1_ITPE3200.DAL
 
                 IQueryable<Disease> query = _db.Diseases;
 
-                foreach (Symptom symptom in selectedSymptoms)
+
+                foreach(Symptom symptom in selectedSymptoms)
                 {
                     query = query.Where(d => d.DiseaseSymptoms.Select(ds => ds.SymptomId).Contains(symptom.Id));
                 }
@@ -338,8 +341,8 @@ namespace Oblig_1_ITPE3200.DAL
         {
             try
             {
-                User foundUser = await _db.Users.FirstOrDefaultAsync(u =>
-                                                u.Username == user.Username);
+            
+                User foundUser = await _db.Users.FirstOrDefaultAsync(u => u.Username == user.Username);
 
                 byte[] hash = MakeHash(user.Password, foundUser.Salt);
                 bool ok = hash.SequenceEqual(foundUser.Password);

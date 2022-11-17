@@ -1,0 +1,26 @@
+<div class="p-3 border-top">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Name</th>
+                <th scope="col">Symptoms</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <ng-container *ngIf="vm">
+                <tr *ngFor="let disease of vm">
+                    <td scope="row">{{disease.id}}</td>
+                    <td>{{disease.name}}</td>
+                    <td>{{disease.symptoms.join(", ")}}</td>
+                    <td>
+                        <a class="link" [routerLink]="['/disease-details/', disease.id]">View</a> |
+                        <a class="link" [routerLink]="['/edit-disease/', disease.id]">Edit</a> |
+                        <a class="link link-danger pointer" (click)="deleteDisease(disease.id)">Delete</a>
+                    </td>
+                </tr>
+            </ng-container>
+        </tbody>
+    </table>
+</div>

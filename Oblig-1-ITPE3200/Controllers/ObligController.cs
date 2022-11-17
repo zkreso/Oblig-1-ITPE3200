@@ -61,16 +61,16 @@ namespace Oblig_1_ITPE3200.Controllers
 
         public async Task<ActionResult> CreateDisease([FromBody] Disease disease)
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString(_loggedOn)))
-            {
-                return Unauthorized();
-            }
+            //if (string.IsNullOrEmpty(HttpContext.Session.GetString(_loggedOn)))
+            //{
+            //    return Unauthorized();
+            //}
             if (!ModelState.IsValid)
             {
                 _log.LogInformation("Feil i inputvalidering");
                 return BadRequest("Feil i inputvalidering");
             }
-
+            
             DiseaseDTO createdDisease = await _db.CreateDisease(disease);
 
             if (createdDisease == null)
@@ -86,10 +86,10 @@ namespace Oblig_1_ITPE3200.Controllers
 
         public async Task<ActionResult> UpdateDisease([FromBody] Disease disease)
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString(_loggedOn)))
-            {
-                return Unauthorized();
-            }
+            //if (string.IsNullOrEmpty(HttpContext.Session.GetString(_loggedOn)))
+            //{
+            //    return Unauthorized();
+            //}
             if (!ModelState.IsValid)
             {
                 _log.LogInformation("Feil i inputvalidering");
@@ -107,10 +107,10 @@ namespace Oblig_1_ITPE3200.Controllers
 
         public async Task<ActionResult> DeleteDisease([FromQuery] int id)
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString(_loggedOn)))
-            {
-                return Unauthorized();
-            }
+            //if (string.IsNullOrEmpty(HttpContext.Session.GetString(_loggedOn)))
+            //{
+            //    return Unauthorized();
+            //}
             if (!ModelState.IsValid)
             {
                 _log.LogInformation("Feil i inputvalidering");
@@ -139,7 +139,7 @@ namespace Oblig_1_ITPE3200.Controllers
             return Ok(symptomDTOList);
         }
 
-        public async Task<ActionResult> GetSymptomsTable(SymptomsTableOptions options)
+        public async Task<ActionResult> GetSymptomsTable([FromBody]SymptomsTableOptions options)
         {
             if (!ModelState.IsValid)
             {
@@ -210,7 +210,7 @@ namespace Oblig_1_ITPE3200.Controllers
 
         // Login functions
         
-        public async Task<ActionResult> LogIn(UserDTO user)
+        public async Task<ActionResult> LogIn([FromBody] UserDTO user)
         {
             try
             {

@@ -1,0 +1,33 @@
+<div class="p-3 border">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Name</th>
+                <th scope="col">Select</th>
+            </tr>
+        </thead>
+        <tbody>
+            <ng-container *ngIf="symptoms; else laster">
+                <ng-container *ngIf="!loading; else laster">
+                    <tr *ngFor="let symptom of symptoms">
+                        <th scope="row">{{symptom.id}}</th>
+                        <td>{{symptom.name}}</td>
+                        <td><a class="link" style="cursor: pointer" (click)="addSymptom(symptom)">Select</a></td>
+                    </tr>
+                </ng-container>
+            </ng-container>
+        </tbody>
+    </table>
+</div>
+
+<!-- loading template to swap in -->
+<ng-template #laster>
+    <tr>
+        <td colspan="3" class="text-center">
+            <div class="spinner-border justify-content-center m-5" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </td>
+    </tr>
+</ng-template>
