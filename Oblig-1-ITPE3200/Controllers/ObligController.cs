@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Http;
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 using Oblig_1_ITPE3200.DAL;
@@ -28,7 +28,7 @@ namespace Oblig_1_ITPE3200.Controllers
 
         // Disease CRUD
 
-        public async Task<ActionResult> GetDisease(int id)
+        public async Task<ActionResult> GetDisease([FromQuery] int id)
         {
             DiseaseDTO diseaseDTO = await _db.GetDisease(id);
             if(diseaseDTO == null)
@@ -59,7 +59,7 @@ namespace Oblig_1_ITPE3200.Controllers
             return Ok(diseaseDTOList);
         }
 
-        public async Task<ActionResult> CreateDisease(Disease disease)
+        public async Task<ActionResult> CreateDisease([FromBody] Disease disease)
         {
             if (string.IsNullOrEmpty(HttpContext.Session.GetString(_loggedOn)))
             {
@@ -70,18 +70,21 @@ namespace Oblig_1_ITPE3200.Controllers
                 _log.LogInformation("Feil i inputvalidering");
                 return BadRequest("Feil i inputvalidering");
             }
-            
-            bool returOK = await _db.CreateDisease(disease);
 
-            if (!returOK)
+            DiseaseDTO createdDisease = await _db.CreateDisease(disease);
+
+            if (createdDisease == null)
             {
                 _log.LogInformation("Disease is not created");
                 return BadRequest("Disease is not created");
             }
-            return Ok("Disease is created");
+
+            var actionName = nameof(GetDisease);
+            var routeValues = new { id = createdDisease.Id };
+            return CreatedAtAction(actionName, routeValues, createdDisease);
         }
 
-        public async Task<ActionResult> UpdateDisease(Disease disease)
+        public async Task<ActionResult> UpdateDisease([FromBody] Disease disease)
         {
             if (string.IsNullOrEmpty(HttpContext.Session.GetString(_loggedOn)))
             {
@@ -99,10 +102,10 @@ namespace Oblig_1_ITPE3200.Controllers
                 _log.LogInformation("Disease is not updated");
                 return BadRequest("Disease is not updated");
             }
-            return Ok("Disease is updated");
+            return Ok();
         }
 
-        public async Task<ActionResult> DeleteDisease(int id)
+        public async Task<ActionResult> DeleteDisease([FromQuery] int id)
         {
             if (string.IsNullOrEmpty(HttpContext.Session.GetString(_loggedOn)))
             {
@@ -120,7 +123,7 @@ namespace Oblig_1_ITPE3200.Controllers
                 _log.LogInformation("Disease is not deleted");
                 return BadRequest("Disease is not deleted");
             }
-            return Ok("Disease is deleted");
+            return Ok();
         }
 
         // Symptom CRUD
@@ -194,9 +197,9 @@ namespace Oblig_1_ITPE3200.Controllers
         */
 
         // Search method
-        public async Task<ActionResult> SearchDiseases(int[] symptomIds)
+        public async Task<ActionResult> SearchDiseases([FromBody] List<Symptom> selectedSymptoms)
         {
-            List<DiseaseDTO> diseaseDTOs = await _db.SearchDiseases(symptomIds);
+            List<DiseaseDTO> diseaseDTOs = await _db.SearchDiseases(selectedSymptoms);
             if(diseaseDTOs == null)
             {
                 _log.LogInformation("Don't find disease list");
@@ -207,7 +210,7 @@ namespace Oblig_1_ITPE3200.Controllers
 
         // Login functions
         
-        public async Task<ActionResult> LogIn(User user)
+        public async Task<ActionResult> LogIn(UserDTO user)
         {
             try
             {

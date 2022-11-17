@@ -51,7 +51,7 @@ namespace Oblig_1_ITPE3200.DAL
                 return null;
             }
         }
-        public async Task<bool> CreateDisease(Disease disease)
+        public async Task<DiseaseDTO> CreateDisease(Disease disease)
         {
             try
             {
@@ -67,11 +67,12 @@ namespace Oblig_1_ITPE3200.DAL
 
                 _db.Diseases.Add(newDisease);
                 await _db.SaveChangesAsync();
-                return true;
+
+                return await GetDisease(newDisease.Id);
             }
             catch
             {
-                return false;
+                return null;
             }
         }
         public async Task<bool> UpdateDisease(Disease disease)
@@ -135,7 +136,7 @@ namespace Oblig_1_ITPE3200.DAL
                 IQueryable<SymptomDTO> query = _db.Symptoms
                     .MapSymptomToDTO()
                     .FilterBySearchString(options.SearchString)
-                    .ExcludeSymptomsById(options.SymptomIds)
+                    .ExcludeSymptoms(options.SelectedSymptoms)
                     .OrderSymptomsBy(options.OrderByOptions);
 
                 options.SetupRestOfDTO(query);
@@ -285,21 +286,21 @@ namespace Oblig_1_ITPE3200.DAL
         */
 
         // Search method
-        public async Task<List<DiseaseDTO>> SearchDiseases(int[] symptomIds)
+        public async Task<List<DiseaseDTO>> SearchDiseases(List<Symptom> selectedSymptoms)
         {
             try
             {
                 // Return empty list if nothing is selected
-                if (symptomIds.Length == 0)
+                if (selectedSymptoms.Count() == 0)
                 {
                     return new List<DiseaseDTO>();
                 }
 
                 IQueryable<Disease> query = _db.Diseases;
 
-                foreach(int i in symptomIds)
+                foreach (Symptom symptom in selectedSymptoms)
                 {
-                    query = query.Where(d => d.DiseaseSymptoms.Select(ds => ds.SymptomId).Contains(i));
+                    query = query.Where(d => d.DiseaseSymptoms.Select(ds => ds.SymptomId).Contains(symptom.Id));
                 }
 
                 List<DiseaseDTO> results = await query
@@ -333,11 +334,11 @@ namespace Oblig_1_ITPE3200.DAL
             return salt;
         }
 
-        public async Task<bool> LogIn(User user)
+        public async Task<bool> LogIn(UserDTO user)
         {
             try
             {
-                Users foundUser = await _db.Users.FirstOrDefaultAsync(u =>
+                User foundUser = await _db.Users.FirstOrDefaultAsync(u =>
                                                 u.Username == user.Username);
 
                 byte[] hash = MakeHash(user.Password, foundUser.Salt);
