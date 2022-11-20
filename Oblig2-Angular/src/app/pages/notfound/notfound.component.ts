@@ -3,8 +3,7 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-notfound',
-  templateUrl: './notfound.component.html',
-  styleUrls: ['./notfound.component.css']
+  templateUrl: './notfound.component.html'
 })
 export class NotfoundComponent implements OnInit {
 

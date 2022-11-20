@@ -2,8 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-diseasetable',
-  templateUrl: './diseasetable.component.html',
-  styleUrls: ['./diseasetable.component.css']
+  templateUrl: './diseasetable.component.html'
 })
 export class DiseasetableComponent implements OnInit {
   @Input() vm: any;

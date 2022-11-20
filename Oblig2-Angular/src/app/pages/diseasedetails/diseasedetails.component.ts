@@ -7,8 +7,7 @@ import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-diseasedetails',
-  templateUrl: './diseasedetails.component.html',
-  styleUrls: ['./diseasedetails.component.css']
+  templateUrl: './diseasedetails.component.html'
 })
 export class DiseasedetailsComponent implements OnInit {
   disease$!: Observable<Disease>;

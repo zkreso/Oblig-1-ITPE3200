@@ -4,7 +4,6 @@ import { PageoptionsService } from '../../services/pageoptions.service';
 @Component({
   selector: 'app-index',
   templateUrl: './index.component.html',
-  styleUrls: ['./index.component.css'],
   providers: [PageoptionsService]
 })
 export class IndexComponent implements OnInit {

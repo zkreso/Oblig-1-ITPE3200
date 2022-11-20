@@ -3,8 +3,7 @@ import { Symptom } from '../../models';
 
 @Component({
   selector: 'app-selectedsymptoms',
-  templateUrl: './selectedsymptoms.component.html',
-  styleUrls: ['./selectedsymptoms.component.css']
+  templateUrl: './selectedsymptoms.component.html'
 })
 
 export class SelectedsymptomsComponent implements OnInit {

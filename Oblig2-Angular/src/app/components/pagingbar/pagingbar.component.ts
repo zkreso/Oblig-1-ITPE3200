@@ -3,8 +3,7 @@ import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-pagingbar',
-  templateUrl: './pagingbar.component.html',
-  styleUrls: ['./pagingbar.component.css']
+  templateUrl: './pagingbar.component.html'
 })
 export class PagingbarComponent implements OnInit {
   @Input() vm: any;

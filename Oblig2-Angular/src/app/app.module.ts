@@ -14,7 +14,6 @@ import { DiseasedetailsComponent } from './pages/diseasedetails/diseasedetails.c
 import { AddpageComponent } from './pages/addpage/addpage.component';
 import { SelectedsymptomsComponent } from './components/selectedsymptoms/selectedsymptoms.component';
 import { SymptomstableComponent } from './components/symptomstable/symptomstable.component';
-import { ButtonComponent } from './components/button/button.component';
 import { SearchbarComponent } from './components/searchbar/searchbar.component';
 import { PagingbarComponent } from './components/pagingbar/pagingbar.component';
 import { DiseasetableComponent } from './components/diseasetable/diseasetable.component';
@@ -47,7 +46,6 @@ const appRoutes: Routes = [
     AddpageComponent,
     SelectedsymptomsComponent,
     SymptomstableComponent,
-    ButtonComponent,
     SearchbarComponent,
     PagingbarComponent,
     DiseasetableComponent,

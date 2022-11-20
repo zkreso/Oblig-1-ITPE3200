@@ -6,8 +6,7 @@ import { PageoptionsService } from '../../services/pageoptions.service';
 
 @Component({
   selector: 'app-calculator',
-  templateUrl: './calculator.component.html',
-  styleUrls: ['./calculator.component.css']
+  templateUrl: './calculator.component.html'
 })
 export class CalculatorComponent implements OnInit {
 

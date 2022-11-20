@@ -3,8 +3,7 @@ import { Symptom } from '../../models';
 
 @Component({
   selector: 'app-symptomstable',
-  templateUrl: './symptomstable.component.html',
-  styleUrls: ['./symptomstable.component.css']
+  templateUrl: './symptomstable.component.html'
 })
 export class SymptomstableComponent implements OnInit {
 

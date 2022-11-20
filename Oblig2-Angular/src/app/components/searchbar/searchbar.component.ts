@@ -4,8 +4,7 @@ import { debounceTime, distinctUntilChanged, map } from 'rxjs';
 
 @Component({
   selector: 'app-searchbar',
-  templateUrl: './searchbar.component.html',
-  styleUrls: ['./searchbar.component.css']
+  templateUrl: './searchbar.component.html'
 })
 export class SearchbarComponent implements OnInit {
   @Output() clickSearch: EventEmitter<string> = new EventEmitter;

@@ -8,7 +8,6 @@ import { PageoptionsService } from '../../services/pageoptions.service';
 @Component({
   selector: 'app-symptomsubpage',
   templateUrl: './symptomsubpage.component.html',
-  styleUrls: ['./symptomsubpage.component.css'],
   providers: [ErrorHandlingService]
 })
 export class SymptomsubpageComponent implements OnInit {

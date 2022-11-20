@@ -10,7 +10,6 @@ import { ErrorHandlingService } from '../../services/error-handling.service';
 @Component({
   selector: 'app-editpage',
   templateUrl: './editpage.component.html',
-  styleUrls: ['./editpage.component.css'],
   providers: [PageoptionsService, ErrorHandlingService]
 })
 export class EditpageComponent implements OnInit {

@@ -6,7 +6,6 @@ import { ErrorHandlingService } from '../../services/error-handling.service';
 @Component({
   selector: 'app-diseaselist',
   templateUrl: './diseaselist.component.html',
-  styleUrls: ['./diseaselist.component.css'],
   providers: [ErrorHandlingService]
 })
 export class DiseaselistComponent implements OnInit {

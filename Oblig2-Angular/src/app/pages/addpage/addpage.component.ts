@@ -9,7 +9,6 @@ import { ErrorHandlingService } from '../../services/error-handling.service';
 @Component({
   selector: 'app-addpage',
   templateUrl: './addpage.component.html',
-  styleUrls: ['./addpage.component.css'],
   providers: [PageoptionsService, ErrorHandlingService]
 })
 export class AddpageComponent implements OnInit {
