@@ -23,6 +23,7 @@ import { AuthguardGuard } from './services/authguard.guard';
 import { LoginComponent } from './pages/login/login.component';
 import { GlobalHttpInterceptorService } from './services/global-http-interceptor.service';
 import { NotfoundComponent } from './pages/notfound/notfound.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 const appRoutes: Routes = [
   { path: RouteStrings.Home, component: IndexComponent },
@@ -59,7 +60,8 @@ const appRoutes: Routes = [
     HttpClientModule,
     RouterModule.forRoot(appRoutes),
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgbModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: GlobalHttpInterceptorService, multi: true }
