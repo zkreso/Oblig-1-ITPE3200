@@ -76,7 +76,7 @@ export class PageoptionsService {
 
   sortById(): void {
     if (this.orderByOptionsSubject.getValue() == "idAscending") {
-      this.orderByOptionsSubject.next("nameDescending");
+      this.orderByOptionsSubject.next("idDescending");
     } else {
       this.orderByOptionsSubject.next("idAscending");
     }
@@ -86,7 +86,7 @@ export class PageoptionsService {
     if (this.orderByOptionsSubject.getValue() == "nameAscending") {
       this.orderByOptionsSubject.next("nameDescending");
     } else {
-      this.orderByOptionsSubject.next("idAscending");
+      this.orderByOptionsSubject.next("nameAscending");
     }
   }
 

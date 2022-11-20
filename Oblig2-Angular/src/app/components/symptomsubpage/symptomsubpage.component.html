@@ -12,7 +12,11 @@
 
 <app-symptomstable [symptoms]="symptoms$ | async"
                    [loading]="loading$ | async"
-                   (clickAddSymptom)="addSymptom($event)">
+                   [sortOptions]="sortOptions$ | async"
+                   [error]="errorMessage$ | async"
+                   (clickAddSymptom)="addSymptom($event)"
+                   (clickSortById)="sortById()"
+                   (clickSortByName)="sortByName()">
 </app-symptomstable>
 
 <app-pagingbar [vm]="(options$ | async)"

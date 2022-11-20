@@ -8,6 +8,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 export class DiseasetableComponent implements OnInit {
   @Input() vm: any;
   @Output() clickDeleteDisease: EventEmitter<number> = new EventEmitter;
+  @Input() error: String | null = null;
 
   constructor() { }
 

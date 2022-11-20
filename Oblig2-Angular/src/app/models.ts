@@ -22,7 +22,7 @@ export interface DiseaseSymptom {
 }
 
 export interface PageOptions {
-  orderByOptions?: string;
+  orderByOptions: string;
   selectedSymptoms: Symptom[];
   searchString?: string;
   pageNum?: number;

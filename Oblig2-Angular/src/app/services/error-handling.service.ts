@@ -4,7 +4,6 @@ import { BehaviorSubject, Observable, throwError } from 'rxjs';
 
 @Injectable()
 export class ErrorHandlingService {
-  // Credit: https://medium.com/ngconf/reactive-error-handling-in-angular-2bde9dd223a0
 
   private notification = new BehaviorSubject<number | null>(null);
   public notification$ = this.notification as Observable<number | null>;
@@ -21,4 +20,5 @@ export class ErrorHandlingService {
       return throwError(error);
     }
   }
+
 }

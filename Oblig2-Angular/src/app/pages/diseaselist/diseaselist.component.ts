@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { DatabaseService } from '../../services/database.service';
-import { take, switchMap, BehaviorSubject, combineLatest } from 'rxjs';
+import { take, switchMap, BehaviorSubject, combineLatest, catchError, map } from 'rxjs';
+import { ErrorHandlingService } from '../../services/error-handling.service';
 
 @Component({
   selector: 'app-diseaselist',
   templateUrl: './diseaselist.component.html',
-  styleUrls: ['./diseaselist.component.css']
+  styleUrls: ['./diseaselist.component.css'],
+  providers: [ErrorHandlingService]
 })
 export class DiseaselistComponent implements OnInit {
 
@@ -20,10 +22,32 @@ export class DiseaselistComponent implements OnInit {
     this.deleteSuccess$,
     this.searchString$
   ]).pipe(
-    switchMap(([_, searchString]) => this.ds.getAllDiseases(searchString))
+    switchMap(([_, searchString]) => this.ds.getAllDiseases(searchString).pipe(
+      catchError(this.es.handleError())
+    ))
   );
 
-  constructor(private ds: DatabaseService) { }
+  public errorMessage$ = this.es.notification$.pipe(
+    map(httpStatusCode => {
+      if (httpStatusCode != null) {
+        return this.errorMessages(httpStatusCode);
+      }
+      return null;
+    })
+  );
+
+  errorMessages(HttpStatusCode: number): string {
+    switch (HttpStatusCode) {
+      case 500: {
+        return "Error occured on server. Please try again later";
+      }
+      default: {
+        return "An unknown error occured";
+      }
+    }
+  }
+
+  constructor(private ds: DatabaseService, private es: ErrorHandlingService) { }
 
   ngOnInit(): void {
   }

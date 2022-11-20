@@ -2,8 +2,14 @@
     <table class="table table-hover">
         <thead>
             <tr>
-                <th scope="col">Id</th>
-                <th scope="col">Name</th>
+                <th scope="col" class="col-1">
+                    <a (click)="sortById()" role="button">Id</a> &nbsp;
+                    <i class="bi" [ngClass]="{ 'bi-caret-up' : sortOptions === 'idAscending', 'bi-caret-down' : sortOptions === 'idDescending'}"></i>
+                </th>
+                <th scope="col">
+                    <a (click)="sortByName()" role="button">Name</a> &nbsp;
+                    <i class="bi" [ngClass]="{ 'bi-caret-up' : sortOptions === 'nameAscending', 'bi-caret-down' : sortOptions === 'nameDescending'}"></i>
+                </th>
                 <th scope="col">Select</th>
             </tr>
         </thead>
@@ -19,6 +25,9 @@
             </ng-container>
         </tbody>
     </table>
+    <ng-container *ngIf="error">
+        {{error}}
+    </ng-container>
 </div>
 
 <!-- loading template to swap in -->
