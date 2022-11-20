@@ -1,4 +1,4 @@
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule, Routes } from '@angular/router';
@@ -22,6 +22,8 @@ import { IndexComponent } from './pages/index/index.component';
 import { SymptomsubpageComponent } from './components/symptomsubpage/symptomsubpage.component';
 import { AuthguardGuard } from './services/authguard.guard';
 import { LoginComponent } from './pages/login/login.component';
+import { GlobalHttpInterceptorService } from './services/global-http-interceptor.service';
+import { NotfoundComponent } from './pages/notfound/notfound.component';
 
 const appRoutes: Routes = [
   { path: RouteStrings.Home, component: IndexComponent },
@@ -29,8 +31,9 @@ const appRoutes: Routes = [
   { path: RouteStrings.EditPage, component: EditpageComponent },
   { path: RouteStrings.DiseaseList, component: DiseaselistComponent, canActivate: [AuthguardGuard] },
   { path: RouteStrings.DiseaseDetails, component: DiseasedetailsComponent },
+  { path: RouteStrings.NotFound, component: NotfoundComponent },
   { path: 'login', component: LoginComponent },
-  { path: '**', redirectTo: '', pathMatch: 'full' }
+  { path: '**', redirectTo: '404', pathMatch: 'full' }
 ]
 
 @NgModule({
@@ -51,6 +54,7 @@ const appRoutes: Routes = [
     IndexComponent,
     SymptomsubpageComponent,
     LoginComponent,
+    NotfoundComponent,
   ],
   imports: [
     BrowserModule,
@@ -59,7 +63,9 @@ const appRoutes: Routes = [
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: GlobalHttpInterceptorService, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

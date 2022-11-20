@@ -3,7 +3,8 @@ export enum RouteStrings {
   AddPage = 'create-disease',
   EditPage = 'edit-disease/:id',
   DiseaseList = 'disease-list',
-  DiseaseDetails = 'disease-details/:id'
+  DiseaseDetails = 'disease-details/:id',
+  NotFound = '404'
 }
 
 export interface NavLink {

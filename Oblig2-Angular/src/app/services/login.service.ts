@@ -8,22 +8,31 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class LoginService {
 
-  private isLoggedIn = new BehaviorSubject(false);
+  private isLoggedIn$ = new BehaviorSubject(false);
+  private username$ = new BehaviorSubject("");
 
   constructor(private http: HttpClient) { }
 
   public isAuthenticated() {
-    return this.isLoggedIn;
+    return this.isLoggedIn$;
+  }
+
+  public getUsername() {
+    return this.username$;
   }
 
   public logIn(user: User) {
     this.http.post<boolean>("oblig/LogIn", user)
-      .subscribe(res => this.isLoggedIn.next(res));
-    return this.isLoggedIn;
+      .subscribe(res => {
+        this.isLoggedIn$.next(res);
+        this.username$.next(user.username)
+      });
+    return this.isLoggedIn$;
   }
 
   public logOut(): void {
-    this.isLoggedIn.next(false);
+    this.isLoggedIn$.next(false);
+    this.username$.next("");
     this.http.get("oblig/LogOut");
   }
 }

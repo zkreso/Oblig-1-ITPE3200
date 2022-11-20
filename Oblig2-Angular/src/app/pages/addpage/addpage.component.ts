@@ -80,12 +80,6 @@ export class AddpageComponent implements OnInit {
       case 400: {
         return "Invalid input";
       }
-      case 401: {
-        return "You need to log in to perform this action";
-      }
-      case 403: {
-        return "You are not authorized to perform this action"
-      }
       case 500: {
         return "Error occured on server. Please try again later";
       }

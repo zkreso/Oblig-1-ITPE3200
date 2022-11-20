@@ -12,8 +12,14 @@
                 </a>
             </li>
         </ul>
-        <a *ngIf="!loggedIn" class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" routerLink="login">Log in</a>
-        <a *ngIf="loggedIn" class="nav-link pointer" (click)="logOut()">Log out</a>
+        <ng-container *ngIf="!loggedIn">
+            <span class="mx-3 text-muted">Not logged in</span>
+            <button class="btn btn-primary btn-sm" routerLink="login">Log in</button>
+        </ng-container>
+        <ng-container *ngIf="loggedIn">
+            <span class="mx-3 text-muted">Logged in as <strong>{{username}}</strong></span>
+            <button *ngIf="loggedIn" class="btn btn-danger btn-sm" (click)="logOut()">Log out</button>
+        </ng-container>
     </div>
     <div>
 
