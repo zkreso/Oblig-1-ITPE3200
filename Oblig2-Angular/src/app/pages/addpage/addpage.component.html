@@ -12,7 +12,10 @@
         </div>
         <div class="mb-3">
             <label for="name" class="form-label">Disease description</label>
-            <input type="text" class="form-control" id="description" formControlName="description">
+            <input type="text" class="form-control" [ngClass]="{ 'is-invalid': form.controls.description.touched && form.controls.description.invalid, 'is-valid' : form.controls.description.valid && form.controls.description.touched }" id="description" formControlName="description">
+            <div *ngIf="form.controls.description.invalid && form.controls.description.touched" class="invalid-feedback">
+                Invalid input
+            </div>
         </div>
 
     </div>

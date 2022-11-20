@@ -11,18 +11,16 @@ import { ErrorHandlingService } from '../../services/error-handling.service';
   selector: 'app-editpage',
   templateUrl: './editpage.component.html',
   styleUrls: ['./editpage.component.css'],
-  providers: [PageoptionsService]
+  providers: [PageoptionsService, ErrorHandlingService]
 })
 export class EditpageComponent implements OnInit {
 
   disease$!: Observable<Disease>;
 
   form = this.fb.group({
-    name: ['', Validators.required],
-    description: ''
+    name: ['', [Validators.required, Validators.pattern("[a-zA-ZæøåÆØÅ0-9\\-. ]{1,}")]],
+    description: ['', [Validators.nullValidator, Validators.pattern("[a-zA-ZæøåÆØÅ0-9\\-. ]*")]]
   });
-
-  // TODO: Add validator for letters etc.
 
   private submit$ = new Subject<DiseaseEntity>();
 

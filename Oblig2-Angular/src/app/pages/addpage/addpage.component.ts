@@ -15,8 +15,8 @@ import { ErrorHandlingService } from '../../services/error-handling.service';
 export class AddpageComponent implements OnInit {
 
   form = this.fb.group({
-    name: ['', Validators.required],
-    description: ''
+    name: ['', [Validators.required, Validators.pattern("[a-zA-ZæøåÆØÅ0-9\\-. ]{1,}")]],
+    description: ['', [Validators.nullValidator, Validators.pattern("[a-zA-ZæøåÆØÅ0-9\\-. ]*")]]
   });
 
   private submit$ = new Subject<DiseaseEntity>();

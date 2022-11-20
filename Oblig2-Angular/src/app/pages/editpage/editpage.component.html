@@ -12,12 +12,15 @@
         </div>
         <div class="mb-3">
             <label for="name" class="form-label">Disease description</label>
-            <input type="text" class="form-control" id="description" formControlName="description">
+            <input type="text" class="form-control" [ngClass]="{ 'is-invalid': form.controls.description.touched && form.controls.description.invalid, 'is-valid' : form.controls.description.valid && form.controls.description.touched }" id="description" formControlName="description">
+            <div *ngIf="form.controls.description.invalid && form.controls.description.touched" class="invalid-feedback">
+                Invalid input
+            </div>
         </div>
 
     </div>
     <div class="bg-light border p-3">
-        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="submit" [disabled]="form.invalid" class="btn btn-primary">Save</button>
         <a onclick="history.back()" class="btn btn-danger mx-1">Cancel</a>
         <span *ngIf="(errorMessage$ | async) as error" class="mx-3 text-danger">
             {{error}} <i class="bi bi-exclamation-circle"></i>
