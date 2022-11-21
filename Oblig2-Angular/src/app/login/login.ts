@@ -2,8 +2,8 @@ import { Component, OnInit } from "@angular/core";
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators, FormBuilder } from "@angular/forms";
-import { User } from "./User";
-import { Meny } from '../meny/meny';
+import { User } from "../User";
+import { LoginService } from '../services/LoginService';
 
 @Component({
   templateUrl: "login.html"
@@ -11,7 +11,7 @@ import { Meny } from '../meny/meny';
 export class Login {
   form: FormGroup;
 
-  constructor(private http: HttpClient, private router: Router, private fb: FormBuilder) {
+  constructor(private http: HttpClient, private router: Router, private fb: FormBuilder, private loginService: LoginService) {
     this.form = fb.group({
       username: ["", Validators.pattern('[A-Za-zÆØÅæøå. ]{2,20}')],
       password: ["", Validators.pattern('[A-Za-z0-9]{8,}')]
@@ -25,18 +25,11 @@ export class Login {
     const user = this.makeUser();
     console.log("Found user: \n" + user.Username + "\n" + user.Password);
 
-    // Should be a get call, but cant get it to work
-    this.http.post<boolean>("api/oblig/LogIn/", user)
-      .subscribe(retur => {
-        if (retur) {
-          this.router.navigate(["/diseaselist"]);
-        }
-        else {
-          console.log("Did not login");
-        }
-      },
-        error => console.log(error)
-      );
+    this.loginService.login(user);
+  }
+
+  logOut() {
+    this.loginService.logout();
   }
 
   makeUser(): User {

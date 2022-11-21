@@ -1,3 +1,62 @@
-<div>
-  <h1>Front page of the world!!</h1>
+<div class="container">
+
+  <header class="mb-3">
+    <h1 class="pb-2">Symptomkalkulator</h1>
+    <p class="col-6">
+      Select one or more symptoms from the symptoms table below. Diseases with all the selected symptoms will be shown automatically.
+      Click on a selected symptom to deselect it. You may also search for symptoms by name.
+    </p>
+  </header>
+
+  <h5 class="pb-2">Matching diseases</h5>
+  <div id="results" class="p-3 border">
+    <div class="text-muted">No symptoms selected - please select one or more symptoms from the symptom list</div>
+  </div>
+  <div class="p-3 mb-3 border border-top-0 rounded-bottom bg-light">
+    <h6>Selected symptoms (click to deselect)</h6>
+    <div id="selectedsymptomsdiv">
+      <div class="text-muted">None</div>
+    </div>
+  </div>
+
+  <h5 class="pb-2">Symptoms list</h5>
+  <!-- search bar etc. -->
+  <div id="filters" class="p-3 border border-bottom-0 rounded-top bg-light">
+    <form class="form-inline row align-items-center" onsubmit="return false;">
+      <div class="col-4">
+        <label for="searchBox" class="visually-hidden">Search for symptom</label>
+        <input type="search" class="form-control" id="searchBox" placeholder="Enter symptom name" on>
+      </div>
+      <div class="col">
+        <button type="submit" class="btn btn-primary" onclick="generateSymptomsList()">Search</button>
+        <button type="button" class="btn btn-secondary" onclick="clearSearch()">Clear search</button>
+      </div>
+    </form>
+  </div>
+  <!-- output table -->
+  <div class="p-3 border">
+    <div id="symptoms">
+
+    </div>
+  </div>
+  <!-- paging -->
+  <div class="p-3 mb-3 border border-top-0 rounded-bottom bg-light">
+    <div class="row justify-content-start align-items-center">
+      <div class="col-auto">
+        <ul class="pagination mb-0" id="pagenav">
+        </ul>
+      </div>
+      <div class="col-auto">
+        Results per page:
+      </div>
+      <div class="col-auto">
+        <select class="form-select" aria-label="Default select example" onchange="generateSymptomsList()" id="pagesizeselect">
+          <option value="5">5</option>
+          <option selected value="10">10</option>
+          <option value="20">20</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div id="#feil"></div>
 </div>

@@ -9,6 +9,8 @@ import { Login } from './login/login';
 import { Meny } from './meny/meny';
 import { DiseaseList } from './diseaselist/diseaselist';
 import { AppRoutingModule } from './app-routing.module';
+import { AuthComponent } from './services/auth/auth.component';
+import { LoginService } from './services/LoginService';
 
 @NgModule({
   declarations: [

@@ -246,7 +246,7 @@ namespace Oblig_1_ITPE3200.Controllers
             }
         }
 
-        [HttpPut, Route("LogOut")]
+        [HttpGet, Route("LogOut")]
         public ActionResult LogOut()
         {
             try
