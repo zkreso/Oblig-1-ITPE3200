@@ -1,0 +1,11 @@
+<div class="modal-header">
+    <h4 class="modal-title">Confirm delete</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="am.dismiss('Cross click')"></button>
+</div>
+<div class="modal-body">
+    <p>Are you sure you want to delete {{ disease.name }}?</p>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="am.close('delete')">Delete</button>
+    <button type="button" class="btn btn-primary" (click)="am.dismiss('cancel')">Abort</button>
+</div>

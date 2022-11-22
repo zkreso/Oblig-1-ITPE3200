@@ -17,7 +17,7 @@
                     <td>
                         <a class="link" [routerLink]="['/disease-details/', disease.id]">View</a> |
                         <a class="link" [routerLink]="['/edit-disease/', disease.id]">Edit</a> |
-                        <a class="link link-danger pointer" (click)="deleteDisease(disease.id)">Delete</a>
+                        <a class="link link-danger pointer" (click)="openModal(disease)">Delete</a>
                     </td>
                 </tr>
             </ng-container>
