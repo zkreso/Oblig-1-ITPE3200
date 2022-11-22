@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { map, switchMap, share, delay, takeUntil, Observable, startWith, merge, catchError } from 'rxjs';
+import { map, switchMap, share, delay, takeUntil, Observable, startWith, merge, BehaviorSubject } from 'rxjs';
 import { Symptom } from '../../models';
 import { DatabaseService } from '../../services/database.service';
 import { ErrorHandlingService } from '../../services/error-handling.service';
@@ -24,7 +24,7 @@ export class SymptomsubpageComponent implements OnInit {
 
   private data$ = this.ps.pageOptions$.pipe(
     switchMap(pageOptions => this.ds.getSymptomsPage(pageOptions).pipe(
-        catchError(this.es.handleError())
+        this.es.handleErrors(this.errorMessage$, this.httpStatusToStrings)
       )
     ),
     share()
@@ -64,16 +64,9 @@ export class SymptomsubpageComponent implements OnInit {
   );
 
   // 3.4 Error message if table fails to load
-  public errorMessage$ = this.es.notification$.pipe(
-    map(httpStatusCode => {
-      if (httpStatusCode != null) {
-        return this.errorMessages(httpStatusCode);
-      }
-      return null;
-    })
-  );
+  public errorMessage$ = new BehaviorSubject<string | null>(null);
 
-  errorMessages(HttpStatusCode: number): string {
+  private httpStatusToStrings(HttpStatusCode: number): string {
     switch (HttpStatusCode) {
       case 500: {
         return "Error occured on server. Please try again later";

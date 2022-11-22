@@ -3,7 +3,7 @@ import { Validators, FormBuilder } from '@angular/forms';
 import { DiseaseEntity, DiseaseSymptom } from '../../models';
 import { DatabaseService } from '../../services/database.service';
 import { PageoptionsService } from '../../services/pageoptions.service';
-import { map, Subject, exhaustMap, withLatestFrom, catchError } from 'rxjs';
+import { map, Subject, BehaviorSubject, exhaustMap, withLatestFrom } from 'rxjs';
 import { ErrorHandlingService } from '../../services/error-handling.service';
 
 @Component({
@@ -34,6 +34,7 @@ export class AddpageComponent implements OnInit {
 
   private submit$ = new Subject<DiseaseEntity>(); // submission events observable
   public success: null | boolean = null; // submission success
+  public errorMessage$ = new BehaviorSubject<string | null>(null); // Error messages on failure
 
   // Subscription that triggers when submission events observable emits
   private subscription = this.submit$.pipe(
@@ -47,7 +48,7 @@ export class AddpageComponent implements OnInit {
     ),
     exhaustMap(
       newDisease => this.ds.createDisease(newDisease).pipe(
-        catchError(this.es.handleError())
+        this.es.handleErrors(this.errorMessage$, this.httpStatusToStrings)
       )
     )
   ).subscribe(() => {
@@ -55,26 +56,7 @@ export class AddpageComponent implements OnInit {
     this.success = true;
   });
 
-  public errorMessage$ = this.es.notification$.pipe(
-    map(httpStatusCode => {
-      httpStatusCode
-        ? this.errorMessages(httpStatusCode)
-        : null
-    })
-  );
-
-  createDisease() {
-    if (this.form.invalid) {
-      return;
-    }
-    this.success = false;
-    this.submit$.next({
-      name: this.form.value.name!,
-      description: this.form.value.description!
-    });
-  }
-
-  errorMessages(HttpStatusCode: number): string {
+  private httpStatusToStrings(HttpStatusCode: number): string {
     switch (HttpStatusCode) {
       case 400: {
         return "Invalid input";
@@ -86,6 +68,17 @@ export class AddpageComponent implements OnInit {
         return "An unknown error occured";
       }
     }
+  }
+
+  createDisease() {
+    if (this.form.invalid) {
+      return;
+    }
+    this.success = false;
+    this.submit$.next({
+      name: this.form.value.name!,
+      description: this.form.value.description!
+    });
   }
 
 }

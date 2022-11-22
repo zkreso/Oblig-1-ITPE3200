@@ -3,7 +3,7 @@ import { PageoptionsService } from '../../services/pageoptions.service';
 import { DatabaseService } from '../../services/database.service';
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Subject, map, exhaustMap, switchMap, forkJoin, take, catchError, withLatestFrom } from 'rxjs';
+import { Subject, map, exhaustMap, switchMap, forkJoin, take, withLatestFrom, BehaviorSubject } from 'rxjs';
 import { DiseaseEntity, DiseaseSymptom } from '../../models';
 import { ErrorHandlingService } from '../../services/error-handling.service';
 
@@ -49,6 +49,7 @@ export class EditpageComponent implements OnInit {
 
   private submit$ = new Subject<DiseaseEntity>(); // submission events observable
   public success: null | boolean = null; // submission success
+  public errorMessage$ = new BehaviorSubject<string | null>(null); // Error messages on failure
 
   // Subscription that triggers when submission events observable emits
   private subscription = this.submit$.pipe(
@@ -64,23 +65,15 @@ export class EditpageComponent implements OnInit {
     })),
     exhaustMap(
     newDisease => this.ds.updateDisease(newDisease).pipe(
-      catchError(this.es.handleError())
-      ))
+        this.es.handleErrors(this.errorMessage$, this.httpStatusToStrings)
+      )
+    )
   ).subscribe(() => {
     this.form.markAsUntouched();
     this.success = true;
   });
 
-  // Convert http status code to error message
-  public errorMessage$ = this.es.notification$.pipe(
-    map(httpStatusCode => {
-      httpStatusCode
-        ? this.errorMessages(httpStatusCode)
-        : null
-    })
-  );
-
-  errorMessages(HttpStatusCode: number): string {
+  private httpStatusToStrings(HttpStatusCode: number): string {
     switch (HttpStatusCode) {
       case 400: {
         return "Invalid input";

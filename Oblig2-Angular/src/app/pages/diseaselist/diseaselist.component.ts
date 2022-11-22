@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DatabaseService } from '../../services/database.service';
-import { take, switchMap, BehaviorSubject, combineLatest, catchError, map } from 'rxjs';
+import { take, switchMap, BehaviorSubject, combineLatest } from 'rxjs';
 import { ErrorHandlingService } from '../../services/error-handling.service';
 
 @Component({
@@ -22,20 +22,13 @@ export class DiseaselistComponent implements OnInit {
     this.searchString$
   ]).pipe(
     switchMap(([_, searchString]) => this.ds.getAllDiseases(searchString).pipe(
-      catchError(this.es.handleError())
+      this.es.handleErrors(this.errorMessage$, this.httpStatusToStrings)
     ))
   );
 
-  public errorMessage$ = this.es.notification$.pipe(
-    map(httpStatusCode => {
-      if (httpStatusCode != null) {
-        return this.errorMessages(httpStatusCode);
-      }
-      return null;
-    })
-  );
+  public errorMessage$ = new BehaviorSubject<string | null>(null);
 
-  errorMessages(HttpStatusCode: number): string {
+  private httpStatusToStrings(HttpStatusCode: number): string {
     switch (HttpStatusCode) {
       case 500: {
         return "Error occured on server. Please try again later";

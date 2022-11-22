@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, distinctUntilChanged, Observable, share, exhaustMap } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject, distinctUntilChanged, Observable, share, exhaustMap, defer, Subject, finalize, throwError } from 'rxjs';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Symptom, Disease, PageOptions, SymptomsTable, DiseaseEntity } from '../models';
 
 @Injectable({
@@ -40,5 +40,12 @@ export class DatabaseService {
 
   deleteDisease(id: number): Observable<string> {
     return this.http.delete<string>("oblig/deleteDisease?id=" + id);
+  }
+
+  // method for testing errors
+
+  public generateError(code: number): Observable<Response> {
+    const error = new HttpErrorResponse({ status: code });
+    return throwError(error) as any;
   }
 }
