@@ -13,42 +13,6 @@ import { ErrorHandlingService } from '../../services/error-handling.service';
 })
 export class AddpageComponent implements OnInit {
 
-  form = this.fb.group({
-    name: ['', [Validators.required, Validators.pattern("[a-zA-ZæøåÆØÅ0-9\\-. ]{1,}")]],
-    description: ['', [Validators.nullValidator, Validators.pattern("[a-zA-ZæøåÆØÅ0-9\\-. ]*")]]
-  });
-
-  private submit$ = new Subject<DiseaseEntity>();
-
-  private subscription = this.submit$.pipe(
-    withLatestFrom(this.ps.selectedSymptoms$),
-    map( ([formdata, latestSymptoms]): DiseaseEntity =>
-      ({
-        name: formdata.name,
-        description: formdata.description,
-        diseaseSymptoms: latestSymptoms.map( (symptom): DiseaseSymptom => ({symptomId: symptom.id}) )
-      })
-    ),
-    exhaustMap(
-      newDisease => this.ds.createDisease(newDisease).pipe(
-        catchError(this.es.handleError())
-      )
-    )
-  ).subscribe(() => {
-    this.success = true;
-  });
-
-  public errorMessage$ = this.es.notification$.pipe(
-    map(httpStatusCode => {
-      if (httpStatusCode != null) {
-        return this.errorMessages(httpStatusCode);
-      }
-      return null;
-    })
-  );
-
-  public success: null | boolean = null;
-
   constructor(
     private ds: DatabaseService,
     private ps: PageoptionsService,
@@ -62,6 +26,42 @@ export class AddpageComponent implements OnInit {
   ngOndestroy(): void {
     this.subscription.unsubscribe();
   }
+
+  form = this.fb.group({
+    name: ['', [Validators.required, Validators.pattern("[a-zA-ZæøåÆØÅ0-9\\\'\"\(\)-. ]{1,}")]],
+    description: ['', [Validators.nullValidator, Validators.pattern("[a-zA-ZæøåÆØÅ0-9\\\'\"\(\)-. ]*")]]
+  });
+
+  private submit$ = new Subject<DiseaseEntity>(); // submission events observable
+  public success: null | boolean = null; // submission success
+
+  // Subscription that triggers when submission events observable emits
+  private subscription = this.submit$.pipe(
+    withLatestFrom(this.ps.selectedSymptoms$),
+    map( ([formData, latestSymptoms]): DiseaseEntity =>
+      ({
+        name: formData.name,
+        description: formData.description,
+        diseaseSymptoms: latestSymptoms.map( (symptom): DiseaseSymptom => ({symptomId: symptom.id}) )
+      })
+    ),
+    exhaustMap(
+      newDisease => this.ds.createDisease(newDisease).pipe(
+        catchError(this.es.handleError())
+      )
+    )
+  ).subscribe(() => {
+    this.form.markAsUntouched();
+    this.success = true;
+  });
+
+  public errorMessage$ = this.es.notification$.pipe(
+    map(httpStatusCode => {
+      httpStatusCode
+        ? this.errorMessages(httpStatusCode)
+        : null
+    })
+  );
 
   createDisease() {
     if (this.form.invalid) {

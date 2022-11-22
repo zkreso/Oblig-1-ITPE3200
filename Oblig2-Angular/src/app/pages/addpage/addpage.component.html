@@ -25,7 +25,7 @@
         <span *ngIf="(errorMessage$ | async) as error" class="mx-3 text-danger">
             {{error}} <i class="bi bi-exclamation-circle"></i>
         </span>
-        <span *ngIf="success" class="mx-3">
+        <span *ngIf="success && form.untouched" class="mx-3">
             Disease added successfully
         </span>
     </div>

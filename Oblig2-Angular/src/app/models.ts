@@ -11,6 +11,7 @@ export interface Disease {
 }
 
 export interface DiseaseEntity {
+  id?: number;
   name: string;
   description: string;
   diseaseSymptoms?: DiseaseSymptom[];

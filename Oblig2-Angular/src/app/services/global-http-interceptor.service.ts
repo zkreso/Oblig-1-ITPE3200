@@ -22,7 +22,7 @@ export class GlobalHttpInterceptorService {
               this.router.navigate(['login']);
               break;
             case 404: // not found
-              this.router.navigate([''])
+              this.router.navigate(['404'])
               break;
           }
         }
