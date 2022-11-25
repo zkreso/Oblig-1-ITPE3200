@@ -2,10 +2,11 @@
 using Microsoft.Extensions.Logging.Console;
 using Microsoft.Extensions.Logging;
 using Oblig_1_ITPE3200.Models;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Oblig_1_ITPE3200.DAL
 {
-
+    [ExcludeFromCodeCoverage]
     public class DB : DbContext
     {
         public DB(DbContextOptions<DB> options) : base(options)

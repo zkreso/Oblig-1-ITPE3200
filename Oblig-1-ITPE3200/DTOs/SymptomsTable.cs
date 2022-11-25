@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Oblig_1_ITPE3200.DTOs
 {
+    [ExcludeFromCodeCoverage]
     public class SymptomsTable
     {
         public SymptomsTable(SymptomsTableOptions pageData, List<SymptomDTO> symptomList)

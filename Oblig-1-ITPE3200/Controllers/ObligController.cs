@@ -7,6 +7,7 @@ using Oblig_1_ITPE3200.DTOs;
 using Oblig_1_ITPE3200.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
 namespace Oblig_1_ITPE3200.Controllers
@@ -28,18 +29,30 @@ namespace Oblig_1_ITPE3200.Controllers
 
         // Disease CRUD
 
-        public async Task<ActionResult> GetDisease([FromQuery] int id)
+        public async Task<ActionResult> GetDisease(
+            [FromQuery]
+            [RegularExpression(@"^[1-9][0-9]*$")]
+            int id
+            )
         {
+            if (!ModelState.IsValid)
+            {
+                _log.LogInformation("Feil i inputvalidering");
+                return BadRequest("Feil i inputvalidering");
+            }
             DiseaseDTO diseaseDTO = await _db.GetDisease(id);
             if(diseaseDTO == null)
             {
-                _log.LogInformation("Don't find the disease");
-                return NotFound("Don't find the disease");
+                _log.LogInformation("Disease was not found");
+                return NotFound("Disease was not found");
             }
             return Ok(diseaseDTO);
         }
 
-        public async Task<ActionResult> GetAllDiseases(string searchString)
+        public async Task<ActionResult> GetAllDiseases(
+            [RegularExpression(@"[a-zA-ZÊ¯Â∆ÿ≈0-9\\\'\(\)-. ]*")]
+            string searchString
+            )
         {
             if (string.IsNullOrEmpty(HttpContext.Session.GetString(_loggedOn)))
             {
@@ -53,18 +66,21 @@ namespace Oblig_1_ITPE3200.Controllers
             List<DiseaseDTO> diseaseDTOList = await _db.GetAllDiseases(searchString);
             if(diseaseDTOList == null)
             {
-                _log.LogInformation("Don't find the disease list");
-                return NotFound("Don't find the disease list");
+                _log.LogInformation("Couldn't get disease list");
+                return new ObjectResult("Couldn't get disease list")
+                {
+                    StatusCode = StatusCodes.Status500InternalServerError
+                };
             }
             return Ok(diseaseDTOList);
         }
 
         public async Task<ActionResult> CreateDisease([FromBody] Disease disease)
         {
-            //if (string.IsNullOrEmpty(HttpContext.Session.GetString(_loggedOn)))
-            //{
-            //    return Unauthorized();
-            //}
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString(_loggedOn)))
+            {
+                return Unauthorized();
+            }
             if (!ModelState.IsValid)
             {
                 _log.LogInformation("Feil i inputvalidering");
@@ -75,8 +91,11 @@ namespace Oblig_1_ITPE3200.Controllers
 
             if (createdDisease == null)
             {
-                _log.LogInformation("Disease is not created");
-                return BadRequest("Disease is not created");
+                _log.LogInformation("Couldn't create disease");
+                return new ObjectResult("Couldn't create disease")
+                {
+                    StatusCode = StatusCodes.Status500InternalServerError
+                };
             }
 
             var actionName = nameof(GetDisease);
@@ -86,10 +105,10 @@ namespace Oblig_1_ITPE3200.Controllers
 
         public async Task<ActionResult> UpdateDisease([FromBody] Disease disease)
         {
-            //if (string.IsNullOrEmpty(HttpContext.Session.GetString(_loggedOn)))
-            //{
-            //    return Unauthorized();
-            //}
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString(_loggedOn)))
+            {
+                return Unauthorized();
+            }
             if (!ModelState.IsValid)
             {
                 _log.LogInformation("Feil i inputvalidering");
@@ -99,18 +118,24 @@ namespace Oblig_1_ITPE3200.Controllers
             bool returOK = await _db.UpdateDisease(disease);
             if(!returOK)
             {
-                _log.LogInformation("Disease is not updated");
-                return BadRequest("Disease is not updated");
+                _log.LogInformation("Couldn't update disease");
+                return new ObjectResult("Couldn't update disease")
+                {
+                    StatusCode = StatusCodes.Status500InternalServerError
+                };
             }
             return Ok();
         }
 
-        public async Task<ActionResult> DeleteDisease([FromQuery] int id)
+        public async Task<ActionResult> DeleteDisease(
+            [FromQuery]
+            [RegularExpression(@"^[1-9][0-9]*$")]
+            int id)
         {
-            //if (string.IsNullOrEmpty(HttpContext.Session.GetString(_loggedOn)))
-            //{
-            //    return Unauthorized();
-            //}
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString(_loggedOn)))
+            {
+                return Unauthorized();
+            }
             if (!ModelState.IsValid)
             {
                 _log.LogInformation("Feil i inputvalidering");
@@ -120,8 +145,11 @@ namespace Oblig_1_ITPE3200.Controllers
             bool returOK = await _db.DeleteDisease(id);
             if(!returOK)
             {
-                _log.LogInformation("Disease is not deleted");
-                return BadRequest("Disease is not deleted");
+                _log.LogInformation("Couldn't delete disease");
+                return new ObjectResult("Couldn't delete disease")
+                {
+                    StatusCode = StatusCodes.Status500InternalServerError
+                };
             }
             return Ok();
         }
@@ -133,8 +161,11 @@ namespace Oblig_1_ITPE3200.Controllers
             List<SymptomDTO> symptomDTOList = await _db.GetAllSymptoms();
             if(symptomDTOList == null)
             {
-                _log.LogInformation("Don't find symptom list");
-                return NotFound("Don't find symptom list");
+                _log.LogInformation("Couldn't get symptoms list");
+                return new ObjectResult("Couldn't get symptoms list")
+                {
+                    StatusCode = StatusCodes.Status500InternalServerError
+                };
             }
             return Ok(symptomDTOList);
         }
@@ -150,19 +181,31 @@ namespace Oblig_1_ITPE3200.Controllers
             SymptomsTable symptomsTable = await _db.GetSymptomsTable(options);
             if(symptomsTable == null)
             {
-                _log.LogInformation("Don't find symptom table");
-                return NotFound("Don't find symptom table");
+                _log.LogInformation("Couldn't get symptoms table");
+                return new ObjectResult("Couldn't get symptoms table")
+                {
+                    StatusCode = StatusCodes.Status500InternalServerError
+                };
             }
             return Ok(symptomsTable);
         }
 
-        public async Task<ActionResult> GetRelatedSymptoms(int id)
+        public async Task<ActionResult> GetRelatedSymptoms([RegularExpression(@"^[1-9][0-9]*$")] int id)
         {
+            if (!ModelState.IsValid)
+            {
+                _log.LogInformation("Feil i inputvalidering");
+                return BadRequest("Feil i inputvalidering");
+            }
+
             List<SymptomDTO> symptomDTOs = await _db.GetRelatedSymptoms(id);
             if(symptomDTOs == null)
             {
-                _log.LogInformation("Don't find symptom list");
-                return NotFound("Don't find symptom list");
+                _log.LogInformation("Couldn't get related symptoms");
+                return new ObjectResult("Couldn't get related symptoms")
+                {
+                    StatusCode = StatusCodes.Status500InternalServerError
+                };
             }
             return Ok(symptomDTOs);
         }
@@ -202,8 +245,17 @@ namespace Oblig_1_ITPE3200.Controllers
             List<DiseaseDTO> diseaseDTOs = await _db.SearchDiseases(selectedSymptoms);
             if(diseaseDTOs == null)
             {
-                _log.LogInformation("Don't find disease list");
-                return NotFound("Don't find disease list");
+                if (!ModelState.IsValid)
+                {
+                    _log.LogInformation("Feil i inputvalidering");
+                    return BadRequest("Feil i inputvalidering");
+                }
+
+                _log.LogInformation("Couldn't get disease list");
+                return new ObjectResult("Couldn't get disease list")
+                {
+                    StatusCode = StatusCodes.Status500InternalServerError
+                };
             }
             return Ok(diseaseDTOs);
         }
@@ -223,38 +275,44 @@ namespace Oblig_1_ITPE3200.Controllers
                         HttpContext.Session.SetString(_loggedOn, "");
                         return Ok(false);
                     }
-                    HttpContext.Session.SetString(_loggedOn, "LoggedOn");
+                    HttpContext.Session.SetString(_loggedOn, "loggedOn");
                     return Ok(true);
                 }
                 _log.LogInformation("Something wrong in inputvalidation, user=" + user.Username);
-                return BadRequest("Something wrong in inputvalidation");
+                return BadRequest("Feil i inputvalidering");
             }
             catch (Exception e)
             {
                 _log.LogInformation(e.Message);
-                return BadRequest("Something wrong on server.");
+                return new ObjectResult("Couldn't verify log in information")
+                {
+                    StatusCode = StatusCodes.Status500InternalServerError
+                };
             }
         }
 
-        public bool LogOut()
+        public async Task<ActionResult> LogOut()
         {
             try
             {
                 HttpContext.Session.SetString(_loggedOn, "");
-                return true;
+                return Ok(true);
             }
             catch (Exception e)
             {
                 _log.LogInformation(e.Message);
-                return false;
+                return new ObjectResult("Something went wrong when logging out")
+                {
+                    StatusCode = StatusCodes.Status500InternalServerError
+                };
             }
         }
 
-        public ActionResult IsLoggedIn()
+        public async Task<ActionResult> IsLoggedIn()
         {
             try
             {
-                if (HttpContext.Session.GetString(_loggedOn) == "LoggedOn")
+                if (HttpContext.Session.GetString(_loggedOn) == "loggedOn")
                 {
                     return Ok(true);
                 }
@@ -263,7 +321,10 @@ namespace Oblig_1_ITPE3200.Controllers
             catch (Exception e)
             {
                 _log.LogInformation(e.Message);
-                return BadRequest("Something wrong with server. Try again later.");
+                return new ObjectResult("Couldn't check login status")
+                {
+                    StatusCode = StatusCodes.Status500InternalServerError
+                };
             }
         }
     }

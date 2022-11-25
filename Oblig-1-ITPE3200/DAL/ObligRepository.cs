@@ -6,12 +6,14 @@ using Oblig_1_ITPE3200.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 
 namespace Oblig_1_ITPE3200.DAL
 {
+    [ExcludeFromCodeCoverage]
     public class ObligRepository : IObligRepository
     {
         private readonly DB _db;

@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Oblig_1_ITPE3200.Models
 {
+    [ExcludeFromCodeCoverage]
     public class Disease
     {
         public int Id { get; set; }

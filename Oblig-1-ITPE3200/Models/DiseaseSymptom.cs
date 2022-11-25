@@ -1,7 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Oblig_1_ITPE3200.Models
 {
+    [ExcludeFromCodeCoverage]
     public class DiseaseSymptom
     {
         public int DiseaseId { get; set; }

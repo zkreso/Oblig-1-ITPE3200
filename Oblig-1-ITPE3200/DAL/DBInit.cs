@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Oblig_1_ITPE3200.Models;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Oblig_1_ITPE3200.DAL
 {
+    [ExcludeFromCodeCoverage]
     public class DBInit
     {
         public static void initialize(IApplicationBuilder app)

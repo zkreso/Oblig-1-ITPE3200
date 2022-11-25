@@ -2,10 +2,12 @@
 using Microsoft.EntityFrameworkCore;
 using Oblig_1_ITPE3200.Models;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace Oblig_1_ITPE3200.DTOs
 {
+    [ExcludeFromCodeCoverage]
     public static class SymptomDTOExtensions
     {
         public static IQueryable<SymptomDTO> MapSymptomToDTO (this IQueryable<Symptom> symptoms)
@@ -53,6 +55,7 @@ namespace Oblig_1_ITPE3200.DTOs
             }
         }
     }
+    [ExcludeFromCodeCoverage]
     public class SymptomDTO
     {
         public int Id { get; set; }

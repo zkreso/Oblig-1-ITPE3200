@@ -1,8 +1,10 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Oblig_1_ITPE3200.DTOs
 {
+    [ExcludeFromCodeCoverage]
     public class UserDTO
     {
         public int Id { get; set; }

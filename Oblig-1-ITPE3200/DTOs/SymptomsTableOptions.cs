@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace Oblig_1_ITPE3200.DTOs
 {
     // Adapted from https://github.com/JonPSmith/EfCoreinAction-SecondEdition repo of book:
     // Smith, J.P. (2021), Entity Framework Core in Action (2nd edition). Manning
+    [ExcludeFromCodeCoverage]
     public class SymptomsTableOptions
     {
         public const int DefaultPageSize = 10;

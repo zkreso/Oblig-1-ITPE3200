@@ -1,10 +1,12 @@
 ﻿using Castle.Core.Internal;
 using Microsoft.EntityFrameworkCore;
 using Oblig_1_ITPE3200.Models;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace Oblig_1_ITPE3200.DTOs
 {
+    [ExcludeFromCodeCoverage]
     public static class DiseaseDTOExtensions
     {
         public static IQueryable<DiseaseDTO> MapDiseaseToDTO (this IQueryable<Disease> diseases)
@@ -26,6 +28,7 @@ namespace Oblig_1_ITPE3200.DTOs
             return diseases.Where(d => EF.Functions.Like(d.Name, "%" + searchString + "%"));
         }
     }
+    [ExcludeFromCodeCoverage]
     public class DiseaseDTO
     {
         public int Id { get; set; }
