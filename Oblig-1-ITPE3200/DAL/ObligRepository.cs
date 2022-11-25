@@ -181,114 +181,6 @@ namespace Oblig_1_ITPE3200.DAL
             }
         }
 
-        /* Unused/unnecessary methods
-        public async Task<Symptom> GetSymptom(int id)
-        {
-            try
-            {
-                Symptom symptom = await _db.Symptoms.FindAsync(id);
-
-                symptom.Diseases = symptom.DiseaseSymptoms.Select(ds => ds.Disease).ToList();
-
-                return symptom;
-            }
-            catch
-            {
-                return null;
-            }
-        }
-        public async Task<List<Symptom>> GetUnrelatedSymptoms(int id)
-        {
-            List<Symptom> symptoms = await _db.Symptoms.ToListAsync();
-
-            symptoms = symptoms.Where(s => !s.DiseaseSymptoms.Select(ds => ds.DiseaseId).Contains(id)).ToList();
-
-            return symptoms;
-        }
-        public async Task<bool> CreateSymptom(Symptom symptom)
-        {
-            try
-            {
-                var newSymptom = new Symptom();
-                newSymptom.Id = symptom.Id;
-                newSymptom.Name = symptom.Name;
-
-                _db.Symptoms.Add(newSymptom);
-                await _db.SaveChangesAsync();
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-        public async Task<bool> UpdateSymptom(Symptom symptom)
-        {
-            try
-            {
-                Symptom changedSymptom = await _db.Symptoms.FindAsync(symptom.Id);
-
-                changedSymptom.Name = symptom.Name;
-                await _db.SaveChangesAsync();
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-        public async Task<bool> DeleteSymptom(int id)
-        {
-            try
-            {
-                Symptom symptom = await _db.Symptoms.FindAsync(id);
-                _db.Symptoms.Remove(symptom);
-                _db.SaveChanges();
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-
-        }
-
-        // Joining table CRUD
-        public async Task<bool> CreateDiseaseSymptom(int diseaseId, int symptomId)
-        {
-            try
-            {
-                var newDiseaseSymptom = new DiseaseSymptom
-                {
-                    SymptomId = symptomId,
-                    DiseaseId = diseaseId
-                };
-
-                _db.DiseaseSymptoms.Add(newDiseaseSymptom);
-                await _db.SaveChangesAsync();
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-        public async Task<bool> DeleteDiseaseSymptom(int diseaseId, int symptomId)
-        {
-            try
-            {
-                DiseaseSymptom diseaseSymptom = await _db.DiseaseSymptoms.FindAsync(diseaseId, symptomId);
-                _db.DiseaseSymptoms.Remove(diseaseSymptom);
-                _db.SaveChanges();
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-        */
-
         // Search method
         public async Task<List<DiseaseDTO>> SearchDiseases(List<Symptom> selectedSymptoms)
         {
@@ -343,7 +235,6 @@ namespace Oblig_1_ITPE3200.DAL
         {
             try
             {
-            
                 User foundUser = await _db.Users.FirstOrDefaultAsync(u => u.Username == user.Username);
 
                 byte[] hash = MakeHash(user.Password, foundUser.Salt);
