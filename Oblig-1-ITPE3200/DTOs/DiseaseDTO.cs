@@ -21,7 +21,7 @@ namespace Oblig_1_ITPE3200.DTOs
         }
         public static IQueryable<DiseaseDTO> FilterBySearchString(this IQueryable<DiseaseDTO> diseases, string searchString)
         {
-            if (searchString.IsNullOrEmpty())
+            if (string.IsNullOrWhiteSpace(searchString))
             {
                 return diseases;
             }

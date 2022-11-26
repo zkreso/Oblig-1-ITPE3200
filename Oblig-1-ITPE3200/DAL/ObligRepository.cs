@@ -1,19 +1,15 @@
 ﻿using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query.Internal;
 using Oblig_1_ITPE3200.DTOs;
 using Oblig_1_ITPE3200.Models;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 
 namespace Oblig_1_ITPE3200.DAL
 {
-    [ExcludeFromCodeCoverage]
     public class ObligRepository : IObligRepository
     {
         private readonly DB _db;
@@ -63,7 +59,7 @@ namespace Oblig_1_ITPE3200.DAL
                 {
                     Name = disease.Name,
                     Description = disease.Description,
-                    DiseaseSymptoms = disease.DiseaseSymptoms?.Select(s => new DiseaseSymptom
+                    DiseaseSymptoms = disease.DiseaseSymptoms.Select(s => new DiseaseSymptom
                     {
                         SymptomId = s.SymptomId
                     }).ToList()
@@ -91,7 +87,7 @@ namespace Oblig_1_ITPE3200.DAL
                 changedDisease.Description = disease.Description;
                 changedDisease.DiseaseSymptoms.Clear();
 
-                changedDisease.DiseaseSymptoms = disease.DiseaseSymptoms?.ToList();
+                changedDisease.DiseaseSymptoms = disease.DiseaseSymptoms.ToList();
 
                 await _db.SaveChangesAsync();
                 return true;
@@ -106,6 +102,10 @@ namespace Oblig_1_ITPE3200.DAL
             try
             {
                 Disease disease = await _db.Diseases.FindAsync(id);
+                if(disease == null)
+                {
+                    return false;
+                }
                 _db.Diseases.Remove(disease);
                 _db.SaveChanges();
                 return true;
@@ -168,10 +168,10 @@ namespace Oblig_1_ITPE3200.DAL
             try
             {
                 List<SymptomDTO> symptoms = await _db.DiseaseSymptoms
-                .Where(ds => ds.DiseaseId == id)
-                .Select(ds => ds.Symptom)
-                .MapSymptomToDTO()
-                .ToListAsync();
+                    .Where(ds => ds.DiseaseId == id)
+                    .Select(ds => ds.Symptom)
+                    .MapSymptomToDTO()
+                    .ToListAsync();
 
                 return symptoms;
             }
@@ -238,12 +238,8 @@ namespace Oblig_1_ITPE3200.DAL
                 User foundUser = await _db.Users.FirstOrDefaultAsync(u => u.Username == user.Username);
 
                 byte[] hash = MakeHash(user.Password, foundUser.Salt);
-                bool ok = hash.SequenceEqual(foundUser.Password);
-                if (ok)
-                {
-                    return true;
-                }
-                return false;
+                bool isCorrectPassword = hash.SequenceEqual(foundUser.Password);
+                return isCorrectPassword;
             }
             catch (Exception e)
             {
