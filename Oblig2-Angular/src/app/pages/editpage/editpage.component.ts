@@ -47,24 +47,24 @@ export class EditpageComponent implements OnInit {
     description: ['', [Validators.nullValidator, Validators.pattern("[a-zA-ZæøåÆØÅ0-9\\\'\"\(\)-. ]*")]]
   });
 
-  private submit$ = new Subject<DiseaseEntity>(); // submission events observable
-  public success: null | boolean = null; // submission success
-  public errorMessage$ = new BehaviorSubject<string | null>(null); // Error messages on failure
+  private submit$ = new Subject<DiseaseEntity>(); // submitted form data stream
+  public errorMessage$ = new BehaviorSubject<string | null>(null); // error message stream
+  public success: null | boolean = null; // disease edited successfully, for displaying message
 
-  // Subscription that triggers when submission events observable emits
+  // Subscribe to form submissions to call server on submit
   private subscription = this.submit$.pipe(
     withLatestFrom(
       this.route.paramMap.pipe(map(params => Number(params.get('id')))),
       this.ps.selectedSymptoms$
     ),
-    map(([formData, diseaseId, latestSymptoms]): DiseaseEntity => ({
+    map( ([formData, diseaseId, latestSymptoms]): DiseaseEntity => ({
       id: diseaseId,
       name: formData.name,
       description: formData.description,
       diseaseSymptoms: latestSymptoms.map((symptom): DiseaseSymptom => ({ symptomId: symptom.id, diseaseId: diseaseId }))
     })),
-    exhaustMap(
-    newDisease => this.ds.updateDisease(newDisease).pipe(
+    exhaustMap(newDisease =>
+      this.ds.updateDisease(newDisease).pipe(
         this.es.handleErrors(this.errorMessage$, this.httpStatusToStrings)
       )
     )

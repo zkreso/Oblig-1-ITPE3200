@@ -28,9 +28,9 @@ import { DeletemodalComponent } from './components/diseasetable/deletemodal/dele
 
 const appRoutes: Routes = [
   { path: RouteStrings.Home, component: IndexComponent },
-  { path: RouteStrings.AddPage, component: AddpageComponent },
-  { path: RouteStrings.EditPage, component: EditpageComponent },
-  { path: RouteStrings.DiseaseList, component: DiseaselistComponent, canActivate: [AuthguardGuard] },
+  { path: RouteStrings.AddPage, component: AddpageComponent, canActivate: [AuthguardGuard] },
+  { path: RouteStrings.EditPage, component: EditpageComponent, canActivate: [AuthguardGuard] },
+  { path: RouteStrings.DiseaseList, component: DiseaselistComponent },
   { path: RouteStrings.DiseaseDetails, component: DiseasedetailsComponent },
   { path: RouteStrings.NotFound, component: NotfoundComponent },
   { path: 'login', component: LoginComponent },

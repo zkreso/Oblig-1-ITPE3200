@@ -35,9 +35,6 @@ export class PageoptionsService {
 
   private selectedSymptoms: Symptom[] = [];
 
-  // TODO: Validation and error handling on client
-  // TODO: Try to do auto updating search with debouncetime and distinctuntilchanged
-
   constructor() { }
 
   setPageNum(n: number): void {

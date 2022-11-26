@@ -1,6 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Subscription } from 'rxjs';
 import { Disease } from '../../models';
+import { LoginService } from '../../services/login.service';
 import { DeletemodalComponent } from './deletemodal/deletemodal.component';
 
 @Component({
@@ -13,9 +15,17 @@ export class DiseasetableComponent implements OnInit {
   @Output() clickDeleteDisease: EventEmitter<number> = new EventEmitter;
   @Input() error: String | null = null;
 
-  constructor(private ms: NgbModal, private am: NgbActiveModal) { }
+  public loggedIn = false;
+  private subscription!: Subscription;
+
+  constructor(private ms: NgbModal, private ls: LoginService) { }
 
   ngOnInit(): void {
+    this.subscription = this.ls.isAuthenticated().subscribe(res => this.loggedIn = res);
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   deleteDisease(disease: Disease) {

@@ -20,8 +20,7 @@ export class SymptomsubpageComponent implements OnInit {
 
   ngOnInit(): void { }
 
-  // Set up calls to server whenever options change
-
+  // Listen to changes in options and call server to get new data
   private data$ = this.ps.pageOptions$.pipe(
     switchMap(pageOptions => this.ds.getSymptomsPage(pageOptions).pipe(
         this.es.handleErrors(this.errorMessage$, this.httpStatusToStrings)
@@ -30,23 +29,29 @@ export class SymptomsubpageComponent implements OnInit {
     share()
   );
 
-  // 1.0 STATIC DATA FOR SEARCH COMPONENT
+  // Most of the code below is just the data stream above broken down so it can
+  // be passed down to child components
 
+  // Just some static labels for search bar child component
   searchPlaceholder: string = "Enter symptom name";
   searchLabel: string = "Search for symptoms";
   
-  // 2.0 DYNAMIC DATA FOR SELECTED SYMPTOMS COMPONENT
-
+  // Stream of selected symptoms for child component
   public selectedSymptoms$: Observable<Symptom[]> = this.ps.selectedSymptoms$;
 
-  // 3.0 DYNAMIC DATA FOR SYMPTOM TABLE COMPONENT
-
-  // 3.1 Current sort options for sort arrow indicator
+  // Currently selected sorting options for child component
   public sortOptions$ = this.data$.pipe(map(symptomsTable => symptomsTable.pageData.orderByOptions));
 
-  // 3.2 Loading indicator, delayed to avoid "flickering"
+  // Symptoms for child component table
+  public symptoms$ = this.data$.pipe(
+    map(symptomsTable => symptomsTable.symptomList),
+    startWith(null)
+  );
+
+  // Loading indicator for child component table, when waiting for symptoms to load.
+  // Delayed by 400 ms to avoid "flickering"
   private loadingStart$: Observable<boolean> = this.ps.pageOptions$.pipe(
-    delay(300),
+    delay(400),
     takeUntil(this.data$),
     map(() => true)
   );
@@ -57,13 +62,7 @@ export class SymptomsubpageComponent implements OnInit {
     startWith(true)
   );
 
-  // 3.3 Symptoms for the table
-  public symptoms$ = this.data$.pipe(
-    map(symptomsTable => symptomsTable.symptomList),
-    startWith(null)
-  );
-
-  // 3.4 Error message if table fails to load
+  // Error message to display instead of table in child component if it fails to load
   public errorMessage$ = new BehaviorSubject<string | null>(null);
 
   private httpStatusToStrings(HttpStatusCode: number): string {
@@ -77,14 +76,14 @@ export class SymptomsubpageComponent implements OnInit {
     }
   }
 
-  // 4.0 DYNAMIC DATA FOR PAGE NAVIGATION COMPONENT
-
+  // Page number and total pages for child component to make page navigation
   public options$ = this.data$.pipe(
     map(symptomsTable => symptomsTable.pageData)
   );
 
-  // All the functions from the child components
-
+  // Functions from all the child components
+  // Forwarded to the page options service
+  // Validated in child components
   addSymptom(symptom: Symptom): void {
     this.ps.addSymptom(symptom);
   }

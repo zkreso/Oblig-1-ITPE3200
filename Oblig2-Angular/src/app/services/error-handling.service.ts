@@ -8,12 +8,17 @@ export class ErrorHandlingService {
   constructor() { }
 
   /** 
-   * Emits http errors to specified subject as strings, based on supplied conversion function.
-   * Sends null at the start of new requests to reset the status.
+   * Custom operator to catch http status codes from failed http calls and output
+   * user-friendly error messages from a stream.
+   *
+   * Takes as input the stream the error messages should be output from, and a function
+   * that converts status codes to strings.
    * 
-   * @param errorMessageObservable - The subject that should emit the error messages.
-   * @param statusCodesToStringsFunction - Function that takes as input http status codes
-   * and outputs strings.
+   * @param errorMessageObservable - The stream that should emit the error messages.
+   * @param statusCodesToStringsFunction - Function that maps status codes to strings.
+   *
+   * It throws the error again after processing it. It's supposed to improve user experience,
+   * not handle the errors. I just couldn't think of a better name than handleErrors. 🙂
    */
 
   public handleErrors<T>(

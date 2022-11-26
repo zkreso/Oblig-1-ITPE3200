@@ -54,10 +54,11 @@ namespace Oblig_1_ITPE3200.Controllers
             string searchString
             )
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString(_loggedOn)))
-            {
-                return Unauthorized();
-            }
+            // I don't want this to require login
+            //if (string.IsNullOrEmpty(HttpContext.Session.GetString(_loggedOn)))
+            //{
+            //    return Unauthorized();
+            //}
             if (!ModelState.IsValid)
             {
                 _log.LogInformation("Feil i inputvalidering");

@@ -15,6 +15,6 @@ export interface NavLink {
 
 export const navData: NavLink[] = [
   { routeString: RouteStrings.Home, linkText: "Home", needsAuth: false },
-  { routeString: RouteStrings.AddPage, linkText: "Save New Disease", needsAuth: false },
-  { routeString: RouteStrings.DiseaseList, linkText: "Disease List", needsAuth: true }
+  { routeString: RouteStrings.AddPage, linkText: "Save New Disease", needsAuth: true },
+  { routeString: RouteStrings.DiseaseList, linkText: "Disease List", needsAuth: false }
 ]

@@ -32,11 +32,11 @@ export class AddpageComponent implements OnInit {
     description: ['', [Validators.nullValidator, Validators.pattern("[a-zA-ZæøåÆØÅ0-9\\\'\"\(\)-. ]*")]]
   });
 
-  private submit$ = new Subject<DiseaseEntity>(); // submission events observable
-  public success: null | boolean = null; // submission success
-  public errorMessage$ = new BehaviorSubject<string | null>(null); // Error messages on failure
+  private submit$ = new Subject<DiseaseEntity>(); // submitted form data stream
+  public errorMessage$ = new BehaviorSubject<string | null>(null); // error message stream
+  public success: null | boolean = null; // disease added successfully, for displaying message
 
-  // Subscription that triggers when submission events observable emits
+  // Subscribe to form submissions to call server on submit
   private subscription = this.submit$.pipe(
     withLatestFrom(this.ps.selectedSymptoms$),
     map( ([formData, latestSymptoms]): DiseaseEntity =>
@@ -46,8 +46,8 @@ export class AddpageComponent implements OnInit {
         diseaseSymptoms: latestSymptoms.map( (symptom): DiseaseSymptom => ({symptomId: symptom.id}) )
       })
     ),
-    exhaustMap(
-      newDisease => this.ds.createDisease(newDisease).pipe(
+    exhaustMap(newDisease =>
+      this.ds.createDisease(newDisease).pipe(
         this.es.handleErrors(this.errorMessage$, this.httpStatusToStrings)
       )
     )
