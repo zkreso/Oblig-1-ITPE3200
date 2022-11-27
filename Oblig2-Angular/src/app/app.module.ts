@@ -25,6 +25,7 @@ import { GlobalHttpInterceptorService } from './services/global-http-interceptor
 import { NotfoundComponent } from './pages/notfound/notfound.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DeletemodalComponent } from './components/diseasetable/deletemodal/deletemodal.component';
+import { DiseaseFormComponent } from './components/disease-form/disease-form.component';
 
 const appRoutes: Routes = [
   { path: RouteStrings.Home, component: IndexComponent },
@@ -56,6 +57,7 @@ const appRoutes: Routes = [
     LoginComponent,
     NotfoundComponent,
     DeletemodalComponent,
+    DiseaseFormComponent,
   ],
   imports: [
     BrowserModule,

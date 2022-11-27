@@ -1,34 +1,9 @@
 <h1>Save new disease</h1>
 
-<form (ngSubmit)="createDisease()" [formGroup]="form">
-    <div class="p-3 mt-3 rounded-top border border-bottom-0 bg-light">
-
-        <div class="mb-3">
-            <label for="name" class="form-label">Disease name</label>
-            <input type="text" class="form-control" [ngClass]="{ 'is-invalid': form.controls.name.touched && form.controls.name.invalid, 'is-valid' : form.controls.name.valid && form.controls.name.touched }" id="name" formControlName="name">
-            <div *ngIf="form.controls.name.invalid && form.controls.name.touched" class="invalid-feedback">
-                Name is required!
-            </div>
-        </div>
-        <div class="mb-3">
-            <label for="name" class="form-label">Disease description</label>
-            <input type="text" class="form-control" [ngClass]="{ 'is-invalid': form.controls.description.touched && form.controls.description.invalid, 'is-valid' : form.controls.description.valid && form.controls.description.touched }" id="description" formControlName="description">
-            <div *ngIf="form.controls.description.invalid && form.controls.description.touched" class="invalid-feedback">
-                Invalid input
-            </div>
-        </div>
-
-    </div>
-    <div class="bg-light border p-3">
-        <button type="submit" [disabled]="form.invalid" class="btn btn-primary">Save</button>
-        <a onclick="history.back()" class="btn btn-danger mx-1">Cancel</a>
-        <span *ngIf="(errorMessage$ | async) as error" class="mx-3 text-danger">
-            {{error}} <i class="bi bi-exclamation-circle"></i>
-        </span>
-        <span *ngIf="success && form.untouched" class="mx-3">
-            Disease added successfully
-        </span>
-    </div>
-</form>
+<app-disease-form (clickSubmit)="createDisease($event)"
+                  [success]="success"
+                  [successString]="successString"
+                  [errorMessage]="errorMessage$ | async">
+</app-disease-form>
 
 <app-symptomsubpage></app-symptomsubpage>
