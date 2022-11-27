@@ -8,9 +8,6 @@ import { PageoptionsService } from '../../services/pageoptions.service';
 })
 export class IndexComponent implements OnInit {
 
-  // This component is only here to provide a unique instance
-  // of pageoptionsservice to its children
-
   constructor() {
   }
 

@@ -6,6 +6,7 @@ using Oblig_1_ITPE3200.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -14,6 +15,7 @@ namespace ServerTests
     // Setup code for in-memory database taken from Microsoft.com Learning center and associated Github repo
     // https://learn.microsoft.com/en-us/ef/core/testing/testing-without-the-database
     // https://github.com/dotnet/EntityFramework.Docs/blob/main/samples/core/Testing/TestingWithoutTheDatabase/SqliteInMemoryBloggingControllerTest.cs
+    [ExcludeFromCodeCoverage]
     public class RepositoryTests : IDisposable
     {
         private readonly DbConnection _connection;

@@ -1,4 +1,4 @@
-import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, catchError, Observable, throwError, defer } from 'rxjs';
 
@@ -8,33 +8,35 @@ export class ErrorHandlingService {
   constructor() { }
 
   /** 
-   * Custom operator to catch http status codes from failed http calls and output
-   * user-friendly error messages from a stream.
+   * Custom operator to detect errors from failed http calls and output user-friendly error
+   * messages from a stream passed as parameter.
    *
-   * Takes as input the stream the error messages should be output from, and a function
-   * that converts status codes to strings.
+   * Takes as input the stream the error messages should be output from, and a dictionary (Map)
+   * that contains the strings the different http status codes should be mapped to.
    * 
-   * @param errorMessageObservable - The stream that should emit the error messages.
-   * @param statusCodesToStringsFunction - Function that maps status codes to strings.
+   * @param errorMessage$ - The stream that should emit the error messages.
+   * @param dict - Dictionary with http status codes as keys and strings as values.
    *
    * It throws the error again after processing it. It's supposed to improve user experience,
    * not handle the errors. I just couldn't think of a better name than handleErrors. 🙂
    */
 
-  public handleErrors<T>(
-    errorMessageObservable: BehaviorSubject<string | null>,
-    statusCodesToStringsFunction: (number: HttpStatusCode) => string
-  ): (source: Observable<T>) => Observable<T> {
+  public handleErrors<T>
+    (errorMessage$: BehaviorSubject<string | null>, dict: Map<number, string>):
+    (source: Observable<T>) => Observable<T>
+  {
     return (source: Observable<T>) =>
       defer(() => {
-        errorMessageObservable.next(null);
+        errorMessage$.next(null);
         return source;
       }).pipe(
       catchError((error) => {
         if (error instanceof HttpErrorResponse) {
-          errorMessageObservable.next(statusCodesToStringsFunction(error.status));
+          let errorMessage = dict.get(error.status) || "An unknown error occured";
+          errorMessage$.next(errorMessage);
         } else {
-          errorMessageObservable.next(statusCodesToStringsFunction(-1));
+          let errorMessage = "An unknown error occured";
+          errorMessage$.next(errorMessage);
         }
         return throwError(error);
       })

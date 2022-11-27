@@ -3,6 +3,10 @@ import { DatabaseService } from '../../services/database.service';
 import { take, switchMap, BehaviorSubject, combineLatest } from 'rxjs';
 import { ErrorHandlingService } from '../../services/error-handling.service';
 
+const dict = new Map<number, string>([
+  [500, "Error occured on server, please try again later"]
+]);
+
 @Component({
   selector: 'app-diseaselist',
   templateUrl: './diseaselist.component.html',
@@ -22,22 +26,11 @@ export class DiseaselistComponent implements OnInit {
     this.searchString$
   ]).pipe(
     switchMap(([_, searchString]) => this.ds.getAllDiseases(searchString).pipe(
-      this.es.handleErrors(this.errorMessage$, this.httpStatusToStrings)
+      this.es.handleErrors(this.errorMessage$, dict)
     ))
   );
 
   public errorMessage$ = new BehaviorSubject<string | null>(null);
-
-  private httpStatusToStrings(HttpStatusCode: number): string {
-    switch (HttpStatusCode) {
-      case 500: {
-        return "Error occured on server. Please try again later";
-      }
-      default: {
-        return "An unknown error occured";
-      }
-    }
-  }
 
   constructor(private ds: DatabaseService, private es: ErrorHandlingService) { }
 

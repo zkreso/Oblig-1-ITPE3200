@@ -1,9 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { map, switchMap, share, delay, takeUntil, Observable, startWith, merge, BehaviorSubject } from 'rxjs';
+import { map, switchMap, share, delay, takeUntil, Observable, startWith, merge, BehaviorSubject, of } from 'rxjs';
 import { Symptom } from '../../models';
 import { DatabaseService } from '../../services/database.service';
 import { ErrorHandlingService } from '../../services/error-handling.service';
 import { PageoptionsService } from '../../services/pageoptions.service';
+
+const dict = new Map<number, string>([
+  [500, "Error occured on server, please try again later"]
+]);
 
 @Component({
   selector: 'app-symptomsubpage',
@@ -11,6 +15,10 @@ import { PageoptionsService } from '../../services/pageoptions.service';
   providers: [ErrorHandlingService]
 })
 export class SymptomsubpageComponent implements OnInit {
+
+  // Just some static labels for search bar child component
+  searchPlaceholder: string = "Enter symptom name";
+  searchLabel: string = "Search for symptoms";
 
   constructor(
     private ds: DatabaseService,
@@ -20,22 +28,21 @@ export class SymptomsubpageComponent implements OnInit {
 
   ngOnInit(): void { }
 
-  // Listen to changes in options and call server to get new data
+  // Error message to display instead of table in child component if it fails to load
+  public errorMessage$ = new BehaviorSubject<string | null>(null);
+
+  // Get new data whenever options change
   private data$ = this.ps.pageOptions$.pipe(
     switchMap(pageOptions => this.ds.getSymptomsPage(pageOptions).pipe(
-        this.es.handleErrors(this.errorMessage$, this.httpStatusToStrings)
+        this.es.handleErrors(this.errorMessage$, dict)
       )
     ),
     share()
   );
 
   // Most of the code below is just the data stream above broken down so it can
-  // be passed down to child components
+  // be passed down to individual child components
 
-  // Just some static labels for search bar child component
-  searchPlaceholder: string = "Enter symptom name";
-  searchLabel: string = "Search for symptoms";
-  
   // Stream of selected symptoms for child component
   public selectedSymptoms$: Observable<Symptom[]> = this.ps.selectedSymptoms$;
 
@@ -49,32 +56,17 @@ export class SymptomsubpageComponent implements OnInit {
   );
 
   // Loading indicator for child component table, when waiting for symptoms to load.
-  // Delayed by 400 ms to avoid "flickering"
-  private loadingStart$: Observable<boolean> = this.ps.pageOptions$.pipe(
-    delay(400),
-    takeUntil(this.data$),
-    map(() => true)
+  // Delayed by 50 ms to avoid "flickering"
+  public loading$ = merge(
+    // End signal
+    this.data$.pipe(map(() => false)),
+    // Start signal
+    this.ps.pageOptions$.pipe(
+      switchMap(
+        () => of(true).pipe(delay(50), takeUntil(this.data$))
+      )
+    )
   );
-  private loadingEnd$: Observable<boolean> = this.data$.pipe(map(() => false));
-
-  public loading$ = this.ps.pageOptions$.pipe(
-    switchMap(() => merge(this.loadingStart$, this.loadingEnd$)),
-    startWith(true)
-  );
-
-  // Error message to display instead of table in child component if it fails to load
-  public errorMessage$ = new BehaviorSubject<string | null>(null);
-
-  private httpStatusToStrings(HttpStatusCode: number): string {
-    switch (HttpStatusCode) {
-      case 500: {
-        return "Error occured on server. Please try again later";
-      }
-      default: {
-        return "An unknown error occured";
-      }
-    }
-  }
 
   // Page number and total pages for child component to make page navigation
   public options$ = this.data$.pipe(

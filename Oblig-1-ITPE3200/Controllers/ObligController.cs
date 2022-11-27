@@ -152,7 +152,7 @@ namespace Oblig_1_ITPE3200.Controllers
                     StatusCode = StatusCodes.Status500InternalServerError
                 };
             }
-            return Ok();
+            return NoContent();
         }
 
         // Symptom CRUD
@@ -297,7 +297,7 @@ namespace Oblig_1_ITPE3200.Controllers
             try
             {
                 HttpContext.Session.SetString(_loggedOn, "");
-                return Ok(true);
+                return Ok();
             }
             catch (Exception e)
             {

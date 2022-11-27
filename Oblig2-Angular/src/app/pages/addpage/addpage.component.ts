@@ -5,6 +5,11 @@ import { PageoptionsService } from '../../services/pageoptions.service';
 import { map, Subject, BehaviorSubject, exhaustMap, withLatestFrom } from 'rxjs';
 import { ErrorHandlingService } from '../../services/error-handling.service';
 
+const dict = new Map<number, string>([
+  [400, "Invalid input"],
+  [500, "Error occured on server, please try again later"]
+]);
+
 @Component({
   selector: 'app-addpage',
   templateUrl: './addpage.component.html',
@@ -45,26 +50,12 @@ export class AddpageComponent implements OnInit {
     ),
     exhaustMap(newDisease =>
       this.ds.createDisease(newDisease).pipe(
-        this.es.handleErrors(this.errorMessage$, this.httpStatusToStrings)
+        this.es.handleErrors(this.errorMessage$, dict)
       )
     )
   ).subscribe(() => {
     this.success = true;
   });
-
-  private httpStatusToStrings(HttpStatusCode: number): string {
-    switch (HttpStatusCode) {
-      case 400: {
-        return "Invalid input";
-      }
-      case 500: {
-        return "Error occured on server. Please try again later";
-      }
-      default: {
-        return "An unknown error occured";
-      }
-    }
-  }
 
   createDisease(disease: DiseaseEntity) {
     this.success = false;

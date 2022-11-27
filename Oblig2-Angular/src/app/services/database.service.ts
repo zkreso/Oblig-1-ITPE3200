@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, distinctUntilChanged, Observable, share, exhaustMap, defer, Subject, finalize, throwError } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Symptom, Disease, PageOptions, SymptomsTable, DiseaseEntity } from '../models';
 

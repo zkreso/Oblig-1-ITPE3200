@@ -1,21 +1,15 @@
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
-using NuGet.Frameworks;
 using Oblig_1_ITPE3200.Controllers;
 using Oblig_1_ITPE3200.DAL;
 using Oblig_1_ITPE3200.DTOs;
 using Oblig_1_ITPE3200.Models;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Net;
-using System.Text;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 using Xunit;
 
 namespace ServerTests
@@ -142,23 +136,6 @@ namespace ServerTests
             // Assert
             Assert.Equal(expected.Value, actual.Value);
             Assert.Equal(expected.StatusCode, actual.StatusCode);
-        }
-
-        [Fact]
-        public async Task GetAllDiseases_NotLoggedIn()
-        {
-            // Arrange
-            var controller = new ObligController(mockRep.Object, mockLog.Object);
-
-            mockSession[_loggedOn] = _notLoggedOn;
-            mockHttpContext.Setup(s => s.Session).Returns(mockSession);
-            controller.ControllerContext.HttpContext = mockHttpContext.Object;
-
-            // Act
-            var actual = await controller.GetAllDiseases(It.IsAny<string>());
-
-            // Assert
-            Assert.IsType<UnauthorizedResult>(actual);
         }
 
         [Fact]
@@ -385,7 +362,7 @@ namespace ServerTests
             var actual = await controller.DeleteDisease(It.IsAny<int>());
 
             // Assert
-            Assert.IsType<OkResult>(actual);
+            Assert.IsType<NoContentResult>(actual);
         }
 
         [Fact]
@@ -798,14 +775,11 @@ namespace ServerTests
             mockHttpContext.Setup(s => s.Session).Returns(mockSession);
             controller.ControllerContext.HttpContext = mockHttpContext.Object;
 
-            var expected = new OkObjectResult(true);
-
             // Act
-            var actual = await controller.LogOut() as OkObjectResult;
+            var actual = await controller.LogOut();
 
             // Assert
-            Assert.Equal(expected.StatusCode, actual.StatusCode);
-            Assert.Equal(expected.Value, actual.Value);
+            Assert.IsType<OkResult>(actual);
         }
 
         [Fact]

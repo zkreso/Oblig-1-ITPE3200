@@ -3,9 +3,14 @@ import { PageoptionsService } from '../../services/pageoptions.service';
 import { DatabaseService } from '../../services/database.service';
 import { ActivatedRoute } from '@angular/router';
 import { Subject, map, exhaustMap, switchMap, forkJoin, take, withLatestFrom, BehaviorSubject } from 'rxjs';
-import { DiseaseEntity, DiseaseSymptom, Symptom } from '../../models';
+import { DiseaseEntity, DiseaseSymptom } from '../../models';
 import { ErrorHandlingService } from '../../services/error-handling.service';
 import { DiseaseFormComponent } from '../../components/disease-form/disease-form.component';
+
+const dict = new Map<number, string>([
+  [400, "Invalid input"],
+  [500, "Error occured on server, please try again later"]
+]);
 
 @Component({
   selector: 'app-editpage',
@@ -66,27 +71,13 @@ export class EditpageComponent implements OnInit, AfterViewInit {
     })),
     exhaustMap(newDisease =>
       this.ds.updateDisease(newDisease).pipe(
-        this.es.handleErrors(this.errorMessage$, this.httpStatusToStrings)
+        this.es.handleErrors(this.errorMessage$, dict)
       )
     )
   ).subscribe(() => {
     this.errorMessage$.next(null);
     this.success = true;
   });
-
-  private httpStatusToStrings(HttpStatusCode: number): string {
-    switch (HttpStatusCode) {
-      case 400: {
-        return "Invalid input";
-      }
-      case 500: {
-        return "Error occured on server. Please try again later";
-      }
-      default: {
-        return "An unknown error occured";
-      }
-    }
-  }
 
   updateDisease(disease: DiseaseEntity) {
     this.success = false;

@@ -1,21 +1,17 @@
 import { Injectable } from '@angular/core';
 import { PageOptions, Symptom } from '../models';
-import { BehaviorSubject, combineLatest, distinctUntilChanged, map, Observable, shareReplay, Subject } from 'rxjs';
+import { BehaviorSubject, combineLatest, distinctUntilChanged, map, Observable } from 'rxjs';
 
 @Injectable()
 export class PageoptionsService {
 
-  private orderByOptionsSubject = new BehaviorSubject<string>("idAscending");
-  private searchStringSubject = new BehaviorSubject<string>("");
-  private pageNumberSubject = new BehaviorSubject<number>(1);
-  private pageSizeSubject = new BehaviorSubject<number>(10);
   private selectedSymptomsSubject = new BehaviorSubject<Symptom[]>([]);
 
-  private orderByOptions$ = this.orderByOptionsSubject as Observable<string>;
-  private searchString$ = this.searchStringSubject as Observable<string>;
-  private pageNum$ = this.pageNumberSubject as Observable<number>;
-  private pageSize$ = this.pageSizeSubject as Observable<number>;
-  selectedSymptoms$ = (this.selectedSymptomsSubject as Observable<Symptom[]>);
+  private orderByOptions$ = new BehaviorSubject<string>("idAscending");
+  private searchString$ = new BehaviorSubject<string>("");
+  private pageNum$ = new BehaviorSubject<number>(1);
+  private pageSize$ = new BehaviorSubject<number>(10);
+  public selectedSymptoms$ = this.selectedSymptomsSubject as Observable<Symptom[]>;
 
   pageOptions$: Observable<PageOptions> = combineLatest([
     this.orderByOptions$,
@@ -38,32 +34,32 @@ export class PageoptionsService {
   constructor() { }
 
   setPageNum(n: number): void {
-    this.pageNumberSubject.next(n);
+    this.pageNum$.next(n);
   }
 
   nextPage(): void {
-    let p = this.pageNumberSubject.getValue() + 1;
-    this.pageNumberSubject.next(p);
+    let p = this.pageNum$.getValue() + 1;
+    this.pageNum$.next(p);
   }
 
   prevPage(): void {
-    let p = this.pageNumberSubject.getValue() - 1;
-    this.pageNumberSubject.next(p);
+    let p = this.pageNum$.getValue() - 1;
+    this.pageNum$.next(p);
   }
 
   setSearchString(s: string): void {
-    this.searchStringSubject.next(s);
-    this.pageNumberSubject.next(1);
+    this.searchString$.next(s);
+    this.pageNum$.next(1);
   }
 
   addSymptom(symptom: Symptom): void {
-    this.selectedSymptoms.push(symptom);
-    this.selectedSymptomsSubject.next(this.selectedSymptoms);
+    let symptoms = [...this.selectedSymptomsSubject.getValue(), symptom];
+    this.selectedSymptomsSubject.next(symptoms);
   }
 
   removeSymptom(symptom: Symptom): void {
-    this.selectedSymptoms = this.selectedSymptoms.filter(s => s.id != symptom.id);
-    this.selectedSymptomsSubject.next(this.selectedSymptoms);
+    let symptoms = this.selectedSymptomsSubject.getValue().filter(s => s.id != symptom.id);
+    this.selectedSymptomsSubject.next(symptoms);
   }
 
   setAllSymptoms(symptoms: Symptom[]): void {
@@ -72,23 +68,23 @@ export class PageoptionsService {
   }
 
   sortById(): void {
-    if (this.orderByOptionsSubject.getValue() == "idAscending") {
-      this.orderByOptionsSubject.next("idDescending");
+    if (this.orderByOptions$.getValue() == "idAscending") {
+      this.orderByOptions$.next("idDescending");
     } else {
-      this.orderByOptionsSubject.next("idAscending");
+      this.orderByOptions$.next("idAscending");
     }
   }
 
   sortByName(): void {
-    if (this.orderByOptionsSubject.getValue() == "nameAscending") {
-      this.orderByOptionsSubject.next("nameDescending");
+    if (this.orderByOptions$.getValue() == "nameAscending") {
+      this.orderByOptions$.next("nameDescending");
     } else {
-      this.orderByOptionsSubject.next("nameAscending");
+      this.orderByOptions$.next("nameAscending");
     }
   }
 
   changePageSize(n: number): void {
-    this.pageSizeSubject.next(n);
+    this.pageSize$.next(n);
   }
 
 }
